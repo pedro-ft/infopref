@@ -1,0 +1,54 @@
+.header {
+    align-self: stretch;
+    display: flex;
+    width: auto;
+    gap: 20px;
+    line-height: 1;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 5px 45px;
+    background: linear-gradient(90deg, rgba(210,210,210,1) 0%, rgba(21,108,221,1) 100%);
+  }
+  
+  .logo {
+    aspect-ratio: 1.15;
+    object-fit: contain;
+    object-position: center;
+    width: 161px;
+    max-width: 100%;
+  }
+  
+  .userInfo {
+    display: flex;
+    gap: 40px 100px;
+    margin: auto 0;
+  }
+  
+  .userProfile {
+    align-self: start;
+    display: flex;
+    gap: 23px;
+  }
+  
+  .avatar {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 40px;
+  }
+  
+  .userName {
+    font-size: 17px;
+    color: #FFFFFF;
+    align-self: start;
+    margin-top: 13px;
+    flex-basis: auto
+  }
+  
+  .notificationIcon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 54px;
+    padding: 0;
+  }
