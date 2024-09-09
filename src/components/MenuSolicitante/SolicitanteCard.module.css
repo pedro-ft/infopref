@@ -1,0 +1,100 @@
+.card {
+    border-radius: 30px;
+    background-color: #fff;
+    display: flex;
+    width: 825px;
+    max-width: 100%;
+    padding-left: 59px;
+    gap: 40px 58px;
+    flex-wrap: wrap;
+    border: 1px solid #000;
+    margin-top: 15px;
+  }
+  
+  .avatar {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 75px;
+    margin: auto 0;
+  }
+  
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: 0;
+    width: fit-content;
+    padding: 33px 0 10px;
+  }
+  
+  .cardHeader {
+    display: flex;
+    gap: 11px;
+    color: #000;
+    letter-spacing: 0.5px;
+    font: 400 24px/1 Roboto, sans-serif;
+    margin-top: -34px;
+    z-index: 10;
+  }
+  
+  .verticalLine {
+    width: 1px;
+    height: 131px;
+    border: 1px solid #000;
+  }
+  
+  .name {
+    align-self: start;
+    flex-basis: auto;
+  }
+  
+  .cardDetails {
+    display: flex;
+    margin-top: 9px;
+    width: 598px;
+    max-width: 100%;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .info {
+    color: #000;
+    font-feature-settings: "liga" off, "clig" off;
+    letter-spacing: 0.5px;
+    font: 400 17px/22px Roboto, -apple-system, Roboto, Helvetica, sans-serif;
+  }
+  
+  .actions {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .editButton,
+  .deleteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .editButton img,
+  .deleteButton img {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 25px;
+  }
+  
+  .deleteButton {
+    margin-top: 29px;
+  }
+  
+  @media (max-width: 991px) {
+    .card {
+      padding-left: 20px;
+    }
+  
+    .cardContent {
+      max-width: 100%;
+    }
+  }

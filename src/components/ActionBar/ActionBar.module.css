@@ -1,0 +1,68 @@
+.actionBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    gap: 0px;
+    flex-wrap: wrap;
+  }
+  
+  .actionButton {
+    font-feature-settings: "liga" off, "clig" off;
+    flex: 1;
+    border-radius: 30px;
+    background-color: #156cdd;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.5px;
+    font: 400 17px/1 Roboto, sans-serif;
+    padding: 16px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    margin: 0 25px 0 0;
+  }
+  
+  .searchForm {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 12px 12px;
+  }
+  
+  .searchInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: rgba(60, 60, 67, 0.6);
+    font: 400 17px/1 Roboto, sans-serif;
+  }
+  
+  .searchButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .searchIcon {
+    width: 30px;
+    height: 25px;
+    object-fit: contain;
+  }
+  
+  .visuallyHidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }

@@ -37,10 +37,6 @@
 
   }
   
-  .menuItem:first-of-type {
-    margin-top: 0;
-  }
-  
   .visually-hidden {
     position: absolute;
     width: 1px;

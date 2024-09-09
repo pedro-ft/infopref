@@ -1,0 +1,29 @@
+.orderServicePage {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 56px;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 0 44px;
+  }
+  
+  .backButton {
+    display: flex;
+    align-items: center;
+    background-color: #156cdd;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    color: #fff;
+    cursor: pointer;
+    font: 400 17px/1 Roboto, sans-serif;
+    letter-spacing: 0.5px;
+    margin-top: 8%;
+    padding: 16px 12px;
+    text-align: center;
+    width: 375px;
+  }

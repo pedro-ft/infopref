@@ -1,0 +1,46 @@
+.solicitanteModule {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 56px;
+    overflow: hidden;
+  }
+  
+  .contentWrapper {
+    width: 100%;
+    margin: 25px 0 0 11px;
+    display: flex;
+  }
+  
+  .listSection {
+    width: 70%;
+  }
+  
+  .sideSection {
+    width: 30%;
+  }
+  
+  .backButton {
+    display: flex;
+    align-items: center;
+    background-color: #156cdd;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    color: #fff;
+    cursor: pointer;
+    font: 400 17px/1 Roboto, sans-serif;
+    letter-spacing: 0.5px;
+    margin-top: 8%;
+    padding: 16px 12px;
+    text-align: center;
+    width: 375px;
+  }
+  
+  .listTitle {
+    color: #000;
+    letter-spacing: 0.5px;
+    margin-top: 54px;
+    font: 400 24px/1 Roboto, sans-serif;
+  }

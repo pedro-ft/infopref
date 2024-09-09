@@ -5,12 +5,12 @@ import {Link} from 'react-router-dom';
 import Cabecalho from '../Cabecalho/Cabecalho';
 
 const menuItems = [
-  'Ordens de Serviço',
-  'Solicitantes',
-  'Secretarias',
-  'Departamentos',
-  'Técnicos',
-  'Relatórios'
+  { text: 'Ordens de Serviço', link: '/osmenu' },
+  { text: 'Solicitantes', link: '/solicitantes' },
+  { text: 'Secretarias', link: '/secretarias' },
+  { text: 'Departamentos', link: '/departamentos' },
+  { text: 'Técnicos', link: '/tecnicos' },
+  { text: 'Relatórios', link: '/relatorios' }
 ];
 
 const MenuPrincipal = () => {
@@ -20,8 +20,10 @@ const MenuPrincipal = () => {
       <h1 className={styles.menuTitle}>Menu</h1>
       <nav className={styles.menuOpcoes}>
         {menuItems.map((item, index) => (
-          <MenuItem key={index} text={item} />
-        ))}
+        <Link to={item.link} key={index}>
+        <MenuItem text={item.text} />
+      </Link>
+    ))}
       </nav>
     </main>
   );
