@@ -1,18 +1,21 @@
 import React from 'react';
 import Cabecalho from '../Cabecalho/Cabecalho';
-import ActionBar from '../ActionBar/ActionBar';
+import ActionBar from '../ActionBarOS/ActionBarOS';
 import OrderServiceList from './OrderServiceList';
 import styles from './OrderServicePage.module.css';
+import { Link } from 'react-router-dom';
 
 function OrderServicePage() {
   return (
     <div className={styles.orderServicePage}>
       <Cabecalho />
+      <ActionBar />
       <main className={styles.mainContent}>
-        <ActionBar />
         <OrderServiceList />
-        <button className={styles.backButton}>Voltar</button>
       </main>
+      <Link to="/menu" className={styles.backButtonLink}>
+      <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
+      </Link>
     </div>
   );
 }

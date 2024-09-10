@@ -34,7 +34,7 @@
     padding: 24px 16px;
     font: 400 24px/1 Roboto, sans-serif;
     color: #ffff;
-
+    cursor: pointer;
   }
   
   .visually-hidden {

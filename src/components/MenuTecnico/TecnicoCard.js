@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './SolicitanteCard.module.css';
+import styles from './TecnicoCard.module.css';
 
-function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId, imageUrl }) {
+function TecnicoCard({ name, phone, imageUrl }) {
   return (
     <article className={styles.card}>
       <img src={imageUrl} alt={`${name}'s avatar`} className={styles.avatar} />
@@ -11,14 +11,11 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
         </div>
         <div className={styles.cardDetails}>
           <div className={styles.info}>
-            <p>Secretaria: {secretariat}</p>
-            <p>Departamento: {department}</p>
             <p>Fone: {phone}</p>
-            <p>ID de Acesso Remoto: {remoteAccessId}</p>
           </div>
           <div className={styles.actions}>
             <button className={styles.editButton} aria-label="Edit">
-              <img src="/imagens/Editar.svg" alt="" />
+              <img src="imagens/Editar.svg" alt="" />
             </button>
             <button className={styles.deleteButton} aria-label="Delete">
               <img src="imagens/Excluir.svg" alt="" />
@@ -30,4 +27,4 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
   );
 }
 
-export default SolicitanteCard;
+export default TecnicoCard;

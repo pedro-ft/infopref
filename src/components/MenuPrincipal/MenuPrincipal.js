@@ -20,7 +20,7 @@ const MenuPrincipal = () => {
       <h1 className={styles.menuTitle}>Menu</h1>
       <nav className={styles.menuOpcoes}>
         {menuItems.map((item, index) => (
-        <Link to={item.link} key={index}>
+      <Link to={item.link} key={index}>
         <MenuItem text={item.text} />
       </Link>
     ))}

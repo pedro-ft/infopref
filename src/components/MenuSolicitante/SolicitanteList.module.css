@@ -1,16 +1,14 @@
 .solicitanteModule {
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 56px;
-    overflow: hidden;
+  background-color: #fff;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 56px;
+  display: flex;
   }
   
   .contentWrapper {
-    width: 100%;
-    margin: 25px 0 0 11px;
-    display: flex;
+    flex: 1;
+    padding: 0 44px;
   }
   
   .listSection {
@@ -22,8 +20,6 @@
   }
   
   .backButton {
-    display: flex;
-    align-items: center;
     background-color: #156cdd;
     border: none;
     border-radius: 30px;
@@ -32,15 +28,20 @@
     cursor: pointer;
     font: 400 17px/1 Roboto, sans-serif;
     letter-spacing: 0.5px;
-    margin-top: 8%;
+    margin-top: 5%;
     padding: 16px 12px;
     text-align: center;
     width: 375px;
+  }
+
+  .backButtonLink{
+    align-self: center;
   }
   
   .listTitle {
     color: #000;
     letter-spacing: 0.5px;
-    margin-top: 54px;
     font: 400 24px/1 Roboto, sans-serif;
+    margin-bottom: 40px;
+    margin-top: 40px;
   }

@@ -1,5 +1,5 @@
 .orderServiceList {
-    margin-top: 30px;
+    margin-top: 40px;
   }
   
   .listTitle {
@@ -7,4 +7,5 @@
     letter-spacing: 0.5px;
     font: 400 24px/1 Roboto, sans-serif;
     margin-bottom: 40px;
+    margin-top: 0px;
   }

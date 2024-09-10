@@ -1,4 +1,4 @@
-  .card {
+.card {
     display: flex;
     background-color: #fff;
     border-radius: 30px;
@@ -45,17 +45,25 @@
   
   .info {
     margin: 0px 20px;
+    justify-self: center;
   }
   
   .actions {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 10px;
+    padding: 10px 10px;
     margin-right: 10px;
   }
   
-  .editButton,
+  .editButton{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 30%;
+  }
+
   .deleteButton {
     background: none;
     border: none;

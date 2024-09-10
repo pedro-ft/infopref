@@ -11,7 +11,8 @@ const orderServiceData = [
     priority: 'Urgente',
     requester: 'Pedro Ferreira Taborda',
     department: 'Administração',
-    secretariat: 'Administração'
+    secretariat: 'Administração',
+    description: 'Tela não da imagem'
   },
   {
     id: '123456789',
@@ -34,7 +35,7 @@ const orderServiceData = [
     department: 'Saúde',
     secretariat: 'Saúde',
     description: 'Roteador Wi-Fi não funciona corretamente.'
-  }
+  },
 ];
 
 function OrderServiceList() {

@@ -1,0 +1,47 @@
+.tecnicosModule {
+    background-color: #fff;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 56px;
+    display: flex;
+    }
+    
+    .contentWrapper {
+      flex: 1;
+      padding: 0 44px;
+    }
+    
+    .listSection {
+      width: 70%;
+    }
+    
+    .sideSection {
+      width: 30%;
+    }
+    
+    .backButton {
+      background-color: #156cdd;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      color: #fff;
+      cursor: pointer;
+      font: 400 17px/1 Roboto, sans-serif;
+      letter-spacing: 0.5px;
+      margin-top: 5%;
+      padding: 16px 12px;
+      text-align: center;
+      width: 375px;
+    }
+  
+    .backButtonLink{
+      align-self: center;
+    }
+    
+    .listTitle {
+      color: #000;
+      letter-spacing: 0.5px;
+      font: 400 24px/1 Roboto, sans-serif;
+      margin-bottom: 40px;
+      margin-top: 40px;
+    }

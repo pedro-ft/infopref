@@ -45,10 +45,13 @@
     flex-basis: auto
   }
   
-  .notificationIcon {
+  .logoutIcon {
     aspect-ratio: 1;
     object-fit: contain;
     object-position: center;
-    width: 54px;
+    width: fit-content;
     padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
   }

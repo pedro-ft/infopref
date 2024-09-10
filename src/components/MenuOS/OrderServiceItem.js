@@ -15,7 +15,7 @@ function OrderServiceItem({
 }) {
   return (
     <article className={styles.orderServiceItem}>
-      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/361c1bb64c8bc959513385c54b7cb074927f0dc31bc366af767742dce07dfd5d?placeholderIfAbsent=true&apiKey=ddba9bb5471147eeb1c31ee1b49ac2b8" alt="" className={styles.itemIcon} />
+      <img src="/imagens/ordem.svg" alt="" className={styles.itemIcon} />
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
           <h3 className={styles.protocolNumber}>Número de Protocolo: {id}</h3>
