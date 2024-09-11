@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import InputGroup from './InputGroup';
+import { UserContext } from '../context/UserContext'
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setUsername: setGlobalUsername } = useContext(UserContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
     const defaultPassword = '1234';
-    const defaultUsername = 'Pedro';
+    const defaultUsername = 'Pedro Taborda';
 
     if (username === defaultUsername && password === defaultPassword) {
+      setGlobalUsername(username); // Atualiza o nome de usuário no contexto
       navigate('/menu');
     } else {
       alert('Usuário ou senha inválidos');
