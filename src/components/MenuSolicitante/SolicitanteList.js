@@ -274,7 +274,12 @@ const solicitantes = [
 
 function SolicitanteList() {
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
+
+  const filteredSolicitantes = solicitantes.filter(solicitante =>
+    solicitante.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(solicitantes.length / itemsPerPage); // ACRESCENTADO
 
@@ -285,12 +290,17 @@ function SolicitanteList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = solicitantes.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredSolicitantes.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  }
 
   return (
     <main className={styles.solicitanteModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Solicitante'/>
+      <ActionBar tipo='Novo Solicitante' onSearch={handleSearch} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Solicitantes</h2>
         <section className={styles.listSection}>

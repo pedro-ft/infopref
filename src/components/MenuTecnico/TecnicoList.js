@@ -70,7 +70,12 @@ const tecnicos = [
 
 function TecnicoList() {
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
+
+  const filteredTecnicos = tecnicos.filter(tecnico =>
+    tecnico.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(tecnicos.length / itemsPerPage); // ACRESCENTADO
 
@@ -81,13 +86,17 @@ function TecnicoList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = tecnicos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredTecnicos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  }
 
   return (
     <main className={styles.tecnicosModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Técnico'/>
+      <ActionBar tipo='Novo Técnico' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Técnicos</h2>
         <section className={styles.listSection}>

@@ -65,8 +65,13 @@ const equipamentos = [
 ];
 
 function EquipamentoList() {
-  const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
+
+  const filteredEquipamentos = equipamentos.filter(equipamento =>
+    equipamento.patrimonio.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(equipamentos.length / itemsPerPage); // ACRESCENTADO
 
@@ -76,13 +81,18 @@ function EquipamentoList() {
     }
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  };
+
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = equipamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredEquipamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
 
   return (
     <main className={styles.equipamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Equipamento'/>
+      <ActionBar tipo='Novo Equipamento' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Equipamentos</h2>
         <section className={styles.listSection}>

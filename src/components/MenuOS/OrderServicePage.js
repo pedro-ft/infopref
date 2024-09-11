@@ -108,7 +108,12 @@ const orderServiceData = [
 
 function OrderServicePage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 5;
+
+  const filteredData = orderServiceData.filter(item =>
+    item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Calcule o número total de páginas com base na quantidade de ordens de serviço
   const totalPages = Math.ceil(orderServiceData.length / itemsPerPage);
@@ -117,13 +122,18 @@ function OrderServicePage() {
     setCurrentPage(newPage);
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1); // Reset para a primeira página quando a pesquisa é alterada
+  };
+
   return (
     <div className={styles.orderServicePage}>
       <Cabecalho />
-      <ActionBar />
+      <ActionBar onSearch={handleSearch}/>
       <main className={styles.mainContent}>
         <OrderServiceList 
-          data={orderServiceData} // Passe os dados como props
+          data={filteredData} // Passe os dados como props
           currentPage={currentPage} 
           itemsPerPage={itemsPerPage} 
         />

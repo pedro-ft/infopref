@@ -51,7 +51,12 @@ const secretarias = [
 
 function SecretariaList() {
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
+
+  const filteredSecretarias = secretarias.filter(secretaria =>
+    secretaria.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(secretarias.length / itemsPerPage); // ACRESCENTADO
 
@@ -62,12 +67,17 @@ function SecretariaList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = secretarias.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredSecretarias.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  }
 
   return (
     <main className={styles.secretariasModule}>
       <Cabecalho />
-      <ActionBar tipo='Nova Secretaria'/>
+      <ActionBar tipo='Nova Secretaria' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Secretarias</h2>
         <section className={styles.listSection}>

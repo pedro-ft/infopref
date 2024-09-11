@@ -51,8 +51,13 @@ const infosInternet = [
 ];
 
 function InfoInternetList() {
-  const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
-  const itemsPerPage = 6; // ACRESCENTADO
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const itemsPerPage = 6;
+
+  const filteredInfoInternet = infosInternet.filter(infoInternet =>
+    infoInternet.nomeRede.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(infosInternet.length / itemsPerPage); // ACRESCENTADO
 
@@ -63,12 +68,17 @@ function InfoInternetList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = infosInternet.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredInfoInternet.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  }
 
   return (
     <main className={styles.infoInternetModule}>
       <Cabecalho />
-      <ActionBar tipo='Nova Informação de Internet'/>
+      <ActionBar tipo='Nova Informação de Internet' onSearch={handleSearch} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Informações de Internet</h2>
         <section className={styles.listSection}>
@@ -98,5 +108,6 @@ function InfoInternetList() {
     </main>
   );
 }
+
 
 export default InfoInternetList;

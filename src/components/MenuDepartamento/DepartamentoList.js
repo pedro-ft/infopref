@@ -50,7 +50,12 @@ const departamentos = [
 
 function DepartamentoList() {
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de pesquisa
   const itemsPerPage = 6; // ACRESCENTADO
+
+  const filteredDepartamentos = departamentos.filter(departamento =>
+    departamento.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(departamentos.length / itemsPerPage); // ACRESCENTADO
 
@@ -61,12 +66,17 @@ function DepartamentoList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = departamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredDepartamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  }
+  
   return (
     <main className={styles.departamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Departamento'/>
+      <ActionBar tipo='Novo Departamento' onSearch={handleSearch} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
         <section className={styles.listSection}>
