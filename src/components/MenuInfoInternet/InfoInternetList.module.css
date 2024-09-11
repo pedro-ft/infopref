@@ -12,11 +12,40 @@
     }
     
     .listSection {
-      width: 70%;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2%;
     }
     
-    .sideSection {
-      width: 30%;
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+    
+    .pagination button {
+      background-color: #156cdd;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 30px;
+    }
+    
+    .pagination button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .pagination span {
+      margin: 0 10px;
+      font: 400 17px/1 Roboto, sans-serif;
+      letter-spacing: 0.5px;
+      text-align: center;
     }
     
     .backButton {
