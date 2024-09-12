@@ -1,0 +1,20 @@
+.container {
+    background-color: #fff;
+    flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    }
+    
+    .mainContent {
+      flex: 1;
+      padding: 0 44px;
+    }
+    
+    .pageTitle {
+      color: #000;
+      letter-spacing: 0.5px;
+      font: 400 24px/1 Roboto, sans-serif;
+      margin-bottom: 40px;
+      margin-top: 40px;
+    }
+    

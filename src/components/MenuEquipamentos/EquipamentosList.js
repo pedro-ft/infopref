@@ -92,7 +92,7 @@ function EquipamentoList() {
   return (
     <main className={styles.equipamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Equipamento' onSearch={handleSearch}/>
+      <ActionBar tipo='Novo Equipamento' link='novo-equipamento' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Equipamentos</h2>
         <section className={styles.listSection}>

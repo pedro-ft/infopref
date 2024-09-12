@@ -96,7 +96,7 @@ function TecnicoList() {
   return (
     <main className={styles.tecnicosModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Técnico' onSearch={handleSearch}/>
+      <ActionBar tipo='Novo Técnico' link='novo-tecnico' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Técnicos</h2>
         <section className={styles.listSection}>

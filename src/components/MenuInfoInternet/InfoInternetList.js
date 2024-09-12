@@ -78,7 +78,7 @@ function InfoInternetList() {
   return (
     <main className={styles.infoInternetModule}>
       <Cabecalho />
-      <ActionBar tipo='Nova Informação de Internet' onSearch={handleSearch} />
+      <ActionBar tipo='Nova Informação de Internet' link='novo-info-internet' onSearch={handleSearch} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Informações de Internet</h2>
         <section className={styles.listSection}>

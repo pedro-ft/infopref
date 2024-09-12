@@ -77,7 +77,7 @@ function SecretariaList() {
   return (
     <main className={styles.secretariasModule}>
       <Cabecalho />
-      <ActionBar tipo='Nova Secretaria' onSearch={handleSearch}/>
+      <ActionBar tipo='Nova Secretaria' link='nova-secretaria' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Secretarias</h2>
         <section className={styles.listSection}>

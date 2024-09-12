@@ -300,7 +300,7 @@ function SolicitanteList() {
   return (
     <main className={styles.solicitanteModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Solicitante' onSearch={handleSearch} />
+      <ActionBar tipo='Novo Solicitante' link='novo-solicitante' onSearch={handleSearch} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Solicitantes</h2>
         <section className={styles.listSection}>

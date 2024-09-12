@@ -76,7 +76,7 @@ function DepartamentoList() {
   return (
     <main className={styles.departamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Departamento' onSearch={handleSearch} />
+      <ActionBar tipo='Novo Departamento' link='novo-departamento' onSearch={handleSearch} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
         <section className={styles.listSection}>
