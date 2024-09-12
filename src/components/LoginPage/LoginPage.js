@@ -8,7 +8,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { setUsername: setGlobalUsername } = useContext(UserContext);
+  const { setUsername: setGlobalUsername, setIsAuthenticated} = useContext(UserContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -17,7 +17,8 @@ function LoginPage() {
     const defaultUsername = 'Pedro Taborda';
 
     if (username === defaultUsername && password === defaultPassword) {
-      setGlobalUsername(username); // Atualiza o nome de usuário no contexto
+      setGlobalUsername(username);
+      setIsAuthenticated(true);
       navigate('/menu');
     } else {
       alert('Usuário ou senha inválidos');

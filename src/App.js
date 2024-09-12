@@ -9,7 +9,8 @@ import NovaOS from './components/NovaOS/NovaOS';
 import SecretariaList from './components/MenuSecretaria/SecretariaList';
 import DepartamentoList from './components/MenuDepartamento/DepartamentoList'
 import EquipamentoList from './components/MenuEquipamentos/EquipamentosList';
-import InfoInternetList from './components/MenuInfoInternet/InfoInternetList'
+import InfoInternetList from './components/MenuInfoInternet/InfoInternetList';
+import ProtectedRoute from './components/context/ProtectedRoute';
 
 function App() {
   return (
@@ -18,15 +19,15 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/menu" element={<MenuPrincipal />} />
-            <Route path="/osmenu" element={<OrderServicePage />} />
-            <Route path="/novaos" element={<NovaOS />} />
-            <Route path="/solicitantes" element={<SolicitanteList />} />
-            <Route path="/tecnicos" element={<TecnicosList />} />
-            <Route path="/secretarias" element={<SecretariaList />} />
-            <Route path="/departamentos" element={<DepartamentoList />} />
-            <Route path="/equipamentos" element={<EquipamentoList />} />
-            <Route path="/infoInternet" element={<InfoInternetList />} />
+            <Route path="/menu" element={<ProtectedRoute element={<MenuPrincipal />}/>} />
+            <Route path="/osmenu" element={<ProtectedRoute element={<OrderServicePage />}/>} />
+            <Route path="/novaos" element={<ProtectedRoute element={<NovaOS />} />} />
+            <Route path="/solicitantes" element={<ProtectedRoute element={<SolicitanteList />} />}/>
+            <Route path="/tecnicos" element={<ProtectedRoute element={<TecnicosList />} />}/>
+            <Route path="/secretarias" element={<ProtectedRoute element={<SecretariaList />} />}/>
+            <Route path="/departamentos" element={<ProtectedRoute element={<DepartamentoList />} />}/>
+            <Route path="/equipamentos" element={<ProtectedRoute element={<EquipamentoList />} />}/>
+            <Route path="/infoInternet" element={<ProtectedRoute element={<InfoInternetList />} />}/>
           </Routes>
         </Router>
       </UserProvider>
