@@ -19,6 +19,8 @@ import NovaInfoInternet from './components/Cadastro/NovoInfoInternet/NovoInfoInt
 import NovoTecnico from './components/Cadastro/Novo Técnico/NovoTecnico';
 import MinhasSolicitacoes from './components/TelasSolicitante/MinhasSolicitacoes';
 import SolicitarOS from './components/TelasSolicitante/SolicitarOrdem';
+import OSSolicitadas from './components/OSSolicitadas/OSSolicitadas';
+import MenuPrincipalSemADM from './components/MenuPrincipalSemADM/MenuPrincipalSemADM';
 
 
 function App() {
@@ -31,8 +33,10 @@ function App() {
             <Route path="/solicitar-ordem" element={<ProtectedRoute element={<SolicitarOS />} />}/> 
             <Route path="/" element={<LoginPage />} />
             <Route path="/menu" element={<ProtectedRoute element={<MenuPrincipal />}/>} />
+            <Route path="/menu2" element={<ProtectedRoute element={<MenuPrincipalSemADM />}/>} />
             <Route path="/osmenu" element={<ProtectedRoute element={<OrderServicePage />}/>} />
             <Route path="/novaos" element={<ProtectedRoute element={<NovaOS />} />} />
+            <Route path="/osSolicitadas" element={<ProtectedRoute element={<OSSolicitadas />} />} />
             <Route path="/solicitantes" element={<ProtectedRoute element={<SolicitanteList />} />}/>
             <Route path="/novo-solicitante" element={<ProtectedRoute element={<NovoSolicitante />} />}/>
             <Route path="/tecnicos" element={<ProtectedRoute element={<TecnicosList />} />}/>

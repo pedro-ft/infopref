@@ -4,11 +4,16 @@ import { useNavigate } from 'react-router-dom';
 
 function ActionBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate(); // Usando o hook useNavigate
+  const navigate = useNavigate();
+  const navigate2 = useNavigate();
 
   const handleNewOSClick = () => {
     navigate('/novaos'); // Redirecionando para a rota /nova-os
   };
+
+  const handleOSSolicitadasClick = () => {
+    navigate('/osSolicitadas');
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +24,7 @@ function ActionBar({ onSearch }) {
   return (
     <div className={styles.actionBar}>
       <button className={styles.actionButton} onClick={handleNewOSClick}>Nova O. S.</button>
-      <button className={styles.actionButton}>O. S. Solicitadas</button>
+      <button className={styles.actionButton} onClick={handleOSSolicitadasClick}>O. S. Solicitadas</button>
       <form className={styles.searchForm} onSubmit={handleSubmit}>
         <label htmlFor="protocolSearch" className={styles.visuallyHidden}>Pesquisar Nº de protocolo</label>
         <input

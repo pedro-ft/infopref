@@ -17,6 +17,9 @@ function LoginPage() {
     const defaultUsername = 'Pedro Taborda';
     const defaultAvatarUrl = 'imagens/iconeTecnico.svg';
 
+    const semADMPassword = '69';
+    const semADMUsername = 'Jonas de Godoi';
+
     const solicitanteUsername = 'Leonardo Mulinari';
     const solicitantePassword = '4321';
     const solicitanteAvatarUrl = 'imagens/UsuarioIcone.svg';
@@ -31,6 +34,11 @@ function LoginPage() {
       setAvatarUrl(solicitanteAvatarUrl);
       setIsAuthenticated(true);
       navigate('/minhas-solicitacoes');
+    } else if (username === semADMUsername && password === semADMPassword) {
+      setGlobalUsername(username);
+      setAvatarUrl(defaultAvatarUrl);
+      setIsAuthenticated(true);
+      navigate('/menu2');
     } else {
       alert('Usuário ou senha inválidos');
     }

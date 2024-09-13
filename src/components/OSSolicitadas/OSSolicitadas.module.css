@@ -1,0 +1,45 @@
+.solicitacaoModule {
+    background-color: #fff;
+    flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    }
+    
+    .contentWrapper {
+      flex: 1;
+      padding: 0 44px;
+    }
+    
+    .listSection {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .listTitle {
+        color: #000;
+        letter-spacing: 0.5px;
+        font: 400 24px/1 Roboto, sans-serif;
+        margin-bottom: 40px;
+        margin-top: 40px;
+    }
+
+    .backButton {
+      background-color: #156cdd;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      color: #fff;
+      cursor: pointer;
+      font: 400 17px/1 Roboto, sans-serif;
+      letter-spacing: 0.5px;
+      margin-top: 5%;
+      padding: 16px 12px;
+      text-align: center;
+      width: 375px;
+      margin-bottom: 56px;
+    }
+  
+    .backButtonLink{
+      align-self: center;
+    }
