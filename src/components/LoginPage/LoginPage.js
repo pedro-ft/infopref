@@ -8,18 +8,29 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { setUsername: setGlobalUsername, setIsAuthenticated} = useContext(UserContext);
+  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated} = useContext(UserContext);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
     const defaultPassword = '1234';
     const defaultUsername = 'Pedro Taborda';
+    const defaultAvatarUrl = 'imagens/iconeTecnico.svg';
+
+    const solicitanteUsername = 'Leonardo Mulinari';
+    const solicitantePassword = '4321';
+    const solicitanteAvatarUrl = 'imagens/UsuarioIcone.svg';
 
     if (username === defaultUsername && password === defaultPassword) {
       setGlobalUsername(username);
+      setAvatarUrl(defaultAvatarUrl);
       setIsAuthenticated(true);
       navigate('/menu');
+    }else if (username === solicitanteUsername && password === solicitantePassword) {
+      setGlobalUsername(username);
+      setAvatarUrl(solicitanteAvatarUrl);
+      setIsAuthenticated(true);
+      navigate('/minhas-solicitacoes');
     } else {
       alert('Usuário ou senha inválidos');
     }

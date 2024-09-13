@@ -55,3 +55,57 @@
     border: none;
     cursor: pointer;
   }
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Estilos do modal */
+  .modal {
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  /* Estilos dos botões de ação do modal */
+  .modalActions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .confirmButton, .cancelButton {
+    padding: 10px 20px;
+    font: 400 17px/1 Roboto, sans-serif;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+  
+  .confirmButton {
+    background-color: #156cdd;
+    color: white;
+  }
+  
+  .cancelButton {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  /* Transições suaves */
+  .modalActions button:hover {
+    opacity: 0.8;
+  }

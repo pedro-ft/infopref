@@ -1,0 +1,55 @@
+.solicitacaoModule {
+    background-color: #fff;
+    flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    }
+    
+    .contentWrapper {
+      flex: 1;
+      padding: 0 44px;
+    }
+    
+    .listSection {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      padding-bottom: 56px;
+    }
+    
+    .pagination button {
+      background-color: #156cdd;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 30px;
+    }
+    
+    .pagination button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .pagination span {
+      margin: 0 10px;
+      font: 400 17px/1 Roboto, sans-serif;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .listTitle {
+        color: #000;
+        letter-spacing: 0.5px;
+        font: 400 24px/1 Roboto, sans-serif;
+        margin-bottom: 40px;
+        margin-top: 40px;
+    }

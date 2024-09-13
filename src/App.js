@@ -2,21 +2,24 @@ import LoginPage from './components/LoginPage/LoginPage';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { UserProvider } from './components/context/UserContext';
 import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
-import OrderServicePage from './components/MenuOS/OrderServicePage';
-import SolicitanteList from './components/MenuSolicitante/SolicitanteList';
-import TecnicosList from './components/MenuTecnico/TecnicoList'
-import NovaOS from './components/NovaOS/NovaOS';
-import SecretariaList from './components/MenuSecretaria/SecretariaList';
-import DepartamentoList from './components/MenuDepartamento/DepartamentoList'
-import EquipamentoList from './components/MenuEquipamentos/EquipamentosList';
-import InfoInternetList from './components/MenuInfoInternet/InfoInternetList';
+import OrderServicePage from './components/Menus/MenuOS/OrderServicePage';
+import SolicitanteList from './components/Menus/MenuSolicitante/SolicitanteList';
+import TecnicosList from './components/Menus/MenuTecnico/TecnicoList'
+import NovaOS from './components/Cadastro/NovaOS/NovaOS';
+import SecretariaList from './components/Menus/MenuSecretaria/SecretariaList';
+import DepartamentoList from './components/Menus/MenuDepartamento/DepartamentoList'
+import EquipamentoList from './components/Menus/MenuEquipamentos/EquipamentosList';
+import InfoInternetList from './components/Menus/MenuInfoInternet/InfoInternetList';
 import ProtectedRoute from './components/context/ProtectedRoute';
-import NovoSolicitante from './components/NovoSolicitante/NovoSolicitante';
-import NovaSecretaria from './components/NovaSecretaria/NovaSecretaria';
-import NovoDepartamento from './components/NovoDepartamento/NovoDepartamento';
-import NovoEquipamento from './components/NovoEquipamento/NovoEquipamento';
-import NovaInfoInternet from './components/NovoInfoInternet/NovoInfoInternet';
-import NovoTecnico from './components/Novo Técnico/NovoTecnico';
+import NovoSolicitante from './components/Cadastro/NovoSolicitante/NovoSolicitante';
+import NovaSecretaria from './components/Cadastro/NovaSecretaria/NovaSecretaria';
+import NovoDepartamento from './components/Cadastro/NovoDepartamento/NovoDepartamento';
+import NovoEquipamento from './components/Cadastro/NovoEquipamento/NovoEquipamento';
+import NovaInfoInternet from './components/Cadastro/NovoInfoInternet/NovoInfoInternet';
+import NovoTecnico from './components/Cadastro/Novo Técnico/NovoTecnico';
+import MinhasSolicitacoes from './components/TelasSolicitante/MinhasSolicitacoes';
+import SolicitarOS from './components/TelasSolicitante/SolicitarOrdem';
+
 
 function App() {
   return (
@@ -24,6 +27,8 @@ function App() {
       <UserProvider>
         <Router>
           <Routes>
+            <Route path="/minhas-solicitacoes" element={<ProtectedRoute element={<MinhasSolicitacoes />} />}/> 
+            <Route path="/solicitar-ordem" element={<ProtectedRoute element={<SolicitarOS />} />}/> 
             <Route path="/" element={<LoginPage />} />
             <Route path="/menu" element={<ProtectedRoute element={<MenuPrincipal />}/>} />
             <Route path="/osmenu" element={<ProtectedRoute element={<OrderServicePage />}/>} />

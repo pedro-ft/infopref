@@ -1,26 +1,57 @@
-import React, { useContext } from 'react';
-import styles from './Cabecalho.module.css'
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import styles from './Cabecalho.module.css';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
 const Cabecalho = () => {
-  const { username } = useContext(UserContext);
-return (
-<header className={styles.header}>
-    <img loading="lazy" src="imagens/LogoEmpresa.png" className={styles.logo} alt="Company logo" />
-    <div className={styles.userInfo}>
-        <div className={styles.userProfile}>
-            <img loading="lazy" src="imagens/iconeTecnico.svg" className={styles.avatar} alt="User avatar" />
+  const { username, avatarUrl } = useContext(UserContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmLogout = () => {
+    // Adicione aqui a lógica de logout
+    closeModal();
+    navigate('/'); // Redireciona para a página de login
+  };
+
+  return (
+    <>
+      <header className={styles.header}>
+        <img loading="lazy" src="imagens/LogoEmpresa.png" className={styles.logo} alt="Company logo" />
+        <div className={styles.userInfo}>
+          <div className={styles.userProfile}>
+            <img loading="lazy" src={avatarUrl} className={styles.avatar} alt="User avatar" />
             <span className={styles.userName}>{username}</span>
-        </div>
-        <Link to="/" className={styles.logoutButton}>
-          <button className={styles.logoutIcon} aria-label="Logout">
+          </div>
+          <button className={styles.logoutIcon} onClick={openModal} aria-label="Logout">
             <img loading="lazy" src="imagens/sair.svg" alt="Logout" />
           </button>
-        </Link>
-    </div>
-</header>
-)
-}
+        </div>
+      </header>
 
-export default Cabecalho
+      {/* Certifique-se de que o modal esteja fora do <header> */}
+      {isModalOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Confirmar Logout</h2>
+            <p>Tem certeza que deseja sair?</p>
+            <div className={styles.modalActions}>
+              <button onClick={handleConfirmLogout} className={styles.confirmButton}>Sim</button>
+              <button onClick={closeModal} className={styles.cancelButton}>Não</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Cabecalho;
