@@ -21,9 +21,8 @@ import MinhasSolicitacoes from './components/TelasSolicitante/MinhasSolicitacoes
 import SolicitarOS from './components/TelasSolicitante/SolicitarOrdem';
 import OSSolicitadas from './components/OSSolicitadas/OSSolicitadas';
 import MenuPrincipalSemADM from './components/MenuPrincipalSemADM/MenuPrincipalSemADM';
+import GerarRelatorio from './components/Menus/Relatorios/GerarRelatorio';
 
-
-/*TESTE*/
 function App() {
   return (
     <div className="App">
@@ -50,6 +49,7 @@ function App() {
             <Route path="/novo-equipamento" element={<ProtectedRoute element={<NovoEquipamento />} />}/>
             <Route path="/infoInternet" element={<ProtectedRoute element={<InfoInternetList />} />}/>
             <Route path="/novo-info-internet" element={<ProtectedRoute element={<NovaInfoInternet />} />}/>
+            <Route path="/relatorios" element={<ProtectedRoute element={<GerarRelatorio />} />}/>
           </Routes>
         </Router>
       </UserProvider>

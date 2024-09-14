@@ -1,7 +1,7 @@
 .menuPrincipal {
     background-color: #fff;
     display: flex;
-    padding-bottom: 0;
+    padding-bottom: 0px;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -15,7 +15,7 @@
     font: 400 36px/1 Roboto, sans-serif;
     line-height: 1;
     margin-top: 25px;
-    margin-bottom: 0px;
+    margin-bottom: 25px;
   }
   
   
@@ -25,7 +25,7 @@
     border-radius: 30px;
     background-color: #156cdd;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    margin-top: 35px;
+    margin-bottom: 35px;
     min-height: 69px;
     width: 440px;
     max-width: 100%;

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import styles from './SolicitanteList.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import SolicitanteCard from './SolicitanteCard';
 import ActionBar from '../../ActionBar/ActionBar';
-import {Link} from 'react-router-dom';
 
 const solicitantes = [
   {
@@ -273,6 +274,8 @@ const solicitantes = [
 ];
 
 function SolicitanteList() {
+  const { username } = useContext(UserContext);
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
   const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
@@ -296,6 +299,14 @@ function SolicitanteList() {
     setSearchTerm(term);
     setCurrentPage(1);
   }
+
+  const handleBackButtonClick = () => {
+    if (username === 'Jonas de Godoi') {
+      navigate('/menu2');
+    } else {
+      navigate('/menu');
+    }
+  };
 
   return (
     <main className={styles.solicitanteModule}>
@@ -324,9 +335,7 @@ function SolicitanteList() {
           Próximo
         </button>
       </div>
-      <Link to="/menu" className={styles.backButtonLink}>
-      <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
-      </Link>
+      <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </main>
   );
 }

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'; // Certifique-se de que useState está importado
+import React, { useState, useContext } from 'react'; 
+import { UserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import ActionBar from '../../ActionBarOS/ActionBarOS';
 import OrderServiceList from './OrderServiceList';
 import styles from './OrderServicePage.module.css';
-import { Link } from 'react-router-dom';
 
 // Mova a constante orderServiceData para cá
 const orderServiceData = [
@@ -107,6 +108,8 @@ const orderServiceData = [
 ];
 
 function OrderServicePage() {
+  const { username } = useContext(UserContext);
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 5;
@@ -125,6 +128,14 @@ function OrderServicePage() {
   const handleSearch = (term) => {
     setSearchTerm(term);
     setCurrentPage(1); // Reset para a primeira página quando a pesquisa é alterada
+  };
+
+  const handleBackButtonClick = () => {
+    if (username === 'Jonas de Godoi') {
+      navigate('/menu2');
+    } else {
+      navigate('/menu');
+    }
   };
 
   return (
@@ -153,9 +164,7 @@ function OrderServicePage() {
           </button>
         </div>
       </main>
-      <Link to="/menu" className={styles.backButtonLink}>
-        <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
-      </Link>
+        <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </div>
   );
 }

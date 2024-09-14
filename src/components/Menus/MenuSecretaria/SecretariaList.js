@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import styles from './SecretariaList.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import SecretariaCard from './SecretariaCard';
 import ActionBar from '../../ActionBar/ActionBar';
-import {Link} from 'react-router-dom';
 
 const secretarias = [
   {
@@ -50,6 +51,8 @@ const secretarias = [
 
 
 function SecretariaList() {
+  const { username } = useContext(UserContext);
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
   const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
@@ -73,6 +76,14 @@ function SecretariaList() {
     setSearchTerm(term);
     setCurrentPage(1);
   }
+
+  const handleBackButtonClick = () => {
+    if (username === 'Jonas de Godoi') {
+      navigate('/menu2');
+    } else {
+      navigate('/menu');
+    }
+  };
 
   return (
     <main className={styles.secretariasModule}>
@@ -101,9 +112,7 @@ function SecretariaList() {
           Próximo
         </button>
       </div>
-      <Link to="/menu" className={styles.backButtonLink}>
-      <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
-      </Link>
+      <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </main>
   );
 }
