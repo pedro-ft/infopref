@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './FormularioOS.css';
+import styles from'./FormularioOS.module.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,11 +34,9 @@ const FormularioOS = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2>Nº de Protocolo: 163247382</h2>
-
+    <div className={styles.formContainer}>
       <form onSubmit={handleSubmit}>
-      <div className="form-group">
+      <div className={styles.formGroup}>
             <label>Data Abertura:</label>
             <input
               type="date"
@@ -48,7 +46,7 @@ const FormularioOS = () => {
             />
           </div>
         
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label>Nome Solicitante:</label>
           <input
             type="text"
@@ -58,8 +56,8 @@ const FormularioOS = () => {
           />
         </div>
 
-        <div className="form-row">
-        <div className="form-group">
+        <div className={styles.formRow}>
+        <div className={styles.formGroup}>
             <label>Secretaria:</label>
             <select
               name="secretaria"
@@ -73,7 +71,7 @@ const FormularioOS = () => {
             </select>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Departamento:</label>
             <select
               name="departamento"
@@ -89,8 +87,8 @@ const FormularioOS = () => {
 
         </div>
 
-        <div className="form-row">
-        <div className="form-group">
+        <div className={styles.formRow}>
+        <div className={styles.formGroup}>
             <label>Tipo Chamado:</label>
             <select
               name="tipoChamado"
@@ -104,7 +102,7 @@ const FormularioOS = () => {
             </select>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Nº Patrimônio:</label>
             <input
               type="text"
@@ -115,8 +113,8 @@ const FormularioOS = () => {
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
             <label>Status:</label>
             <select
               name="status"
@@ -130,7 +128,7 @@ const FormularioOS = () => {
             </select>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Prioridade:</label>
             <select
               name="prioridade"
@@ -145,8 +143,8 @@ const FormularioOS = () => {
           </div>
         </div>
 
-        <div className="form-row">
-        <div className="form-group">
+        <div className={styles.formRow}>
+        <div className={styles.formGroup}>
             <label>Técnico:</label>
             <select
               name="tecnico"
@@ -160,7 +158,7 @@ const FormularioOS = () => {
             </select>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>*Data Finalização:</label>
             <input
               type="date"
@@ -171,7 +169,7 @@ const FormularioOS = () => {
           </div>
         </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Descrição:</label>
             <textarea
               name="descricao"
@@ -180,7 +178,7 @@ const FormularioOS = () => {
               rows="3"
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>*Resolução:</label>
             <textarea
               name="resolucao"
@@ -190,11 +188,11 @@ const FormularioOS = () => {
             />
           </div>
 
-        <div className="form-buttons">
-        <Link className="link-btn" to="/osmenu">
-            <button type="button" className="btn-back">Voltar</button>
+        <div className={styles.formButtons}>
+        <Link className={styles.linkBtn} to="/osmenu">
+            <button type="button" className={styles.btnBack}>Voltar</button>
         </Link>
-            <button type="submit" className="btn-submit">Enviar</button>
+            <button type="submit" className={styles.btnSubmit}>Enviar</button>
         </div>
 
         <p className="form-note">* Campos não obrigatórios</p>

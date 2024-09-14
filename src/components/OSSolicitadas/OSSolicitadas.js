@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom';
 function OSSolicitadas() {
     const solicitadas = [
         {
-            numProtocolo: "21009826",
             dataAbertura: "29/03/2022",
             patrimonio: "453525",
             solicitante: "Pedro",
@@ -16,7 +15,6 @@ function OSSolicitadas() {
             imageUrl: "/imagens/ordem.svg"
         },
         {
-            numProtocolo: "21009826",
             dataAbertura: "29/03/2022",
             patrimonio: "453525",
             solicitante: "Pedro",

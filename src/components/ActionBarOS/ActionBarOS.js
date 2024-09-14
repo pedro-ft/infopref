@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 function ActionBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const navigate2 = useNavigate();
 
   const handleNewOSClick = () => {
     navigate('/novaos'); // Redirecionando para a rota /nova-os

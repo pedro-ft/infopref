@@ -6,7 +6,6 @@
     box-sizing: border-box;
     align-items: center;
     justify-content: center;
-    font: Arial, sans-serif;
     background: linear-gradient(173deg, rgba(21,108,221,1) 0%, rgba(20,34,71,1) 100%);
   }
   
@@ -37,14 +36,16 @@
     gap: 10px;
     width: 100%;
     border-bottom: 1px solid #ccc;
-    
     padding: 10px;
     box-sizing: border-box;
   }
   
-  .inputLabel {
+  .loginLabel {
     flex-grow: 1;
-    border: none;
+    padding: 0px !important;
+    border: none !important;
+    border-radius: 0px !important;
+    font: 400 17px/1 Roboto, sans-serif !important;
   }
   
   .inputIcon {
@@ -92,4 +93,13 @@
     margin-bottom: 0px;
     margin-top: 0px;
     padding: 0px;
+  }
+
+  .inputIcon {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1;
+    object-fit: contain;
+    cursor: pointer; /* Adiciona cursor de pointer ao ícone */
   }
