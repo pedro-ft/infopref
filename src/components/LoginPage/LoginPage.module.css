@@ -9,7 +9,13 @@
     background: linear-gradient(173deg, rgba(21,108,221,1) 0%, rgba(20,34,71,1) 100%);
   }
   
-  
+  .errorMessage{
+    font: 400 17px/1 Roboto, sans-serif;
+    color: red;
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+
   .loginForm {
     border-radius: 30px;
     background-color: #fff;

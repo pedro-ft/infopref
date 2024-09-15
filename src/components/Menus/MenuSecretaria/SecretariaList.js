@@ -1,76 +1,49 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { getAllSecretarias } from '../../../api/secretaria';
 import styles from './SecretariaList.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import SecretariaCard from './SecretariaCard';
 import ActionBar from '../../ActionBar/ActionBar';
 
-const initialSecretarias = [
-  {
-    name: "Educação e Saúde",
-    phone: "(42) 3231-3434",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Segurança Pública",
-    phone: "(42) 3231-4545",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Transportes e Trânsito",
-    phone: "(42) 3231-5656",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Ambiente e Sustentabilidade",
-    phone: "(42) 3231-6767",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Cultura e Lazer",
-    phone: "(42) 3231-7878",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Desenvolvimento Econômico",
-    phone: "(42) 3231-8989",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Assistência Social",
-    phone: "(42) 3231-9090",
-    imageUrl: "/imagens/Secretaria.svg"
-  },
-  {
-    name: "Planejamento Urbano",
-    phone: "(42) 3231-2121",
-    imageUrl: "/imagens/Secretaria.svg"
-  }
-];
-
 
 function SecretariaList() {
-  const [secretarias, setSecretarias] = useState(initialSecretarias);
+  const [secretarias, setSecretarias] = useState([]);
   const { username } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 6; // ACRESCENTADO
 
+  useEffect(() => {
+    const fetchSecretarias = async () => {
+      try {
+        const data = await getAllSecretarias();
+        setSecretarias(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Erro ao carregar secretarias:', error);
+        setLoading(false);
+      }
+    };
+    fetchSecretarias();
+  }, []);
+
   const filteredSecretarias = secretarias.filter(secretaria =>
-    secretaria.name.toLowerCase().includes(searchTerm.toLowerCase())
+    secretaria.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(secretarias.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(secretarias.length / itemsPerPage); 
 
-  const handlePageChange = (newPage) => { // ACRESCENTADO
+  const handlePageChange = (newPage) => { 
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
+  const startIndex = (currentPage - 1) * itemsPerPage; 
   const currentItems = filteredSecretarias.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
   
   const handleSearch = (term) => {
@@ -92,6 +65,10 @@ function SecretariaList() {
     setSecretarias(updatedSecretarias);
   };
 
+  const handleDeleteSecretaria = (id) => {
+    setSecretarias(secretarias.filter(secretaria => secretaria.id !== id));
+  };
+
   return (
     <main className={styles.secretariasModule}>
       <Cabecalho />
@@ -100,8 +77,12 @@ function SecretariaList() {
         <h2 className={styles.listTitle}>Lista Secretarias</h2>
         <section className={styles.listSection}>
           {currentItems.map((secretaria, index) => (
-            <SecretariaCard key={index} {...secretaria} 
-            onEdit={(updatedSecretaria) => handleEditSecretaria(startIndex + index, updatedSecretaria)}
+            <SecretariaCard key={index} name={secretaria.nome}
+              phone={secretaria.fone}
+              id={secretaria.id}
+              onDelete={handleDeleteSecretaria} 
+              onEdit={handleEditSecretaria}
+
             />
           ))}
         </section>

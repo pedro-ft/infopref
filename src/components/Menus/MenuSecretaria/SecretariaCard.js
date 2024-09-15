@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import EditForm from '../EditForm/EditForm'
+import api from '../../../api/api';
 import styles from './SecretariaCard.module.css';
 
-function SecretariaCard({ name, phone, onDelete, onEdit }) {
+function SecretariaCard({ id, name, phone, onDelete, onEdit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -14,17 +15,30 @@ function SecretariaCard({ name, phone, onDelete, onEdit }) {
     setIsModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    closeModal();
-    if (onDelete) {
-      onDelete(); // Chame a função onDelete para realizar a exclusão do elemento
+  const handleConfirmDelete = async () => {
+    try {
+      await api.delete(`/secretarias/${id}`); // Use o id recebido
+      console.log("Secretaria removida");
+      if (onDelete) {
+        onDelete(id); // Chama onDelete para atualizar a lista, caso necessário
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Erro ao deletar secretaria: ", error);
     }
   };
 
-  const handleEdit = (updatedData) => {
-    setIsEditing(false);
-    onEdit(updatedData); // Chama a função de edição passando os novos dados
-    console.log('Objeto editado:', updatedData);
+  const handleEdit = async (updatedData) => {
+    try{
+      await api.put(`/secretarias/${id}`);
+      console.log('Objeto editado:', updatedData);
+      if (onEdit){
+        onEdit(updatedData)
+      }
+      setIsEditing(false);
+      }catch (error) {
+        console.error("Erro ao atualizar secretaria: ", error);
+      }
   };
 
   const handleCancelEdit = () => {
@@ -42,7 +56,7 @@ function SecretariaCard({ name, phone, onDelete, onEdit }) {
       <img src="imagens/Secretaria.svg" alt={`${name}'s avatar`} className={styles.avatar} />
       <div className={styles.cardContent}>
         <div className={styles.cardHeader}>
-          <h3 className={styles.name}>Secretaria de {name}</h3>
+          <h3 className={styles.name}>{name}</h3>
         </div>
         <div className={styles.cardDetails}>
           <div className={styles.info}>

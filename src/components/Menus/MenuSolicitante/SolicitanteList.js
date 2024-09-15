@@ -1,6 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { getAllSolicitantes } from '../../../api/solicitante';
 import styles from './SolicitanteList.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import SolicitanteCard from './SolicitanteCard';
@@ -275,26 +276,42 @@ const initialSolicitantes = [
 
 function SolicitanteList() {
   const { username } = useContext(UserContext);
-  const [solicitantes, setSolicitantes] = useState(initialSolicitantes);
+  const [solicitantes, setSolicitantes] = useState([]);
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = 6; // ACRESCENTADO
+  const itemsPerPage = 6;
+
+  // Função para buscar os solicitantes do back-end
+  useEffect(() => {
+    const fetchSolicitantes = async () => {
+      try {
+        const data = await getAllSolicitantes();
+        setSolicitantes(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Erro ao carregar solicitantes:', error);
+        setLoading(false);
+      }
+    };
+    fetchSolicitantes();
+  }, []);
 
   const filteredSolicitantes = solicitantes.filter(solicitante =>
-    solicitante.name.toLowerCase().includes(searchTerm.toLowerCase())
+    solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(solicitantes.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(solicitantes.length / itemsPerPage); 
 
-  const handlePageChange = (newPage) => { // ACRESCENTADO
+  const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = filteredSolicitantes.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredSolicitantes.slice(startIndex, startIndex + itemsPerPage);
   
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -308,6 +325,10 @@ function SolicitanteList() {
       navigate('/menu');
     }
   };
+
+  if (loading) {
+    return <p>Carregando solicitantes...</p>;
+  }
 
   const handleEditSolicitante = (index, updatedSolicitante) => {
     const updatedSolicitantes = [...solicitantes];
@@ -323,10 +344,19 @@ function SolicitanteList() {
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Solicitantes</h2>
         <section className={styles.listSection}>
-          {currentItems.map((solicitante, index) => (
-            <SolicitanteCard key={startIndex + index} {...solicitante} 
-            onEdit={(updatedSolicitante) => handleEditSolicitante(startIndex + index, updatedSolicitante)}/>
-          ))}
+        {currentItems.length > 0 ? (
+            currentItems.map((solicitante, index) => (
+              <SolicitanteCard key={startIndex + index} name={solicitante.nome}
+                department={solicitante.departamento.nome}
+                secretariat={solicitante.departamento.secretaria.nome}
+                phone={solicitante.fone}
+                remoteAccessId={solicitante.id_acesso_remoto}
+                onEdit={(updatedSolicitante) => handleEditSolicitante(startIndex + index, updatedSolicitante)}
+                />
+          ))
+                ) : (
+                  <p>Nenhum solicitante encontrado.</p>
+                )}
         </section>
       </div>
       <div className={styles.pagination}>

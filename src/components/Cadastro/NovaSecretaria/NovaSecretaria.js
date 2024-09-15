@@ -1,4 +1,5 @@
 import React from 'react';
+import api from '../../../api/api';
 import styles from '../Novo.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import Formulario from '../Formulario/Formulario';
@@ -9,9 +10,10 @@ const NovaSecretaria = () => {
         {label: 'Fone', name: 'fone', type: 'text'}
     ]
 
-    const handleFormSubmit = (formData) => {
-        console.log('Dados do formulário:', formData);
-    }; 
+    const handleFormSubmit = async (formData) => {
+      await api.post('/secretarias', formData);
+      console.log('Dados do formulário:', formData);
+    };
     
   return (
     <div className={styles.container}>
