@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import EditForm from '../EditForm/EditForm'
 import styles from './SolicitanteCard.module.css';
+import { type } from '@testing-library/user-event/dist/type';
 
-function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId, imageUrl, onDelete }) {
+function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -19,10 +23,39 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
     }
   };
 
+  const handleEdit = (updatedData) => {
+    setIsEditing(false);
+    onEdit(updatedData);
+    console.log('Objeto editado:', updatedData);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  const fields = [
+    { name: 'name', label: 'Nome', type: 'text' },
+    { name: 'secretariat', label: 'Secretaria', type: 'select', options: [
+      { label: 'Educação e Saúde', value: 'educação e saúde' },
+      { label: 'Administração', value: 'administração' },
+      { label: 'Segurança Pública', value: 'segurança pública' },
+    ]
+  },
+  { name: 'departament', label: 'Departamento', type: 'select', options: [
+    { label: 'Educação', value: 'educação' },
+    { label: 'Saúde', value: 'saúde' },
+    { label: 'Segurança', value: 'segurança' },
+  ]
+},
+    { name: 'phone', label: 'Telefone', type: 'text' },
+    { name: 'remoteAccessId', label: 'ID de Acesso Remoto', type: 'text' },
+
+  ];
+
   return (
   <>
     <article className={styles.card}>
-      <img src={imageUrl} alt={`${name}'s avatar`} className={styles.avatar} />
+      <img src="/imagens/Usuario.svg" alt={`${name}'s avatar`} className={styles.avatar} />
       <div className={styles.cardContent}>
         <div className={styles.cardHeader}>
           <h3 className={styles.name}>Nome: {name}</h3>
@@ -35,7 +68,7 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
             <p>ID de Acesso Remoto: {remoteAccessId}</p>
           </div>
           <div className={styles.actions}>
-            <button className={styles.editButton} aria-label="Edit">
+            <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
               <img src="/imagens/Editar.svg" alt="" />
             </button>
             <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
@@ -57,6 +90,14 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
             </div>
           </div>
         </div>
+      )}
+      {isEditing && (
+        <EditForm
+          fields={fields}
+          initialValues={{ name, phone, secretariat, department, remoteAccessId }}
+          onSubmit={handleEdit}
+          onCancel={handleCancelEdit}
+        />
       )}
     </>
   );

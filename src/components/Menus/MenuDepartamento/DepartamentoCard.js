@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styles from './DepartamentoCard.module.css';
+import EditForm from '../EditForm/EditForm'
 import { Link } from 'react-router-dom';
 
-function DepartamentoCard({ name, phone, imageUrl, onDelete }) {
+function DepartamentoCard({ name, phone, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -20,10 +22,25 @@ function DepartamentoCard({ name, phone, imageUrl, onDelete }) {
     }
   };
 
+  const handleEdit = (updatedData) => {
+    setIsEditing(false);
+    onEdit(updatedData); // Chama a função de edição passando os novos dados
+    console.log('Objeto editado:', updatedData);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  const fields = [
+    { name: 'name', label: 'Nome', type: 'text' },
+    { name: 'phone', label: 'Telefone', type: 'text' },
+  ];
+
   return (
     <>
       <article className={styles.card}>
-        <img src={imageUrl} alt={`${name}'s avatar`} className={styles.avatar} />
+        <img src="imagens/Secretaria.svg" alt={`${name}'s avatar`} className={styles.avatar} />
         <div className={styles.cardContent}>
           <div className={styles.cardHeader}>
             <h3 className={styles.name}>Departamento de {name}</h3>
@@ -41,7 +58,7 @@ function DepartamentoCard({ name, phone, imageUrl, onDelete }) {
               </Link>
             </div>
             <div className={styles.actions}>
-              <button className={styles.editButton} aria-label="Edit">
+              <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
                 <img src="imagens/Editar.svg" alt="" />
               </button>
               <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
@@ -63,6 +80,15 @@ function DepartamentoCard({ name, phone, imageUrl, onDelete }) {
             </div>
           </div>
         </div>
+      )}
+
+      {isEditing && (
+        <EditForm
+          fields={fields}
+          initialValues={{ name, phone }}
+          onSubmit={handleEdit}
+          onCancel={handleCancelEdit}
+        />
       )}
     </>
   );

@@ -6,7 +6,7 @@ import Cabecalho from '../../Cabecalho/Cabecalho';
 import SecretariaCard from './SecretariaCard';
 import ActionBar from '../../ActionBar/ActionBar';
 
-const secretarias = [
+const initialSecretarias = [
   {
     name: "Educação e Saúde",
     phone: "(42) 3231-3434",
@@ -51,6 +51,7 @@ const secretarias = [
 
 
 function SecretariaList() {
+  const [secretarias, setSecretarias] = useState(initialSecretarias);
   const { username } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
@@ -85,6 +86,12 @@ function SecretariaList() {
     }
   };
 
+  const handleEditSecretaria = (index, updatedSecretaria) => {
+    const updatedSecretarias = [...secretarias];
+    updatedSecretarias[index] = updatedSecretaria;
+    setSecretarias(updatedSecretarias);
+  };
+
   return (
     <main className={styles.secretariasModule}>
       <Cabecalho />
@@ -93,7 +100,9 @@ function SecretariaList() {
         <h2 className={styles.listTitle}>Lista Secretarias</h2>
         <section className={styles.listSection}>
           {currentItems.map((secretaria, index) => (
-            <SecretariaCard key={index} {...secretaria} />
+            <SecretariaCard key={index} {...secretaria} 
+            onEdit={(updatedSecretaria) => handleEditSecretaria(startIndex + index, updatedSecretaria)}
+            />
           ))}
         </section>
       </div>

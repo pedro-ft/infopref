@@ -4,106 +4,40 @@ import { useNavigate } from 'react-router-dom';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import ActionBar from '../../ActionBarOS/ActionBarOS';
 import OrderServiceList from './OrderServiceList';
+import OrderServiceForm from './OrderServiceForm'
 import styles from './OrderServicePage.module.css';
 
 // Mova a constante orderServiceData para cá
 const orderServiceData = [
   {
     id: '1',
+    tipoChamado: 'Troca de Peças',
     status: 'Em andamento',
     openDate: '27/05/2024',
-    assetNumber: '21009826',
+    closeDate: '29/05/2024',
+    patrimonio: '21009826',
     priority: 'Urgente',
     requester: 'Pedro Ferreira Taborda',
     department: 'Administração',
     secretariat: 'Administração',
-    description: 'Tela não da imagem'
+    description: 'Tela não aparece nenhuma imagem.',
+    tecnico: 'Leonardo Mulinari',
+    resolucao: 'Placa de Vídeo deu defeito e não funcionava mais, foi realizada a troca.'
   },
   {
     id: '2',
-    status: 'Finalizada',
-    openDate: '22/05/2024',
-    closeDate: '23/05/2024',
-    assetNumber: '21007526',
-    requester: 'Leonardo Mulinari',
-    department: 'Educação e Cultura',
-    secretariat: 'Educação e Cultura',
-    description: 'Entrada USB do dispositivo não funciona.'
-  },
-  {
-    id: '3',
-    status: 'Finalizada',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    requester: 'Jonas de Godoi',
-    department: 'Saúde',
-    secretariat: 'Saúde',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '4',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '5',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '6',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '7',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '8',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '9',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '10',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
-  },
-  {
-    id: '11',
-    status: 'Em aberto',
-    openDate: '16/05/2024',
-    closeDate: '18/05/2024',
-    assetNumber: '18001243',
-    description: 'Roteador Wi-Fi não funciona corretamente.'
+    tipoChamado: 'Troca de Peças',
+    status: 'Em andamento',
+    openDate: '27/05/2024',
+    closeData: '29/05/2024',
+    patrimonio: '21009826',
+    priority: 'Urgente',
+    requester: 'Pedro Ferreira Taborda',
+    department: 'Administração',
+    secretariat: 'Administração',
+    description: 'Tela não aparece nenhuma imagem.',
+    tecnico: 'Leonardo Mulinari',
+    resolucao: 'Placa de Vídeo deu defeito e não funcionava mais, foi realizada a troca.'
   }
 ];
 
@@ -112,13 +46,13 @@ function OrderServicePage() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
 
   const filteredData = orderServiceData.filter(item =>
     item.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Calcule o número total de páginas com base na quantidade de ordens de serviço
   const totalPages = Math.ceil(orderServiceData.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
@@ -127,7 +61,15 @@ function OrderServicePage() {
 
   const handleSearch = (term) => {
     setSearchTerm(term);
-    setCurrentPage(1); // Reset para a primeira página quando a pesquisa é alterada
+    setCurrentPage(1);
+  };
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const closeModal = () => {
+    setSelectedOrder(null);
   };
 
   const handleBackButtonClick = () => {
@@ -146,7 +88,8 @@ function OrderServicePage() {
         <OrderServiceList 
           data={filteredData} // Passe os dados como props
           currentPage={currentPage} 
-          itemsPerPage={itemsPerPage} 
+          itemsPerPage={itemsPerPage}
+          onOrderClick={handleOrderClick} 
         />
         <div className={styles.pagination}>
           <button 
@@ -164,8 +107,17 @@ function OrderServicePage() {
           </button>
         </div>
       </main>
+      {selectedOrder && (
+        <OrderServiceForm 
+          order={selectedOrder} 
+          onClose={closeModal} 
+        />
+      )}
         <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </div>
+
+
+    
   );
 }
 

@@ -5,7 +5,7 @@ import InfoInternetCard from './InfoInternetCard';
 import ActionBar from '../../ActionBar/ActionBar';
 import {Link} from 'react-router-dom';
 
-const infosInternet = [
+const initialInfosInternet = [
   {
     nomeRede: "adm2024",
     senha: "pref2024adm",
@@ -51,6 +51,7 @@ const infosInternet = [
 ];
 
 function InfoInternetList() {
+  const [infosInternet, setInfosInternet] = useState(initialInfosInternet);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6;
@@ -75,6 +76,12 @@ function InfoInternetList() {
     setCurrentPage(1);
   }
 
+  const handleEditInfoInternet = (index, updatedInfoInternet) => {
+    const updatedInfosInternet = [...infosInternet];
+    updatedInfosInternet[index] = updatedInfoInternet;
+    setInfosInternet(updatedInfosInternet);
+  };
+
   return (
     <main className={styles.infoInternetModule}>
       <Cabecalho />
@@ -83,7 +90,9 @@ function InfoInternetList() {
         <h2 className={styles.listTitle}>Lista Informações de Internet</h2>
         <section className={styles.listSection}>
           {currentItems.map((infoInternet, index) => (
-            <InfoInternetCard key={index} {...infoInternet} />
+            <InfoInternetCard key={index} {...infoInternet} 
+            onEdit={(updatedInfoInternet) => handleEditInfoInternet(startIndex + index, updatedInfoInternet)}
+            />
           ))}
         </section>
       </div>

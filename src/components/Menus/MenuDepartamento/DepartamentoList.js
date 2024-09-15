@@ -7,7 +7,7 @@ import Cabecalho from '../../Cabecalho/Cabecalho';
 import DepartamentoCard from './DepartamentoCard';
 import ActionBar from '../../ActionBar/ActionBar';
 
-const departamentos = [
+const initialDepartamentos = [
     {
       name: "Educação e Saúde",
       phone: "(42) 3231-3434",
@@ -51,6 +51,7 @@ const departamentos = [
 ];
 
 function DepartamentoList() {
+  const [departamentos, setDepartamentos] = useState(initialDepartamentos);
   const { username } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
@@ -85,6 +86,12 @@ function DepartamentoList() {
     }
   };
   
+  const handleEditDepartamento = (index, updatedDepartamento) => {
+    const updatedDepartamentos = [...departamentos];
+    updatedDepartamentos[index] = updatedDepartamento;
+    setDepartamentos(updatedDepartamentos);
+  };
+
   return (
     <main className={styles.departamentoModule}>
       <Cabecalho />
@@ -93,7 +100,9 @@ function DepartamentoList() {
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
         <section className={styles.listSection}>
           {currentItems.map((departamento, index) => (
-            <DepartamentoCard key={index} {...departamento} />
+            <DepartamentoCard key={index} {...departamento} 
+            onEdit={(updatedDepartamento) => handleEditDepartamento(startIndex + index, updatedDepartamento)}
+            />
           ))}
         </section>
       </div>

@@ -9,7 +9,7 @@ const NovoSolicitante = () => {
         {label: 'Secretaria', name: 'secretaria', type: 'select', options: ['Educação', 'Saúde', 'Segurança']},
         {label: 'Departamento', name: 'departamento', type: 'select', options: ['Educação', 'Saúde', 'Segurança']},
         {label: 'Fone', name: 'fone', type: 'text'},
-        {label: 'ID de Acesso Remoto', name: 'idAcesso', type: 'number'},
+        {label: 'ID de Acesso Remoto', name: 'idAcesso', type: 'text'},
         {label: 'Usuário', name: 'usuario', type: 'text'},
         {label: 'Senha', name: 'senha', type: 'text'}
     ]

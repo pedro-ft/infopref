@@ -5,7 +5,7 @@ import DepartamentoCard from './EquipamentosCard';
 import ActionBar from '../../ActionBar/ActionBar';
 import {Link} from 'react-router-dom';
 
-const equipamentos = [
+const initialEquipamentos = [
   {
     patrimonio: "21009826",
     modelo: "Notebook Inspiron 15",
@@ -65,6 +65,7 @@ const equipamentos = [
 ];
 
 function EquipamentoList() {
+  const [equipamentos, setEquipamentos] = useState(initialEquipamentos);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 6; // ACRESCENTADO
@@ -89,6 +90,12 @@ function EquipamentoList() {
   const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
   const currentItems = filteredEquipamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
 
+  const handleEditEquipamento = (index, updatedEquipamento) => {
+    const updatedEquipamentos = [...equipamentos];
+    updatedEquipamentos[index] = updatedEquipamento;
+    setEquipamentos(updatedEquipamentos);
+  };
+
   return (
     <main className={styles.equipamentoModule}>
       <Cabecalho />
@@ -97,7 +104,9 @@ function EquipamentoList() {
         <h2 className={styles.listTitle}>Lista Equipamentos</h2>
         <section className={styles.listSection}>
           {currentItems.map((equipamento, index) => (
-            <DepartamentoCard key={index} {...equipamento} />
+            <DepartamentoCard key={index} {...equipamento}
+            onEdit={(updatedEquipamento) => handleEditEquipamento(startIndex + index, updatedEquipamento)}
+            />
           ))}
         </section>
       </div>

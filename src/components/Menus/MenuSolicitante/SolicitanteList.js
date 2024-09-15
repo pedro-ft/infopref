@@ -6,7 +6,7 @@ import Cabecalho from '../../Cabecalho/Cabecalho';
 import SolicitanteCard from './SolicitanteCard';
 import ActionBar from '../../ActionBar/ActionBar';
 
-const solicitantes = [
+const initialSolicitantes = [
   {
     name: "Pedro Ferreira Taborda",
     department: "Administração",
@@ -275,6 +275,7 @@ const solicitantes = [
 
 function SolicitanteList() {
   const { username } = useContext(UserContext);
+  const [solicitantes, setSolicitantes] = useState(initialSolicitantes);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
   const [searchTerm, setSearchTerm] = useState('');
@@ -308,6 +309,13 @@ function SolicitanteList() {
     }
   };
 
+  const handleEditSolicitante = (index, updatedSolicitante) => {
+    const updatedSolicitantes = [...solicitantes];
+    updatedSolicitantes[index] = updatedSolicitante;
+    setSolicitantes(updatedSolicitantes);
+  };
+
+
   return (
     <main className={styles.solicitanteModule}>
       <Cabecalho />
@@ -316,7 +324,8 @@ function SolicitanteList() {
         <h2 className={styles.listTitle}>Lista Solicitantes</h2>
         <section className={styles.listSection}>
           {currentItems.map((solicitante, index) => (
-            <SolicitanteCard key={startIndex + index} {...solicitante} />
+            <SolicitanteCard key={startIndex + index} {...solicitante} 
+            onEdit={(updatedSolicitante) => handleEditSolicitante(startIndex + index, updatedSolicitante)}/>
           ))}
         </section>
       </div>
