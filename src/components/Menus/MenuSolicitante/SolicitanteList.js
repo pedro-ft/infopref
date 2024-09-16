@@ -275,7 +275,7 @@ const initialSolicitantes = [
 ];
 
 function SolicitanteList() {
-  const { username } = useContext(UserContext);
+  const { userProfile } = useContext(UserContext);
   const [solicitantes, setSolicitantes] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -302,7 +302,7 @@ function SolicitanteList() {
     solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(solicitantes.length / itemsPerPage); 
+  const totalPages = Math.ceil(filteredSolicitantes.length / itemsPerPage); 
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -318,11 +318,11 @@ function SolicitanteList() {
     setCurrentPage(1);
   }
 
-  const handleBackButtonClick = () => {
-    if (username === 'Jonas de Godoi') {
-      navigate('/menu2');
-    } else {
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
       navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
     }
   };
 
@@ -374,7 +374,7 @@ function SolicitanteList() {
           Próximo
         </button>
       </div>
-      <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
+      <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </main>
   );
 }

@@ -10,7 +10,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated} = useContext(UserContext);
+  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated, setUserProfile} = useContext(UserContext);
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
@@ -34,19 +34,19 @@ function LoginPage() {
       console.log(userResponse.data);
 
       setIsAuthenticated(true);
+      setGlobalUsername(userResponse.data.username);
+      setUserProfile(userResponse.data.profile);
+      const defaultAvatarUrl = userResponse.data.profile.includes("ADM") ? 'imagens/iconeTecnico.svg' : 
+                               userResponse.data.profile.includes("TECNICO") ? 'imagens/iconeTecnico.svg' : 
+                              'imagens/UsuarioIcone.svg';
+      setAvatarUrl(defaultAvatarUrl);
 
       // Redireciona o usuário de acordo com o tipo de perfil
       if (userResponse.data.profile.includes("ADM")) {
-        const defaultAvatarUrl = 'imagens/iconeTecnico.svg';
-        setAvatarUrl(defaultAvatarUrl);
         navigate('/menu');
       } else if (userResponse.data.profile.includes("TECNICO")) {
-        const defaultAvatarUrl = 'imagens/iconeTecnico.svg';
-        setAvatarUrl(defaultAvatarUrl);
         navigate('/menu2');
       } else if (userResponse.data.profile.includes("SOLICITANTE")) {
-        const defaultAvatarUrl = 'imagens/UsuarioIcone.svg';
-        setAvatarUrl(defaultAvatarUrl);
         navigate('/minhas-solicitacoes');
       }
     } catch (err) {

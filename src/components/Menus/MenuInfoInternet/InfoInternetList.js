@@ -60,7 +60,7 @@ function InfoInternetList() {
     infoInternet.nomeRede.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(infosInternet.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredInfoInternet.length / itemsPerPage); // ACRESCENTADO
 
   const handlePageChange = (newPage) => { // ACRESCENTADO
     if (newPage > 0 && newPage <= totalPages) {

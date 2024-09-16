@@ -64,7 +64,7 @@ function MinhasSolicitacoes() {
         solicitacao.numProtocolo.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const totalPages = Math.ceil(solicitacoes.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredSolicitacoes.length / itemsPerPage);
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {

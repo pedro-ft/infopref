@@ -15,18 +15,43 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
     setIsModalOpen(false);
   };
 
-  const handleConfirmDelete = async () => {
+  const fetchDetails = async (tecnicoId) => {
     try {
-      await api.delete(`/tecnicos/${id}`); // Use o id recebido
-      console.log("Tecnico removida");
-      if (onDelete) {
-        onDelete(id); // Chama onDelete para atualizar a lista, caso necessário
-      }
-      closeModal();
+      const response = await api.get(`/tecnicos/${tecnicoId}`);
+      return response.data; // Deve retornar o técnico com o usuário associado
     } catch (error) {
-      console.error("Erro ao deletar tecnico: ", error);
+      console.error('Erro ao buscar detalhes do técnico:', error);
+      throw error;
     }
   };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const tecnicoDetails = await fetchDetails(id);
+
+      if (tecnicoDetails && tecnicoDetails.user && tecnicoDetails.user.id) {
+        const userId = tecnicoDetails.user.id;
+      
+         // Excluir o técnico
+         await api.delete(`/tecnicos/${id}`);
+         console.log("Técnico removido");
+ 
+         // Excluir o usuário associado
+         await api.delete(`/user/${userId}`);
+         console.log("Usuário associado removido");
+       } else {
+         console.error("Nenhum usuário associado encontrado para o técnico");
+       }
+ 
+       if (onDelete) {
+         onDelete(id); // Atualiza a lista de técnicos
+       }
+       closeModal();
+     } catch (error) {
+       console.error("Erro ao deletar técnico ou usuário associado:", error);
+     }
+   };
+ 
 
   const handleEdit = async (updatedData) => {
     try {

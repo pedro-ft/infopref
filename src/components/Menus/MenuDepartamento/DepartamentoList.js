@@ -9,7 +9,7 @@ import styles from './DepartamentoList.module.css';
 
 function DepartamentoList() {
   const [departamentos, setDepartamentos] = useState([]);
-  const { username } = useContext(UserContext);
+  const { userProfile } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
   const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de pesquisa
@@ -34,7 +34,7 @@ function DepartamentoList() {
     departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(departamentos.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredDepartamentos.length / itemsPerPage); // ACRESCENTADO
 
   const handlePageChange = (newPage) => { // ACRESCENTADO
     if (newPage > 0 && newPage <= totalPages) {
@@ -50,11 +50,11 @@ function DepartamentoList() {
     setCurrentPage(1);
   }
 
-  const handleBackButtonClick = () => {
-    if (username === 'Jonas de Godoi') {
-      navigate('/menu2');
-    } else {
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
       navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
     }
   };
 
@@ -102,7 +102,7 @@ function DepartamentoList() {
           Próximo
         </button>
       </div>
-      <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
+      <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </main>
   );
 }
