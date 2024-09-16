@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
-import styles from './ActionBar.module.css';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styles from './ActionBar.module.css';
 
-function ActionBarPadrao({tipo, link, onSearch}) {
+function ActionBarPadrao({ tipo, link, onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate(); // Usando o hook useNavigate
+
+
 
   const handleNewClick = () => {
     navigate(`/${link}`);
@@ -22,7 +24,7 @@ function ActionBarPadrao({tipo, link, onSearch}) {
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
-  
+
 
   return (
     <div className={styles.actionBar}>

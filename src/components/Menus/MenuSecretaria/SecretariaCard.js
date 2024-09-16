@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import EditForm from '../EditForm/EditForm'
 import api from '../../../api/api';
+import EditForm from '../EditForm/EditForm';
 import styles from './SecretariaCard.module.css';
 
-function SecretariaCard({ id, name, phone, onDelete, onEdit }) {
+function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -29,16 +29,17 @@ function SecretariaCard({ id, name, phone, onDelete, onEdit }) {
   };
 
   const handleEdit = async (updatedData) => {
-    try{
-      await api.put(`/secretarias/${id}`);
+    try {
+      console.log('Dados enviados para o servidor:', updatedData);
+      await api.put(`/secretarias/${id}`, updatedData);
       console.log('Objeto editado:', updatedData);
-      if (onEdit){
+      if (onEdit) {
         onEdit(updatedData)
       }
       setIsEditing(false);
-      }catch (error) {
-        console.error("Erro ao atualizar secretaria: ", error);
-      }
+    } catch (error) {
+      console.error("Erro ao atualizar secretaria: ", error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -46,39 +47,39 @@ function SecretariaCard({ id, name, phone, onDelete, onEdit }) {
   };
 
   const fields = [
-    { name: 'name', label: 'Nome', type: 'text' },
-    { name: 'phone', label: 'Telefone', type: 'text' },
+    { name: 'nome', label: 'Nome', type: 'text' },
+    { name: 'fone', label: 'Telefone', type: 'text' },
   ];
 
   return (
-  <>
-    <article className={styles.card}>
-      <img src="imagens/Secretaria.svg" alt={`${name}'s avatar`} className={styles.avatar} />
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <h3 className={styles.name}>{name}</h3>
-        </div>
-        <div className={styles.cardDetails}>
-          <div className={styles.info}>
-            <p>Fone: {phone}</p>
+    <>
+      <article className={styles.card}>
+        <img src="imagens/Secretaria.svg" alt={`${nome}'s avatar`} className={styles.avatar} />
+        <div className={styles.cardContent}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.name}>{nome}</h3>
           </div>
-          <div className={styles.actions}>
-            <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
-              <img src="imagens/Editar.svg" alt="" />
-            </button>
-            <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
-              <img src="imagens/Excluir.svg" alt="" />
-            </button>
+          <div className={styles.cardDetails}>
+            <div className={styles.info}>
+              <p>Fone: {fone}</p>
+            </div>
+            <div className={styles.actions}>
+              <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
+                <img src="imagens/Editar.svg" alt="" />
+              </button>
+              <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
+                <img src="imagens/Excluir.svg" alt="" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
       {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir a secretaria {name}?</p>
+            <p>Tem certeza que deseja excluir a secretaria {nome}?</p>
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
@@ -89,8 +90,8 @@ function SecretariaCard({ id, name, phone, onDelete, onEdit }) {
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ name, phone }}
-          onSubmit={handleEdit}
+          initialValues={{ nome, fone }}
+          onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}  // Inclui o ID
           onCancel={handleCancelEdit}
         />
       )}

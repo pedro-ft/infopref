@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import EditForm from '../EditForm/EditForm'
+import api from '../../../api/api';
+import EditForm from '../EditForm/EditForm';
 import styles from './TecnicoCard.module.css';
 
-function TecnicoCard({ name, phone, onDelete, onEdit }) {
+function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -14,17 +15,31 @@ function TecnicoCard({ name, phone, onDelete, onEdit }) {
     setIsModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    closeModal();
-    if (onDelete) {
-      onDelete(); // Chame a função onDelete para realizar a exclusão do elemento
+  const handleConfirmDelete = async () => {
+    try {
+      await api.delete(`/tecnicos/${id}`); // Use o id recebido
+      console.log("Tecnico removida");
+      if (onDelete) {
+        onDelete(id); // Chama onDelete para atualizar a lista, caso necessário
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Erro ao deletar tecnico: ", error);
     }
   };
 
-  const handleEdit = (updatedData) => {
-    setIsEditing(false);
-    onEdit(updatedData); // Chama a função de edição passando os novos dados
-    console.log('Objeto editado:', updatedData);
+  const handleEdit = async (updatedData) => {
+    try {
+      console.log('Dados enviados para o servidor:', updatedData);
+      await api.put(`/tecnicos/${id}`, updatedData);
+      console.log('Objeto editado:', updatedData);
+      if (onEdit) {
+        onEdit(updatedData)
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Erro ao atualizar tecnico: ", error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -32,40 +47,40 @@ function TecnicoCard({ name, phone, onDelete, onEdit }) {
   };
 
   const fields = [
-    { name: 'name', label: 'Nome', type: 'text' },
-    { name: 'phone', label: 'Telefone', type: 'text' },
+    { name: 'nome', label: 'Nome', type: 'text' },
+    { name: 'fone', label: 'Telefone', type: 'text' },
   ];
 
 
   return (
-  <>
-    <article className={styles.card}>
-      <img src="/imagens/tecnico.svg" alt={`${name}'s avatar`} className={styles.avatar} />
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <h3 className={styles.name}>Nome: {name}</h3>
-        </div>
-        <div className={styles.cardDetails}>
-          <div className={styles.info}>
-            <p>Fone: {phone}</p>
+    <>
+      <article className={styles.card}>
+        <img src="/imagens/tecnico.svg" alt={`${nome}'s avatar`} className={styles.avatar} />
+        <div className={styles.cardContent}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.name}>Nome: {nome}</h3>
           </div>
-          <div className={styles.actions}>
-            <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
-              <img src="imagens/Editar.svg" alt="" />
-            </button>
-            <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
-              <img src="imagens/Excluir.svg" alt="" />
-            </button>
+          <div className={styles.cardDetails}>
+            <div className={styles.info}>
+              <p>Fone: {fone}</p>
+            </div>
+            <div className={styles.actions}>
+              <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
+                <img src="imagens/Editar.svg" alt="" />
+              </button>
+              <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
+                <img src="imagens/Excluir.svg" alt="" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    {isModalOpen && (
+      {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir o técnico {name}?</p>
+            <p>Tem certeza que deseja excluir o técnico {nome}?</p>
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
@@ -77,8 +92,8 @@ function TecnicoCard({ name, phone, onDelete, onEdit }) {
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ name, phone }}
-          onSubmit={handleEdit}
+          initialValues={{ nome, fone }}
+          onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
         />
       )}

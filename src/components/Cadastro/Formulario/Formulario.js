@@ -35,8 +35,8 @@ const Formulario = ({ campos, onSubmit, voltarUrl }) => {
               >
                 <option value="">Selecione</option>
                 {campo.options.map((option, i) => (
-                  <option key={i} value={option}>
-                    {option}
+                  <option key={i} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -52,7 +52,7 @@ const Formulario = ({ campos, onSubmit, voltarUrl }) => {
         ))}
 
         <div className={styles.formButtons}>
-        <button type="button" className={styles.btnBack} onClick={handleVoltar}>
+          <button type="button" className={styles.btnBack} onClick={handleVoltar}>
             Voltar
           </button>
           <button type="submit" className={styles.btnSubmit}>Enviar</button>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import styles from './DepartamentoCard.module.css';
-import EditForm from '../EditForm/EditForm'
 import { Link } from 'react-router-dom';
+import api from '../../../api/api';
+import EditForm from '../EditForm/EditForm';
+import styles from './DepartamentoCard.module.css';
 
-function DepartamentoCard({ name, phone, onEdit, onDelete }) {
+function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -15,17 +16,31 @@ function DepartamentoCard({ name, phone, onEdit, onDelete }) {
     setIsModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    closeModal();
-    if (onDelete) {
-      onDelete(); // Chame a função onDelete para realizar a exclusão do elemento
+  const handleConfirmDelete = async () => {
+    try {
+      await api.delete(`/departamentos/${id}`); // Use o id recebido
+      console.log("Departamento removida");
+      if (onDelete) {
+        onDelete(id); // Chama onDelete para atualizar a lista, caso necessário
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Erro ao deletar departamento: ", error);
     }
   };
 
-  const handleEdit = (updatedData) => {
-    setIsEditing(false);
-    onEdit(updatedData); // Chama a função de edição passando os novos dados
-    console.log('Objeto editado:', updatedData);
+  const handleEdit = async (updatedData) => {
+    try {
+      console.log('Dados enviados para o servidor:', updatedData);
+      await api.put(`/departamentos/${id}`, updatedData);
+      console.log('Objeto editado:', updatedData);
+      if (onEdit) {
+        onEdit(updatedData)
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Erro ao atualizar departamento: ", error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -33,27 +48,27 @@ function DepartamentoCard({ name, phone, onEdit, onDelete }) {
   };
 
   const fields = [
-    { name: 'name', label: 'Nome', type: 'text' },
-    { name: 'phone', label: 'Telefone', type: 'text' },
+    { name: 'nome', label: 'Nome', type: 'text' },
+    { name: 'fone', label: 'Telefone', type: 'text' },
   ];
 
   return (
     <>
       <article className={styles.card}>
-        <img src="imagens/Secretaria.svg" alt={`${name}'s avatar`} className={styles.avatar} />
+        <img src="imagens/Secretaria.svg" alt={`${nome}'s avatar`} className={styles.avatar} />
         <div className={styles.cardContent}>
           <div className={styles.cardHeader}>
-            <h3 className={styles.name}>Departamento de {name}</h3>
+            <h3 className={styles.name}>{nome}</h3>
           </div>
           <div className={styles.cardDetails}>
             <div className={styles.info}>
-              <p>Fone: {phone}</p>
+              <p>Fone: {fone}</p>
             </div>
             <div className={styles.cardSideSection}>
-              <Link to="/equipamentos">
+              <Link to={`/departamentos/${id}/equipamentos`}>
                 <button className={styles.cardButton} aria-label="Equipamentos">Equipamentos</button>
               </Link>
-              <Link to="/infoInternet">
+              <Link to={`/departamentos/${id}/infoInternet`}>
                 <button className={styles.cardButton} aria-label="Informações de Internet">Informações de Internet</button>
               </Link>
             </div>
@@ -73,7 +88,7 @@ function DepartamentoCard({ name, phone, onEdit, onDelete }) {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir o departamento {name}?</p>
+            <p>Tem certeza que deseja excluir o departamento {nome}?</p>
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
@@ -85,8 +100,8 @@ function DepartamentoCard({ name, phone, onEdit, onDelete }) {
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ name, phone }}
-          onSubmit={handleEdit}
+          initialValues={{ nome, fone }}
+          onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
         />
       )}
