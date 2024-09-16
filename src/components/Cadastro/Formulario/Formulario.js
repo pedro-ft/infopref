@@ -8,7 +8,23 @@ const Formulario = ({ campos, onSubmit, voltarUrl }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    
+    let formattedValue = value;
+    // Verifica se o campo é o de telefone
+    if (name === 'fone') {
+      // Remove todos os caracteres não numéricos
+      formattedValue = value.replace(/\D/g, '');
+
+      // Aplica a formatação (xx) xxxxx-xxxx
+      if (formattedValue.length <= 10) {
+        formattedValue = formattedValue.replace(/^(\d{2})(\d)/, '($1) $2');
+        formattedValue = formattedValue.replace(/(\d{4})(\d{1,4})$/, '$1-$2');
+      } else {
+        formattedValue = formattedValue.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+      }
+    }
+
+    setFormData({ ...formData, [name]: formattedValue });
   };
 
   const handleSubmit = async (e) => {
