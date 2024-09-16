@@ -63,6 +63,14 @@ function SecretariaList() {
     setSecretarias(secretarias.filter(secretaria => secretaria.id !== id));
   };
 
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
+      navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
+    }
+  };
+
   return (
     <main className={styles.secretariasModule}>
       <Cabecalho />
@@ -96,7 +104,7 @@ function SecretariaList() {
           Próximo
         </button>
       </div>
-      <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
+      <button className={styles.backButton} aria-label='Voltar' onClick={handleBackClick}>Voltar</button>
     </main>
   );
 }

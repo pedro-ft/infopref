@@ -5,22 +5,22 @@ import Cabecalho from '../../Cabecalho/Cabecalho';
 import Formulario from '../../Cadastro/Formulario/Formulario';
 
 const GerarRelatorio = () => {
-    const { username } = useContext(UserContext);
+    const { userProfile } = useContext(UserContext);
     let url = '';
     const campos = [
         {label: 'Data Inicio', name: 'DataInicio', type: 'date'},
         {label: 'Data Final', name: 'DataFinal', type: 'date'},
-        {label: 'Relatório por', name: 'tipo', type: 'select', options: ['Solicitante', 'Secretaria', 'Departamento', 'Técnico', 'Tipo chamado']}
+        {label: 'Relatório por', name: 'tipo', type: 'select', options: [{label: 'Solicitante', value: 'solicitante'}, {label: 'Secretaria', value: 'secretaria'}, {label: 'Departamento', value: 'departamento'}, {label: 'Técnico', value: 'tecnico'}, {label:'Tipo chamado', value: 'tipo-chamado'}]}
     ]
 
     const handleFormSubmit = (formData) => {
         console.log('Dados do formulário:', formData);
     }; 
 
-    if (username === 'Jonas de Godoi') {
-        url = '/menu2'
-      } else {
+    if (userProfile === 'ADM') {
         url = '/menu'
+      } else {
+        url = '/menu2'
       }
 
     return (

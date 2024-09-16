@@ -10,7 +10,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated} = useContext(UserContext);
+  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated, setUserProfile} = useContext(UserContext);
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
@@ -35,6 +35,7 @@ function LoginPage() {
 
       setIsAuthenticated(true);
       setGlobalUsername(userResponse.data.username);
+      setUserProfile(userResponse.data.profile);
       const defaultAvatarUrl = userResponse.data.profile.includes("ADM") ? 'imagens/iconeTecnico.svg' : 
                                userResponse.data.profile.includes("TECNICO") ? 'imagens/iconeTecnico.svg' : 
                               'imagens/UsuarioIcone.svg';

@@ -42,7 +42,7 @@ const orderServiceData = [
 ];
 
 function OrderServicePage() {
-  const { username } = useContext(UserContext);
+  const { userProfile } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -72,11 +72,11 @@ function OrderServicePage() {
     setSelectedOrder(null);
   };
 
-  const handleBackButtonClick = () => {
-    if (username === 'Jonas de Godoi') {
-      navigate('/menu2');
-    } else {
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
       navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
     }
   };
 
@@ -113,7 +113,7 @@ function OrderServicePage() {
           onClose={closeModal} 
         />
       )}
-        <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
+        <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </div>
 
 
