@@ -11,9 +11,9 @@ const Formulario = ({ campos, onSubmit, voltarUrl }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    await onSubmit(formData);
     navigate(voltarUrl);
   };
 

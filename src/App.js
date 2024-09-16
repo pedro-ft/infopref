@@ -46,11 +46,11 @@ function App() {
             <Route path="/departamentos" element={<ProtectedRoute element={<DepartamentoList />} />} />
             <Route path="/novo-departamento" element={<ProtectedRoute element={<NovoDepartamento />} />} />
 
-            <Route path="/departamentos/:departamentoId/equipamentos" element={<EquipamentoList />} />
+            <Route path="/departamentos/:id/equipamentos" element={<EquipamentoList />} />
 
 
 
-            <Route path="/novo-equipamento" element={<ProtectedRoute element={<NovoEquipamento />} />} />
+            <Route path="/novo-equipamento/:id" element={<ProtectedRoute element={<NovoEquipamento />} />} />
             <Route path="/infoInternet" element={<ProtectedRoute element={<InfoInternetList />} />} />
             <Route path="/novo-info-internet" element={<ProtectedRoute element={<NovaInfoInternet />} />} />
             <Route path="/relatorios" element={<ProtectedRoute element={<GerarRelatorio />} />} />

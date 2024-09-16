@@ -77,7 +77,9 @@ function DepartamentoList() {
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
         <section className={styles.listSection}>
           {currentItems.map((departamento, index) => (
-            <DepartamentoCard key={index} nome={departamento.nome}
+            <DepartamentoCard key={index}
+              id={departamento.id}
+              nome={departamento.nome}
               fone={departamento.fone}
               onDelete={handleDeleteDepartamento}
               onEdit={handleEditDepartamento}
