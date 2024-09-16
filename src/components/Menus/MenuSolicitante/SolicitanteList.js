@@ -302,7 +302,7 @@ function SolicitanteList() {
     solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(solicitantes.length / itemsPerPage); 
+  const totalPages = Math.ceil(filteredSolicitantes.length / itemsPerPage); 
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {

@@ -6,44 +6,14 @@ import Cabecalho from '../../Cabecalho/Cabecalho';
 import TecnicoCard from './TecnicoCard';
 import styles from './TecnicoList.module.css';
 
-/*const initialTecnicos = [
-  {
-    name: "Pedro Ferreira Taborda",
-    phone: "(42) 99806-7951",
-  },
-  {
-    name: "Leonardo Mulinari",
-    phone: "(42) 99923-8965",
-  },
-  {
-    name: "Leonardo Mulinari",
-    phone: "(42) 99923-8965",
-  },
-  {
-    name: "Leonardo Mulinari",
-    phone: "(42) 99923-8965",
-  },
-  {
-    name: "Leonardo Mulinari",
-    phone: "(42) 99923-8965",
-  },
-  {
-    name: "Leonardo Mulinari",
-    phone: "(42) 99923-8965",
-  },
-  {
-    name: "Leonardo Mulinari",
-    phone: "(42) 99923-8965",
-  },
-];*/
+
 
 function TecnicoList() {
   const [tecnicos, setTecnicos] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const itemsPerPage = 6; // ACRESCENTADO
-  const [updateTrigger, setUpdateTrigger] = useState(0);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchTecnicos = async () => {
@@ -57,13 +27,13 @@ function TecnicoList() {
       }
     };
     fetchTecnicos();
-  }, [updateTrigger]);
+  }, []);
 
   const filteredTecnicos = tecnicos.filter(tecnico =>
     tecnico.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(tecnicos.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredTecnicos.length / itemsPerPage); // ACRESCENTADO
 
   const handlePageChange = (newPage) => { // ACRESCENTADO
     if (newPage > 0 && newPage <= totalPages) {
@@ -90,14 +60,10 @@ function TecnicoList() {
     setTecnicos(tecnicos.filter(tecnico => tecnico.id !== id));
   };
 
-  const handleAddTecnico = () => {
-    setUpdateTrigger(updateTrigger + 1); // Atualize a lista ao adicionar um técnico
-  };
-
   return (
     <main className={styles.tecnicosModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Técnico' link='novo-tecnico' onSearch={handleSearch} onAdd={handleAddTecnico} />
+      <ActionBar tipo='Novo Técnico' link='novo-tecnico' onSearch={handleSearch}/>
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Técnicos</h2>
         <section className={styles.listSection}>

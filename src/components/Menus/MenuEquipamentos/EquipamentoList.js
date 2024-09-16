@@ -38,7 +38,7 @@ function EquipamentoList() {
     equipamento.patrimonio.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(equipamentos.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredEquipamentos.length / itemsPerPage); // ACRESCENTADO
 
   const handlePageChange = (newPage) => { // ACRESCENTADO
     if (newPage > 0 && newPage <= totalPages) {

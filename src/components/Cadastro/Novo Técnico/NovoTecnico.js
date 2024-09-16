@@ -1,14 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import Formulario from '../Formulario/Formulario';
 import styles from '../Novo.module.css';
 
 const NovoTecnico = () => {
-  const navigate = useNavigate();
-
-
   const campos = [
     { label: 'Nome', name: 'nome', type: 'text' },
     { label: 'Fone', name: 'fone', type: 'text' },
@@ -42,7 +38,6 @@ const NovoTecnico = () => {
       console.log('Payload do técnico:', tecnicoPayload);
       await api.post('/tecnicos', tecnicoPayload);
       console.log('Técnico criado com sucesso:', tecnicoPayload);
-      navigate('/tecnicos');
     } catch (error) {
       console.error('Erro ao criar o técnico ou usuário:', error);
     }

@@ -10,7 +10,7 @@ import styles from './SecretariaList.module.css';
 
 function SecretariaList() {
   const [secretarias, setSecretarias] = useState([]);
-  const { username } = useContext(UserContext);
+  const { userProfile } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,7 +35,7 @@ function SecretariaList() {
     secretaria.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(secretarias.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredSecretarias.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -50,20 +50,6 @@ function SecretariaList() {
     setSearchTerm(term);
     setCurrentPage(1);
   }
-
-  const handleBackButtonClick = () => {
-    if (username === 'Jonas de Godoi') {
-      navigate('/menu2');
-    } else {
-      navigate('/menu');
-    }
-  };
-
-  /*const handleEditSecretaria = (index, updatedSecretaria) => {
-    const updatedSecretarias = [...secretarias];
-    updatedSecretarias[index] = updatedSecretaria;
-    setSecretarias(updatedSecretarias);
-  };*/
 
   const handleEditSecretaria = (updatedSecretaria) => {
     const updatedSecretarias = secretarias.map(secretaria =>
@@ -110,7 +96,7 @@ function SecretariaList() {
           Próximo
         </button>
       </div>
-      <button onClick={handleBackButtonClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
+      <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </main>
   );
 }

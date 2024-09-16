@@ -34,7 +34,7 @@ function DepartamentoList() {
     departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(departamentos.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredDepartamentos.length / itemsPerPage); // ACRESCENTADO
 
   const handlePageChange = (newPage) => { // ACRESCENTADO
     if (newPage > 0 && newPage <= totalPages) {
