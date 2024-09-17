@@ -1,75 +1,74 @@
-import React, { useState } from 'react';
-import styles from './TelasSolicitante.module.css';
-import Cabecalho from '../Cabecalho/Cabecalho';
+import { format } from 'date-fns';
+import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from 'react';
+import api from '../../api/api';
 import ActionBar from '../ActionBar/ActionBar';
+import Cabecalho from '../Cabecalho/Cabecalho';
 import MinhasSolicitacoesItem from './MinhasSolicitacoesItem';
+import styles from './TelasSolicitante.module.css';
 
 function MinhasSolicitacoes() {
-    const solicitacoes = [
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009827",
-            dataAbertura: "05/04/2022",
-            dataFinalizacao: "10/04/2022",
-            status: 'Finalizado',
-            descricao: "Substituição do monitor por tela de 24 polegadas Full HD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009828",
-            dataAbertura: "12/04/2022",
-            dataFinalizacao: null,
-            status: 'Em andamento',
-            descricao: "Configuração de rede e ajustes de VPN para home office.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009829",
-            dataAbertura: "20/04/2022",
-            dataFinalizacao: "22/04/2022",
-            status: 'Finalizado',
-            descricao: "Instalação de software de segurança e backup automático.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009830",
-            dataAbertura: "01/05/2022",
-            dataFinalizacao: null,
-            status: 'Pendente',
-            descricao: "Atualização do sistema operacional para versão mais recente.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009831",
-            dataAbertura: "10/05/2022",
-            dataFinalizacao: null,
-            status: 'Em aberto',
-            descricao: "Reparação da impressora de rede com erro de conexão.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009832",
-            dataAbertura: "15/05/2022",
-            dataFinalizacao: "18/05/2022",
-            status: 'Finalizado',
-            descricao: "Substituição de HD por SSD em desktop.",
-            imageUrl: "/imagens/ordem.svg"
-        }
-    ];
 
+    const [solicitacoes, setSolicitacoes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const itemsPerPage = 5;
 
+    const [solicitanteId, setSolicitanteId] = useState();
+
+    const statusMapping = {
+        AGUARDANDO_PEÇAS: "Aguardando peças",
+        EM_ABERTO: "Em aberto",
+        EM_ANDAMENTO: "Em andamento",
+        FINALIZADO: "Finalizado",
+    };
+
+    useEffect(() => {
+        // Função para buscar o ID do solicitante do token JWT
+        const getSolicitanteIdFromToken = async () => {
+            const authToken = localStorage.getItem('authToken');
+            if (authToken) {
+                try {
+                    const token = authToken.replace('Bearer ', '');
+                    const decoded = jwtDecode(token);
+                    console.log('Decoded token:', decoded);
+
+                    const userId = decoded.jti;
+                    console.log('User ID:', userId);
+
+                    const response = await api.get(`/solicitantes/usuario/${userId}`);
+                    console.log('Solicitante response:', response.data);
+                    setSolicitanteId(response.data.id);
+                } catch (error) {
+                    console.error('Erro ao decodificar o token:', error);
+                }
+            }
+        };
+
+        getSolicitanteIdFromToken();
+    }, []);
+
+    useEffect(() => {
+        if (solicitanteId) {
+            const fetchSolicitacoes = async () => {
+                console.log('Fetching solicitacoes for ID:', solicitanteId);
+                try {
+                    const response = await api.get(`/osmenu/solicitante/${solicitanteId}`);
+                    console.log('Solicitacoes response:', response.data);
+                    setSolicitacoes(response.data);
+                } catch (error) {
+                    console.error('Erro ao buscar ordens de serviço:', error);
+                }
+            };
+
+            fetchSolicitacoes();
+        } else {
+            console.warn('Solicitante ID não está definido.');
+        }
+    }, [solicitanteId]);
+
     const filteredSolicitacoes = solicitacoes.filter(solicitacao =>
-        solicitacao.numProtocolo.toLowerCase().includes(searchTerm.toLowerCase())
+        solicitacao.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const totalPages = Math.ceil(filteredSolicitacoes.length / itemsPerPage);
@@ -96,7 +95,12 @@ function MinhasSolicitacoes() {
                 <h2 className={styles.listTitle}>Minhas Solicitações</h2>
                 <section className={styles.listSection}>
                     {currentItems.map((solicitacao, index) => (
-                        <MinhasSolicitacoesItem key={index} {...solicitacao} />
+                        <MinhasSolicitacoesItem key={index} id={solicitacao.id}
+                            data_abertura={format(solicitacao.data_abertura, "dd/MM/yyyy")}
+                            data_finalizacao={format(solicitacao.data_finalizacao, "dd/MM/yyyy")}
+                            descricao={solicitacao.descricao}
+                            status={statusMapping[solicitacao.status]}
+                        />
                     ))}
                 </section>
             </div>

@@ -28,7 +28,7 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
           resolucao={item.resolucao}
           secretariat={item.solicitante.departamento.secretaria.nome}
           status={statusMapping[item.status]}
-          tecnico={item.tecnico.nome}
+          tecnico={item.tecnico?.nome}
           tipoChamado={item.tipo_chamado}
           onClick={() => onOrderClick(item)}
         />
