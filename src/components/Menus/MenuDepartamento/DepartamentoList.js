@@ -21,6 +21,7 @@ function DepartamentoList() {
       try {
         const data = await getAllDepartamentos();
         setDepartamentos(data);
+        console.log(data);
         setLoading(false);
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);

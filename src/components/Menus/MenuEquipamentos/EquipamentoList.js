@@ -28,6 +28,7 @@ function EquipamentoList() {
       try {
         const response = await api.get(`/equipamentos/departamento/${id}`);
         setEquipamentos(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Erro ao carregar os equipamentos:', error);
       }
