@@ -16,13 +16,7 @@ const FormularioOS = () => {
   useEffect(() => {
     const fetchSelects = async () => {
       try {
-        let response = await api.get('/departamentos');  // Assumindo que você tem essa rota configurada
-        setDepartamentos(response.data);
-
-        response = await api.get('/secretarias');
-        setSecretarias(response.data);
-
-        response = await api.get('/tecnicos');
+        let response = await api.get('/tecnicos');
         setTecnicos(response.data);
 
         response = await api.get('/solicitantes');
@@ -59,10 +53,13 @@ const FormularioOS = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post('/osmenu')
-    console.log(formData)
-    navigate('/osmenu');
-    // Lógica para enviar os dados
+    console.log('Payload enviado:', formData);
+    try {
+      await api.post('/osmenu', formData);  // Enviando o payload correto
+      navigate('/osmenu');
+    } catch (error) {
+      console.error('Erro ao criar ordem de serviço:', error);
+    }
   };
 
   return (
@@ -85,9 +82,10 @@ const FormularioOS = () => {
             value={formData.cod_sol}
             onChange={handleInputChange}
           >
-            {solicitante.map(x => {
-              return <option key={x.cod_sol} value={x.cod_sol}>{x.nome}</option>
-            })}
+            <option value="">Selecione o solicitante</option>
+            {solicitante.map(sol => (
+              <option key={sol.id} value={sol.id}>{sol.nome}</option>
+            ))}
           </select>
         </div>
 
@@ -122,8 +120,9 @@ const FormularioOS = () => {
               value={formData.status}
               onChange={handleInputChange}
             >
-              {status.map(x => {
-                return <option key={x.key} value={x.value}>{x.key}</option>
+              <option value="">Selecione o status</option>
+              {status.map(stat => {
+                return <option key={stat.key} value={stat.value}>{stat.key}</option>
               })}
             </select>
           </div>
@@ -135,8 +134,9 @@ const FormularioOS = () => {
               value={formData.prioridade}
               onChange={handleInputChange}
             >
-              {prioridade.map(x => {
-                return <option key={x} value={x}>{x}</option>
+              <option value="">Selecione a prioridade</option>
+              {prioridade.map(prio => {
+                return <option key={prio} value={prio}>{prio}</option>
               })}
             </select>
           </div>
@@ -146,13 +146,15 @@ const FormularioOS = () => {
           <div className={styles.formGroup}>
             <label>Técnico:</label>
             <select
+              label='Tecnico'
               name="cod_tec"
               value={formData.cod_tec}
               onChange={handleInputChange}
             >
-              {tecnico.map(x => {
-                return <option key={x.cod_tec} value={x.cod_tec}>{x.nome}</option>
-              })}
+              <option value="">Selecione o técnico</option>
+              {tecnico.map(x => (
+                <option key={x.id} value={x.id}>{x.nome}</option>
+              ))}
             </select>
           </div>
 
