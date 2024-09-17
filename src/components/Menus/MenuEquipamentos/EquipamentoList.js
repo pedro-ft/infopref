@@ -61,7 +61,7 @@ function EquipamentoList() {
 
   const handleEditEquipamento = (updatedEquipamento) => {
     const updatedEquipamentos = equipamentos.map(equipamento =>
-      equipamento.id === updatedEquipamento.id ? updatedEquipamento : equipamento
+      equipamento.idEquip === updatedEquipamento.idEquip ? updatedEquipamento : equipamento
     );
     setEquipamentos(updatedEquipamentos);
   };

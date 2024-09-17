@@ -40,7 +40,7 @@ function ActionBarPadrao({ tipo, link, onSearch }) {
           onChange={handleInputChange}
         />
         <button type="submit" className={styles.searchButton}>
-          <img src="imagens/filtros.svg" alt="Pesquisar" className={styles.searchIcon} />
+          <img src="/imagens/filtros.svg" alt="Pesquisar" className={styles.searchIcon} />
         </button>
       </form>
     </div>

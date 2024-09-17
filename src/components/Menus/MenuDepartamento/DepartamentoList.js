@@ -51,14 +51,6 @@ function DepartamentoList() {
     setCurrentPage(1);
   }
 
-  const handleBackClick = () => {
-    if (userProfile === 'ADM') {
-      navigate('/menu');
-    } else if (userProfile === 'TECNICO') {
-      navigate('/menu2');
-    }
-  };
-
   const handleEditDepartamento = (updatedDepartamento) => {
     const updatedDepartamentos = departamentos.map(departamento =>
       departamento.id === updatedDepartamento.id ? updatedDepartamento : departamento
@@ -69,6 +61,15 @@ function DepartamentoList() {
   const handleDeleteDepartamento = (id) => {
     setDepartamentos(departamentos.filter(departamento => departamento.id !== id));
   };
+
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
+      navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
+    }
+  };
+
 
   return (
     <main className={styles.departamentoModule}>
