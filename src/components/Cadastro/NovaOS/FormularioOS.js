@@ -1,22 +1,53 @@
-import React, { useState } from 'react';
-import styles from'./FormularioOS.module.css';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../../api/api';
+import styles from './FormularioOS.module.css';
 
 const FormularioOS = () => {
   const navigate = useNavigate();
 
+  const [solicitante, setSolicitantes] = useState([]);
+  const [departamentos, setDepartamentos] = useState([]);
+  const [secretaria, setSecretarias] = useState([]);
+  const [status, setStatus] = useState([]);
+  const [prioridade, setPrioridades] = useState([]);
+  const [tecnico, setTecnicos] = useState([]);
+
+  useEffect(() => {
+    const fetchSelects = async () => {
+      try {
+        let response = await api.get('/departamentos');  // Assumindo que você tem essa rota configurada
+        setDepartamentos(response.data);
+
+        response = await api.get('/secretarias');
+        setSecretarias(response.data);
+
+        response = await api.get('/tecnicos');
+        setTecnicos(response.data);
+
+        response = await api.get('/solicitantes');
+        setSolicitantes(response.data);
+
+        setStatus([{ key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" }, { key: "Em aberto", value: "EM_ABERTO" }, { key: "Em andamento", value: "EM_ANDAMENTO" }, { key: "Finalizado", value: "FINALIZADO" }]);
+
+        setPrioridades(["Baixa", "Normal", "Urgente"]);
+        console.log(response.data);  // Verifique os dados retornados
+      } catch (error) {
+        console.error('Erro ao carregar departamentos:', error);
+      }
+    };
+    fetchSelects();
+  }, []);
+
   const [formData, setFormData] = useState({
-    dataAbertura: '',
-    nomeSolicitante: '',
-    secretaria: '',
-    departamento: '',
-    tipoChamado: '',
-    numeroPatrimonio: '',
+    data_abertura: '',
+    cod_sol: '',
+    tipo_chamado: '',
+    num_patrimonio: '',
     status: '',
     prioridade: '',
-    tecnico: '',
-    dataFinalizacao: '',
+    cod_tec: '',
+    data_finalizacao: '',
     descricao: '',
     resolucao: ''
   });
@@ -26,88 +57,58 @@ const FormularioOS = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await api.post('/osmenu')
+    console.log(formData)
     navigate('/osmenu');
-    console.log(formData);
     // Lógica para enviar os dados
   };
 
   return (
     <div className={styles.formContainer}>
       <form onSubmit={handleSubmit}>
-      <div className={styles.formGroup}>
-            <label>Data Abertura:</label>
-            <input
-              type="date"
-              name="dataAbertura"
-              value={formData.dataAbertura}
-              onChange={handleInputChange}
-            />
-          </div>
-        
         <div className={styles.formGroup}>
-          <label>Nome Solicitante:</label>
+          <label>Data Abertura:</label>
           <input
-            type="text"
-            name="nomeSolicitante"
-            value={formData.nomeSolicitante}
+            type="date"
+            name="data_abertura"
+            value={formData.data_abertura}
             onChange={handleInputChange}
           />
         </div>
 
-        <div className={styles.formRow}>
         <div className={styles.formGroup}>
-            <label>Secretaria:</label>
-            <select
-              name="secretaria"
-              value={formData.secretaria}
-              onChange={handleInputChange}
-            >
-              <option value="">Selecione</option>
-              <option value="educação">Educação</option>
-              <option value="saúde">Saúde</option>
-              <option value="segurança">Segurança</option>
-            </select>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Departamento:</label>
-            <select
-              name="departamento"
-              value={formData.departamento}
-              onChange={handleInputChange}
-            >
-              <option value="">Selecione</option>
-              <option value="educação">Educação</option>
-              <option value="saúde">Saúde</option>
-              <option value="segurança">Segurança</option>
-            </select>
-          </div>
-
+          <label>Nome Solicitante:</label>
+          <select
+            name="cod_sol"
+            value={formData.cod_sol}
+            onChange={handleInputChange}
+          >
+            {solicitante.map(x => {
+              return <option key={x.cod_sol} value={x.cod_sol}>{x.nome}</option>
+            })}
+          </select>
         </div>
 
         <div className={styles.formRow}>
-        <div className={styles.formGroup}>
+          <div className={styles.formGroup}>
             <label>Tipo Chamado:</label>
-            <select
-              name="tipoChamado"
-              value={formData.tipoChamado}
+            <input
+              type='text'
+              name="tipo_chamado"
+              value={formData.tipo_chamado}
               onChange={handleInputChange}
             >
-              <option value="">Selecione</option>
-              <option value="Formatação">Formatação</option>
-              <option value="Troca de Peças">Troca de Peças</option>
-              <option value="Limpeza">Limpeza</option>
-            </select>
+            </input>
           </div>
 
           <div className={styles.formGroup}>
             <label>Nº Patrimônio:</label>
             <input
               type="text"
-              name="numeroPatrimonio"
-              value={formData.numeroPatrimonio}
+              name="num_patrimonio"
+              value={formData.num_patrimonio}
               onChange={handleInputChange}
             />
           </div>
@@ -121,10 +122,9 @@ const FormularioOS = () => {
               value={formData.status}
               onChange={handleInputChange}
             >
-              <option value="">Selecione</option>
-              <option value="aberto">Aberto</option>
-              <option value="fechado">Fechado</option>
-              <option value="em andamento">Em andamento</option>
+              {status.map(x => {
+                return <option key={x.key} value={x.value}>{x.key}</option>
+              })}
             </select>
           </div>
 
@@ -135,26 +135,24 @@ const FormularioOS = () => {
               value={formData.prioridade}
               onChange={handleInputChange}
             >
-              <option value="">Selecione</option>
-              <option value="alta">Alta</option>
-              <option value="media">Média</option>
-              <option value="baixa">Baixa</option>
+              {prioridade.map(x => {
+                return <option key={x} value={x}>{x}</option>
+              })}
             </select>
           </div>
         </div>
 
         <div className={styles.formRow}>
-        <div className={styles.formGroup}>
+          <div className={styles.formGroup}>
             <label>Técnico:</label>
             <select
-              name="tecnico"
-              value={formData.tecnico}
+              name="cod_tec"
+              value={formData.cod_tec}
               onChange={handleInputChange}
             >
-              <option value="">Selecione</option>
-              <option value="Leonardo Mulinari">Leonardo Mulinari</option>
-              <option value="Pedro Taborda">Pedro Taborda</option>
-              <option value="Jonas de Godoi">Jonas de Godoi</option>
+              {tecnico.map(x => {
+                return <option key={x.cod_tec} value={x.cod_tec}>{x.nome}</option>
+              })}
             </select>
           </div>
 
@@ -162,37 +160,37 @@ const FormularioOS = () => {
             <label>*Data Finalização:</label>
             <input
               type="date"
-              name="dataFinalizacao"
-              value={formData.dataFinalizacao}
+              name="data_finalizacao"
+              value={formData.data_finalizacao}
               onChange={handleInputChange}
             />
           </div>
         </div>
 
-          <div className={styles.formGroup}>
-            <label>Descrição:</label>
-            <textarea
-              name="descricao"
-              value={formData.descricao}
-              onChange={handleInputChange}
-              rows="3"
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>*Resolução:</label>
-            <textarea
-              name="resolucao"
-              value={formData.resolucao}
-              onChange={handleInputChange}
-              rows="3"
-            />
-          </div>
+        <div className={styles.formGroup}>
+          <label>Descrição:</label>
+          <textarea
+            name="descricao"
+            value={formData.descricao}
+            onChange={handleInputChange}
+            rows="3"
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>*Resolução:</label>
+          <textarea
+            name="resolucao"
+            value={formData.resolucao}
+            onChange={handleInputChange}
+            rows="3"
+          />
+        </div>
 
         <div className={styles.formButtons}>
-        <Link className={styles.linkBtn} to="/osmenu">
+          <Link className={styles.linkBtn} to="/osmenu">
             <button type="button" className={styles.btnBack}>Voltar</button>
-        </Link>
-            <button type="submit" className={styles.btnSubmit}>Enviar</button>
+          </Link>
+          <button type="submit" className={styles.btnSubmit}>Enviar</button>
         </div>
 
         <p className="form-note">* Campos não obrigatórios</p>

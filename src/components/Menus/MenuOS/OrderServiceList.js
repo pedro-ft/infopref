@@ -16,7 +16,7 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
           description={item.descricao}
           patrimonio={item.equipamentos?.at(0)?.name}
           department={item.solicitante.departamento.nome}
-          id={item.num_protocolo}
+          id={item.id}
           priority={item.prioridade}
           requester={item.solicitante.nome}
           resolucao={item.resolucao}
