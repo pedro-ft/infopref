@@ -15,45 +15,53 @@ function MinhasSolicitacoes() {
             imageUrl: "/imagens/ordem.svg"
         },
         {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
+            numProtocolo: "21009827",
+            dataAbertura: "05/04/2022",
+            dataFinalizacao: "10/04/2022",
+            status: 'Finalizado',
+            descricao: "Substituição do monitor por tela de 24 polegadas Full HD.",
             imageUrl: "/imagens/ordem.svg"
         },
         {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
+            numProtocolo: "21009828",
+            dataAbertura: "12/04/2022",
+            dataFinalizacao: null,
+            status: 'Em andamento',
+            descricao: "Configuração de rede e ajustes de VPN para home office.",
             imageUrl: "/imagens/ordem.svg"
         },
         {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
+            numProtocolo: "21009829",
+            dataAbertura: "20/04/2022",
+            dataFinalizacao: "22/04/2022",
+            status: 'Finalizado',
+            descricao: "Instalação de software de segurança e backup automático.",
             imageUrl: "/imagens/ordem.svg"
         },
         {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
+            numProtocolo: "21009830",
+            dataAbertura: "01/05/2022",
+            dataFinalizacao: null,
+            status: 'Pendente',
+            descricao: "Atualização do sistema operacional para versão mais recente.",
             imageUrl: "/imagens/ordem.svg"
         },
         {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
+            numProtocolo: "21009831",
+            dataAbertura: "10/05/2022",
+            dataFinalizacao: null,
             status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
+            descricao: "Reparação da impressora de rede com erro de conexão.",
             imageUrl: "/imagens/ordem.svg"
         },
+        {
+            numProtocolo: "21009832",
+            dataAbertura: "15/05/2022",
+            dataFinalizacao: "18/05/2022",
+            status: 'Finalizado',
+            descricao: "Substituição de HD por SSD em desktop.",
+            imageUrl: "/imagens/ordem.svg"
+        }
     ];
 
     const [currentPage, setCurrentPage] = useState(1);
