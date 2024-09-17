@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './MinhasSolicitacoes.module.css';
 
-function MinhasSolicitacoesItem({ id, data_abertura, data_finalizacao, status, descricao, imageUrl }) {
+function MinhasSolicitacoesItem({ id, data_abertura, data_finalizacao, status, descricao }) {
   return (
     <article className={styles.card}>
-      <img src={imageUrl} alt={`Ordem avatar`} className={styles.avatar} />
+      <img src='/imagens/ordem.svg' alt={`Ordem avatar`} className={styles.avatar} />
       <div className={styles.cardContent}>
         <div className={styles.cardHeader}>
           <h3 className={styles.name}>Número de Protocolo: {id}</h3>

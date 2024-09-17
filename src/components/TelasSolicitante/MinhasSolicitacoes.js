@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from 'react';
 import api from '../../api/api';
 import ActionBar from '../ActionBar/ActionBar';
@@ -7,74 +8,63 @@ import MinhasSolicitacoesItem from './MinhasSolicitacoesItem';
 import styles from './TelasSolicitante.module.css';
 
 function MinhasSolicitacoes() {
-    /*const solicitacoes = [
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            numProtocolo: "21009826",
-            dataAbertura: "29/03/2022",
-            dataFinalizacao: "29/03/2022",
-            status: 'Em aberto',
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-    ];*/
 
     const [solicitacoes, setSolicitacoes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const itemsPerPage = 5;
 
-    const solicitanteId = 6;
+    const [solicitanteId, setSolicitanteId] = useState();
+
+    const statusMapping = {
+        AGUARDANDO_PEÇAS: "Aguardando peças",
+        EM_ABERTO: "Em aberto",
+        EM_ANDAMENTO: "Em andamento",
+        FINALIZADO: "Finalizado",
+    };
 
     useEffect(() => {
-        const fetchSolicitacoes = async () => {
-            try {
-                const response = await api.get(`/osmenu/solicitante/${solicitanteId}`);
-                setSolicitacoes(response.data);
-            } catch (error) {
-                console.error('Erro ao buscar ordens de serviço:', error);
+        // Função para buscar o ID do solicitante do token JWT
+        const getSolicitanteIdFromToken = async () => {
+            const authToken = localStorage.getItem('authToken');
+            if (authToken) {
+                try {
+                    const token = authToken.replace('Bearer ', '');
+                    const decoded = jwtDecode(token);
+                    console.log('Decoded token:', decoded);
+
+                    const userId = decoded.jti;
+                    console.log('User ID:', userId);
+
+                    const response = await api.get(`/solicitantes/usuario/${userId}`);
+                    console.log('Solicitante response:', response.data);
+                    setSolicitanteId(response.data.id);
+                } catch (error) {
+                    console.error('Erro ao decodificar o token:', error);
+                }
             }
         };
-        fetchSolicitacoes();
+
+        getSolicitanteIdFromToken();
+    }, []);
+
+    useEffect(() => {
+        if (solicitanteId) {
+            const fetchSolicitacoes = async () => {
+                console.log('Fetching solicitacoes for ID:', solicitanteId);
+                try {
+                    const response = await api.get(`/osmenu/solicitante/${solicitanteId}`);
+                    console.log('Solicitacoes response:', response.data);
+                    setSolicitacoes(response.data);
+                } catch (error) {
+                    console.error('Erro ao buscar ordens de serviço:', error);
+                }
+            };
+
+            fetchSolicitacoes();
+        } else {
+            console.warn('Solicitante ID não está definido.');
+        }
     }, [solicitanteId]);
 
     const filteredSolicitacoes = solicitacoes.filter(solicitacao =>
@@ -109,7 +99,7 @@ function MinhasSolicitacoes() {
                             data_abertura={format(solicitacao.data_abertura, "dd/MM/yyyy")}
                             data_finalizacao={format(solicitacao.data_finalizacao, "dd/MM/yyyy")}
                             descricao={solicitacao.descricao}
-                            status={solicitacao.status}
+                            status={statusMapping[solicitacao.status]}
                         />
                     ))}
                 </section>
