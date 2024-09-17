@@ -1,12 +1,39 @@
-import React, { useState } from 'react';
-import EditForm from '../EditForm/EditForm'
+import React, { useEffect, useState } from 'react';
+import api from '../../../api/api';
+import EditForm from '../EditForm/EditForm';
 import styles from './SolicitanteCard.module.css';
-import { type } from '@testing-library/user-event/dist/type';
 
-function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId, onEdit, onDelete }) {
+function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_remoto, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [departamentos, setDepartamentos] = useState([]);
+  const [selectedDepartamento, setSelectedDepartamento] = useState(null);
+
+  useEffect(() => {
+    console.log('Dados recebidos no SolicitanteCard:', { id, nome, departamento, secretariat, fone, id_acesso_remoto });
+  }, [id, nome, departamento, secretariat, fone, id_acesso_remoto]);
+
+
+  // Fetch departamentos from the backend
+  useEffect(() => {
+    const fetchDepartamentos = async () => {
+      try {
+        const response = await api.get('/departamentos');  // Assumindo que você tem essa rota configurada
+        setDepartamentos(response.data);
+        console.log(response.data);  // Verifique os dados retornados
+      } catch (error) {
+        console.error('Erro ao carregar departamentos:', error);
+      }
+    };
+    fetchDepartamentos();
+  }, []);
+
+  useEffect(() => {
+    // Encontrar o departamento selecionado baseado no id
+    const departamento = departamentos.find(dep => dep.id === (selectedDepartamento ? selectedDepartamento.id : null));
+    setSelectedDepartamento(departamento);
+  }, [departamentos, selectedDepartamento]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -16,17 +43,71 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
     setIsModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    closeModal();
-    if (onDelete) {
-      onDelete();
+  const fetchDetails = async (solicitanteId) => {
+    try {
+      const response = await api.get(`/solicitantes/${solicitanteId}`);
+      return response.data; // Deve retornar o solicitante com o usuário associado
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do solicitante:', error);
+      throw error;
     }
   };
 
-  const handleEdit = (updatedData) => {
-    setIsEditing(false);
-    onEdit(updatedData);
-    console.log('Objeto editado:', updatedData);
+  const handleConfirmDelete = async () => {
+    try {
+      const solicitanteDetails = await fetchDetails(id);
+
+      if (solicitanteDetails && solicitanteDetails.user && solicitanteDetails.user.id) {
+        const userId = solicitanteDetails.user.id;
+
+        // Excluir o solicitante
+        await api.delete(`/solicitantes/${id}`);
+        console.log("Solicitante removido");
+
+        // Excluir o usuário associado
+        await api.delete(`/user/${userId}`);
+        console.log("Usuário associado removido");
+      } else {
+        console.error("Nenhum usuário associado encontrado para o solicitante");
+      }
+
+      if (onDelete) {
+        onDelete(id); // Atualiza a lista de solicitantes
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Erro ao deletar solicitante ou usuário associado:", error);
+    }
+  };
+
+  const handleEdit = async (updatedData) => {
+    try {
+
+      // Atualizando o departamento e secretaria no payload
+      const departamento = departamentos.find(dep => dep.id === updatedData.departamento);
+
+      const payload = {
+        nome: updatedData.nome,
+        fone: updatedData.fone,
+        id_acesso_remoto: updatedData.id_acesso_remoto,
+        departamento: {
+          idDep: departamento.id,
+          nome: departamento.nome,
+          secretaria: departamento.secretaria // Associando secretaria automaticamente
+        }
+      };
+
+      console.log('Dados enviados para o servidor:', payload);
+      await api.put(`/solicitantes/${id}`, payload);
+      console.log('Objeto editado:', payload);
+
+      if (onEdit) {
+        onEdit(payload); // Atualiza o estado no componente pai
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Erro ao atualizar solicitante: ", error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -34,56 +115,52 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
   };
 
   const fields = [
-    { name: 'name', label: 'Nome', type: 'text' },
-    { name: 'secretariat', label: 'Secretaria', type: 'select', options: [
-      { label: 'Educação e Saúde', value: 'educação e saúde' },
-      { label: 'Administração', value: 'administração' },
-      { label: 'Segurança Pública', value: 'segurança pública' },
-    ]
-  },
-  { name: 'departament', label: 'Departamento', type: 'select', options: [
-    { label: 'Educação', value: 'educação' },
-    { label: 'Saúde', value: 'saúde' },
-    { label: 'Segurança', value: 'segurança' },
-  ]
-},
-    { name: 'phone', label: 'Telefone', type: 'text' },
-    { name: 'remoteAccessId', label: 'ID de Acesso Remoto', type: 'text' },
+    { name: 'nome', label: 'Nome', type: 'text' },
+    { name: 'fone', label: 'Telefone', type: 'text' },
+    { name: 'id_acesso_remoto', label: 'ID de Acesso Remoto', type: 'text' },
+    {
+      label: 'Departamento', name: 'departamento', type: 'select', options: departamentos.map(dep => {
+        //console.log(dep);
+        return { label: dep.nome, value: dep.id };
+      })
+    },
+
+
 
   ];
 
   return (
-  <>
-    <article className={styles.card}>
-      <img src="/imagens/Usuario.svg" alt={`${name}'s avatar`} className={styles.avatar} />
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <h3 className={styles.name}>Nome: {name}</h3>
-        </div>
-        <div className={styles.cardDetails}>
-          <div className={styles.info}>
-            <p>Secretaria: {secretariat}</p>
-            <p>Departamento: {department}</p>
-            <p>Fone: {phone}</p>
-            <p>ID de Acesso Remoto: {remoteAccessId}</p>
+    <>
+      <article className={styles.card}>
+        <img src="/imagens/Usuario.svg" alt={`${nome}'s avatar`} className={styles.avatar} />
+        <div className={styles.cardContent}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.name}>Nome: {nome}</h3>
           </div>
-          <div className={styles.actions}>
-            <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
-              <img src="/imagens/Editar.svg" alt="" />
-            </button>
-            <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
-              <img src="imagens/Excluir.svg" alt="" />
-            </button>
+          <div className={styles.cardDetails}>
+            <div className={styles.info}>
+              <p>{secretariat}</p>
+              <p>{departamento}</p>
+              <p>Fone: {fone}</p>
+              <p>ID de Acesso Remoto: {id_acesso_remoto}</p>
+            </div>
+            <div className={styles.actions}>
+              <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
+                <img src="/imagens/Editar.svg" alt="" />
+              </button>
+              <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
+                <img src="imagens/Excluir.svg" alt="" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    {isModalOpen && (
+      {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir o solicitante {name}?</p>
+            <p>Tem certeza que deseja excluir o solicitante {nome}?</p>
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
@@ -94,8 +171,8 @@ function SolicitanteCard({ name, department, secretariat, phone, remoteAccessId,
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ name, phone, secretariat, department, remoteAccessId }}
-          onSubmit={handleEdit}
+          initialValues={{ nome, fone, departamento: selectedDepartamento ? selectedDepartamento.id : '', id_acesso_remoto }}
+          onSubmit={(updatedData) => handleEdit({ ...updatedData, departamento: updatedData.departamento })}
           onCancel={handleCancelEdit}
         />
       )}
