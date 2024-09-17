@@ -1,56 +1,44 @@
-import React, { useState, useContext } from 'react'; 
-import { UserContext } from '../../context/UserContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cabecalho from '../../Cabecalho/Cabecalho';
+import { getAllOrdemServico } from '../../../api/ordemServico';
 import ActionBar from '../../ActionBarOS/ActionBarOS';
+import Cabecalho from '../../Cabecalho/Cabecalho';
+import { UserContext } from '../../context/UserContext';
+import OrderServiceForm from './OrderServiceForm';
 import OrderServiceList from './OrderServiceList';
-import OrderServiceForm from './OrderServiceForm'
-import styles from './OrderServicePage.module.css';
 
-// Mova a constante orderServiceData para cá
-const orderServiceData = [
-  {
-    id: '1',
-    tipoChamado: 'Troca de Peças',
-    status: 'Em andamento',
-    openDate: '27/05/2024',
-    closeDate: '29/05/2024',
-    patrimonio: '21009826',
-    priority: 'Urgente',
-    requester: 'Pedro Ferreira Taborda',
-    department: 'Administração',
-    secretariat: 'Administração',
-    description: 'Tela não aparece nenhuma imagem.',
-    tecnico: 'Leonardo Mulinari',
-    resolucao: 'Placa de Vídeo deu defeito e não funcionava mais, foi realizada a troca.'
-  },
-  {
-    id: '2',
-    tipoChamado: 'Troca de Peças',
-    status: 'Em andamento',
-    openDate: '27/05/2024',
-    closeData: '29/05/2024',
-    patrimonio: '21009826',
-    priority: 'Urgente',
-    requester: 'Pedro Ferreira Taborda',
-    department: 'Administração',
-    secretariat: 'Administração',
-    description: 'Tela não aparece nenhuma imagem.',
-    tecnico: 'Leonardo Mulinari',
-    resolucao: 'Placa de Vídeo deu defeito e não funcionava mais, foi realizada a troca.'
-  }
-];
+import styles from './OrderServicePage.module.css';
 
 function OrderServicePage() {
   const { userProfile } = useContext(UserContext);
+  const [ordemServicos, setOrdemServicos] = useState([]);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
 
-  const filteredData = orderServiceData.filter(item =>
-    item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    const fetchOrdemServicos = async () => {
+      try {
+
+        const data = await getAllOrdemServico();
+        console.log('Ordem servico retornados:', data);
+        setOrdemServicos(data);
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Erro ao carregar ordem de servico:', error);
+        setLoading(false);
+      }
+    };
+    fetchOrdemServicos();
+  }, []);
+
+
+  const filteredData = ordemServicos.filter(item =>
+    item.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -83,24 +71,24 @@ function OrderServicePage() {
   return (
     <div className={styles.orderServicePage}>
       <Cabecalho />
-      <ActionBar onSearch={handleSearch}/>
+      <ActionBar onSearch={handleSearch} />
       <main className={styles.mainContent}>
-        <OrderServiceList 
+        <OrderServiceList
           data={filteredData} // Passe os dados como props
-          currentPage={currentPage} 
+          currentPage={currentPage}
           itemsPerPage={itemsPerPage}
-          onOrderClick={handleOrderClick} 
+          onOrderClick={handleOrderClick}
         />
         <div className={styles.pagination}>
-          <button 
-            onClick={() => handlePageChange(currentPage - 1)} 
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
             Anterior
           </button>
           <span>{currentPage} de {totalPages}</span>
-          <button 
-            onClick={() => handlePageChange(currentPage + 1)} 
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
             Próximo
@@ -108,16 +96,16 @@ function OrderServicePage() {
         </div>
       </main>
       {selectedOrder && (
-        <OrderServiceForm 
-          order={selectedOrder} 
-          onClose={closeModal} 
+        <OrderServiceForm
+          order={selectedOrder}
+          onClose={closeModal}
         />
       )}
-        <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
+      <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>
     </div>
 
 
-    
+
   );
 }
 
