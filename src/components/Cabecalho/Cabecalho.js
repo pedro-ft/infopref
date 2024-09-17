@@ -6,6 +6,7 @@ import { UserContext } from '../context/UserContext';
 const Cabecalho = () => {
   const { username, avatarUrl } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const urlCorreto= `/${avatarUrl}`
   const navigate = useNavigate();
 
   const openModal = () => {
@@ -25,14 +26,14 @@ const Cabecalho = () => {
   return (
     <>
       <header className={styles.header}>
-        <img loading="lazy" src="imagens/LogoEmpresa.png" className={styles.logo} alt="Company logo" />
+        <img loading="lazy" src="/imagens/LogoEmpresa.png" className={styles.logo} alt="Company logo" />
         <div className={styles.userInfo}>
           <div className={styles.userProfile}>
-            <img loading="lazy" src={avatarUrl} className={styles.avatar} alt="User avatar" />
+            <img loading="lazy" src={urlCorreto} className={styles.avatar} alt="User avatar" />
             <span className={styles.userName}>{username}</span>
           </div>
           <button className={styles.logoutIcon} onClick={openModal} aria-label="Logout">
-            <img loading="lazy" src="imagens/sair.svg" alt="Logout" />
+            <img loading="lazy" src="/imagens/sair.svg" alt="Logout" />
           </button>
         </div>
       </header>

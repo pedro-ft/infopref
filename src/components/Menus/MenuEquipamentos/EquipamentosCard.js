@@ -56,7 +56,6 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
   };
 
   const fields = [
-    { name: 'num_patrimonio', label: 'Número de Patrimônio', type: 'text' },
     { name: 'modelo', label: 'Modelo', type: 'text' },
     { name: 'marca', label: 'Marca', type: 'text' },
     { name: 'data_aquisicao', label: 'Data de Aquisição', type: 'date' },
@@ -82,10 +81,10 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
             </div>
             <div className={styles.actions}>
               <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
-                <img src="imagens/Editar.svg" alt="" />
+                <img src="/imagens/Editar.svg" alt="" />
               </button>
               <button className={styles.deleteButton} onClick={openModal} aria-label="Delete">
-                <img src="imagens/Excluir.svg" alt="" />
+                <img src="/imagens/Excluir.svg" alt="" />
               </button>
             </div>
           </div>
