@@ -4,11 +4,31 @@ import styles from './EditForm.module.css';
 function EditForm({ fields, onSubmit, onCancel, initialValues }) {
   const [formData, setFormData] = useState(initialValues || {});
 
+  const formatPhoneNumber = (value) => {
+    let formattedValue = value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+
+    // Aplica a formatação (xx) xxxxx-xxxx
+    if (formattedValue.length <= 10) {
+      formattedValue = formattedValue.replace(/^(\d{2})(\d)/, '($1) $2');
+      formattedValue = formattedValue.replace(/(\d{4})(\d{1,4})$/, '$1-$2');
+    } else {
+      formattedValue = formattedValue.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+    }
+    
+    return formattedValue;
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let newValue = value;
+
+    if (name === 'fone') {
+      newValue = formatPhoneNumber(value);
+    }
+
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : newValue
     });
   };
 
