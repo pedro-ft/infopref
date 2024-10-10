@@ -22,6 +22,9 @@ function OSSolicitadas() {
         fetchOrdensSolicitadas();
     }, []);
 
+    const handleUpdateOrdem = (id) => {
+        setSolicitadas(prevSolicitadas => prevSolicitadas.filter(ordem => ordem.id !== id));
+    };
 
     return (
         <main className={styles.solicitacaoModule}>
@@ -39,7 +42,8 @@ function OSSolicitadas() {
                                 solicitante={solicitada.solicitante.nome}
                                 secretaria={solicitada.solicitante.departamento.secretaria.nome}
                                 departamento={solicitada.solicitante.departamento.nome}
-
+                                onUpdate={handleUpdateOrdem}
+                                onDelete={handleUpdateOrdem}
                             />
                         ))
                     ) : (

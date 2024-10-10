@@ -50,7 +50,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
       // Atualiza os campos necessários
       const updatedOrdemServico = {
         ...ordemServicoAtual,  // Spread para manter os dados atuais
-        tecnico: tecnicoSelecionado,
+        cod_tec: tecnicoSelecionado,
         prioridade,
         tipo_chamado: tipoChamado,
         status: "EM_ANDAMENTO"
