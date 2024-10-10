@@ -24,9 +24,14 @@ function OrderServicePage() {
       try {
 
         const data = await getAllOrdemServico();
-        console.log('Ordem servico retornados:', data);
-        setOrdemServicos(data);
-
+        // Filtra as ordens de serviço com status EM-ANDAMENTO, AGUARDANDO_PEÇAS ou FINALIZADO
+        const filteredData = data.filter(
+          (item) =>
+            item.status === 'EM_ANDAMENTO' ||
+            item.status === 'AGUARDANDO_PEÇAS' ||
+            item.status === 'FINALIZADO'
+        );
+        setOrdemServicos(filteredData);
         setLoading(false);
       } catch (error) {
         console.error('Erro ao carregar ordem de servico:', error);
