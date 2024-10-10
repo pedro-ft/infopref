@@ -6,7 +6,13 @@ import styles from './OrderServiceList.module.css';
 function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = data.slice(startIndex, startIndex + itemsPerPage);
-  console.log(data);
+  const statusMapping = {
+    AGUARDANDO_PEÇAS: "Aguardando peças",
+    EM_ABERTO: "Em aberto",
+    EM_ANDAMENTO: "Em andamento",
+    FINALIZADO: "Finalizado",
+  };  
+
   return (
     <section className={styles.orderServiceList}>
       <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
@@ -21,7 +27,7 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
           requester={item.solicitante.nome}
           resolucao={item.resolucao}
           secretariat={item.solicitante.departamento.secretaria.nome}
-          status={item.status}
+          status={statusMapping[item.status]}
           tecnico={item.tecnico?.nome}
           tipoChamado={item.tipo_chamado}
           onClick={() => onOrderClick(item)}

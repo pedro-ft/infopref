@@ -5,10 +5,7 @@ import styles from './FormularioOS.module.css';
 
 const FormularioOS = () => {
   const navigate = useNavigate();
-
   const [solicitante, setSolicitantes] = useState([]);
-  const [departamentos, setDepartamentos] = useState([]);
-  const [secretaria, setSecretarias] = useState([]);
   const [status, setStatus] = useState([]);
   const [prioridade, setPrioridades] = useState([]);
   const [tecnico, setTecnicos] = useState([]);
