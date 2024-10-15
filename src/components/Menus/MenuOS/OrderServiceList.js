@@ -11,14 +11,14 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
     EM_ABERTO: "Em aberto",
     EM_ANDAMENTO: "Em andamento",
     FINALIZADO: "Finalizado",
-  };  
+  };
 
   return (
     <section className={styles.orderServiceList}>
       <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
       {currentItems.map((item) => (
         <OrderServiceItem key={item.id} openDate={format(item.data_abertura, "dd/MM/yyyy")}
-          closeDate={format(item.data_finalizacao, "dd/MM/yyyy")}
+          closeDate={(item.data_finalizacao, "dd/MM/yyyy")}
           description={item.descricao}
           patrimonio={item.equipamentos?.at(0)?.name}
           department={item.solicitante.departamento.nome}

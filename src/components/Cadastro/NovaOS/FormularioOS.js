@@ -19,7 +19,7 @@ const FormularioOS = () => {
         response = await api.get('/solicitantes');
         setSolicitantes(response.data);
 
-        setStatus([{ key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" }, { key: "Em aberto", value: "EM_ABERTO" }, { key: "Em andamento", value: "EM_ANDAMENTO" }, { key: "Finalizado", value: "FINALIZADO" }]);
+        setStatus([{ key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" }, { key: "Em andamento", value: "EM_ANDAMENTO" }, { key: "Finalizado", value: "FINALIZADO" }]);
 
         setPrioridades(["Baixa", "Normal", "Urgente"]);
         console.log(response.data);  // Verifique os dados retornados
