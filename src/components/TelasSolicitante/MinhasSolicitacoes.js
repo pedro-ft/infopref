@@ -97,7 +97,7 @@ function MinhasSolicitacoes() {
                     {currentItems.map((solicitacao, index) => (
                         <MinhasSolicitacoesItem key={index} id={solicitacao.id}
                             data_abertura={format(solicitacao.data_abertura, "dd/MM/yyyy")}
-                            data_finalizacao={format(solicitacao.data_finalizacao, "dd/MM/yyyy")}
+                            data_finalizacao={(solicitacao.data_finalizacao, "dd/MM/yyyy")}
                             descricao={solicitacao.descricao}
                             status={statusMapping[solicitacao.status]}
                         />

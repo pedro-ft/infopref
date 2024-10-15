@@ -51,8 +51,8 @@ const SolicitarOS = () => {
       status: 'EM_ABERTO',              // Status padrão
       tipo_chamado: 'MANUTENÇÃO',    // Tipo de chamado padrão
       prioridade: 'Baixa',           // Prioridade padrão
-      data_abertura: new Date(),     // Data de abertura
-      data_finalizacao: new Date()        // Data de finalização indefinida no início
+      data_abertura: new Date()     // Data de abertura
+      //data_finalizacao: new Date()        // Data de finalização indefinida no início
     };
 
     try {
