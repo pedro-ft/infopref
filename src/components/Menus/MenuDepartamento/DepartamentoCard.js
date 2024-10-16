@@ -7,6 +7,7 @@ import styles from './DepartamentoCard.module.css';
 function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -14,18 +15,31 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setErrorMessage('');
   };
 
   const handleConfirmDelete = async () => {
     try {
-      await api.delete(`/departamentos/${id}`); // Use o id recebido
-      console.log("Departamento removida");
+      await api.delete(`/departamentos/${id}`);
+      console.log("Departamento removido");
       if (onDelete) {
-        onDelete(id); // Chama onDelete para atualizar a lista, caso necessário
+        onDelete(id);
       }
       closeModal();
     } catch (error) {
       console.error("Erro ao deletar departamento: ", error);
+
+      // Aqui estamos tentando obter uma mensagem de erro do corpo da resposta
+      const errorMsg = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message
+        : 'Erro ao tentar excluir o departamento.';
+
+      // Verifica se o erro indica que a exclusão não foi permitida
+      if (error.response && error.response.status === 409) { // Verifica se o status é 409
+        setErrorMessage('Não é possível excluir este departamento, pois está associado a outros registros.');
+      } else {
+        setErrorMessage(errorMsg);
+      }
     }
   };
 
@@ -89,6 +103,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir o departamento {nome}?</p>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>} {/* Exibe a mensagem de erro */}
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
