@@ -1,30 +1,30 @@
-import styles from './OSSolicitadas.module.css';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getAllOrdemServico } from '../../api/ordemServico';
 import Cabecalho from '../Cabecalho/Cabecalho';
-import OSSolicitadasItem from './OSSolicitadasItem'
-import {Link} from 'react-router-dom';
+import styles from './OSSolicitadas.module.css';
+import OSSolicitadasItem from './OSSolicitadasItem';
 
 function OSSolicitadas() {
-    const solicitadas = [
-        {
-            dataAbertura: "29/03/2022",
-            patrimonio: "453525",
-            solicitante: "Pedro",
-            secretaria: "Saúde",
-            departamento: "Saúde",
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-        {
-            dataAbertura: "29/03/2022",
-            patrimonio: "453525",
-            solicitante: "Pedro",
-            secretaria: "Saúde",
-            departamento: "Saúde",
-            descricao: "Laptop com processador Intel i5, 8GB RAM, 256GB SSD.",
-            imageUrl: "/imagens/ordem.svg"
-        },
-    ];
+    const [solicitadas, setSolicitadas] = useState([]);
 
+    useEffect(() => {
+        const fetchOrdensSolicitadas = async () => {
+            try {
+                const data = await getAllOrdemServico();  // Ou outra função específica para buscar ordens solicitadas
+                const ordensEmAberto = data.filter(item => item.status === 'EM_ABERTO');
+                setSolicitadas(ordensEmAberto);
+            } catch (error) {
+                console.error('Erro ao buscar ordens solicitadas:', error);
+            }
+        };
+        fetchOrdensSolicitadas();
+    }, []);
+
+    const handleUpdateOrdem = (id) => {
+        setSolicitadas(prevSolicitadas => prevSolicitadas.filter(ordem => ordem.id !== id));
+    };
 
     return (
         <main className={styles.solicitacaoModule}>
@@ -32,13 +32,27 @@ function OSSolicitadas() {
             <div className={styles.contentWrapper}>
                 <h2 className={styles.listTitle}>Ordens de serviços solicitadas</h2>
                 <section className={styles.listSection}>
-                    {solicitadas.map((solicitada, index) => (
-                        <OSSolicitadasItem key={index} {...solicitada} />
-                    ))}
+                    {solicitadas.length > 0 ? (
+                        solicitadas.map((solicitada, index) => (
+                            <OSSolicitadasItem key={solicitada.id}
+                                dataAbertura={format(solicitada.data_abertura, "dd/MM/yyyy")}
+                                patrimonio={solicitada.equipamentos?.at(0)?.name}
+                                descricao={solicitada.descricao}
+                                id={solicitada.id}
+                                solicitante={solicitada.solicitante.nome}
+                                secretaria={solicitada.solicitante.departamento.secretaria.nome}
+                                departamento={solicitada.solicitante.departamento.nome}
+                                onUpdate={handleUpdateOrdem}
+                                onDelete={handleUpdateOrdem}
+                            />
+                        ))
+                    ) : (
+                        <p>Nenhuma ordem solicitada no momento.</p>
+                    )}
                 </section>
             </div>
             <Link to="/osmenu" className={styles.backButtonLink}>
-                    <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
+                <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
             </Link>
         </main>
     )

@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../../../api/api';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import Formulario from '../Formulario/Formulario';
@@ -45,7 +45,7 @@ const NovoSolicitante = () => {
       };
 
       //console.log('Teste user payload',userPayload);
-      const userResponse = await api.post('/user', userPayload);
+      const userResponse = await api.post('/user/solicitante', userPayload);
       const userId = userResponse.data.id; // Supondo que o backend retorna o ID do usuário criado
 
       if (!userId) {

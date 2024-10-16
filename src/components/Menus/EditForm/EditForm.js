@@ -14,7 +14,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
     } else {
       formattedValue = formattedValue.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
     }
-    
+
     return formattedValue;
   };
 
@@ -34,6 +34,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Dados enviados no formulário:', formData);
     onSubmit(formData);
   };
 
@@ -57,6 +58,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
                     </option>
                   ))}
                 </select>
+
               ) : field.type === 'checkbox' ? (
                 <input
                   type="checkbox"

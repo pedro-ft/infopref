@@ -3,7 +3,7 @@ import styles from './OrderServiceItem.module.css';
 
 function OrderServiceItem({
   id,
-  tipoChamado,
+  tipo_chamado,
   status,
   openDate,
   closeDate,
@@ -29,7 +29,7 @@ function OrderServiceItem({
             <p>Data Abertura: {openDate}</p>
             {closeDate && <p>Data Finalização: {closeDate}</p>}
             <p>Nº de patrimônio: {patrimonio}</p>
-            <p>Tipo Chamado: {tipoChamado}</p>
+            <p>Tipo Chamado: {tipo_chamado}</p>
             {priority && <p>Prioridade: {priority}</p>}
             <p>Status: {status}</p>
           </div>
@@ -41,9 +41,9 @@ function OrderServiceItem({
           </div>
         </div>
         {description && <p className={styles.itemDescription}>Descrição: {description}
-          </p>}
+        </p>}
         {resolucao && <p className={styles.itemDescription}>Resolução: {resolucao}
-          </p>}
+        </p>}
       </div>
     </article>
   );
