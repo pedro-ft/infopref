@@ -35,8 +35,8 @@ function OrderServiceItem({
           </div>
           <div className={styles.itemRequester}>
             <p>Solicitante: {requester}</p>
-            <p>Secretaria: {secretariat}</p>
-            <p>Departamento: {department}</p>
+            <p>{secretariat}</p>
+            <p>{department}</p>
             <p>Técnico: {tecnico}</p>
           </div>
         </div>
