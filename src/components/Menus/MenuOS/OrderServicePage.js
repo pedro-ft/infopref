@@ -19,25 +19,26 @@ function OrderServicePage() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    const fetchOrdemServicos = async () => {
-      try {
 
-        const data = await getAllOrdemServico();
-        // Filtra as ordens de serviço com status EM-ANDAMENTO, AGUARDANDO_PEÇAS ou FINALIZADO
-        const filteredData = data.filter(
-          (item) =>
-            item.status === 'EM_ANDAMENTO' ||
-            item.status === 'AGUARDANDO_PEÇAS' ||
-            item.status === 'FINALIZADO'
-        );
-        setOrdemServicos(filteredData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erro ao carregar ordem de servico:', error);
-        setLoading(false);
-      }
-    };
+  const fetchOrdemServicos = async () => {
+    try {
+
+      const data = await getAllOrdemServico();
+      // Filtra as ordens de serviço com status EM-ANDAMENTO, AGUARDANDO_PEÇAS ou FINALIZADO
+      const filteredData = data.filter(
+        (item) =>
+          item.status === 'EM_ANDAMENTO' ||
+          item.status === 'AGUARDANDO_PEÇAS' ||
+          item.status === 'FINALIZADO'
+      );
+      setOrdemServicos(filteredData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Erro ao carregar ordem de servico:', error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchOrdemServicos();
   }, []);
 
@@ -73,6 +74,17 @@ function OrderServicePage() {
     }
   };
 
+  const handleSave = () => {
+    fetchOrdemServicos(); // Recarrega a lista após salvar
+  };
+
+  const handleDelete = (deletedOrderId) => {
+    setOrdemServicos(prevOrdemServicos =>
+      prevOrdemServicos.filter(order => order.id !== deletedOrderId)
+    );
+    closeModal(); // Fechar o modal após a exclusão
+  };
+
   return (
     <div className={styles.orderServicePage}>
       <Cabecalho />
@@ -104,6 +116,8 @@ function OrderServicePage() {
         <OrderServiceForm
           order={selectedOrder}
           onClose={closeModal}
+          onSave={handleSave}
+          onDelete={() => handleDelete(selectedOrder.id)}
         />
       )}
       <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>Voltar</button>

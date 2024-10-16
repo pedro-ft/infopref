@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../../api/api';
 import styles from './OrderServiceForm.module.css';
 
-function OrderServiceForm({ order, onClose, onDelete }) {
+function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState(order);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,17 +20,37 @@ function OrderServiceForm({ order, onClose, onDelete }) {
         const solicitantesRes = await api.get('/solicitantes');
         const tecnicosRes = await api.get('/tecnicos');
 
-
         setSolicitantes(solicitantesRes.data);
         setPrioridades(["Baixa", "Normal", "Urgente"]);
         setTecnicos(tecnicosRes.data);
-        setStatusList([{ key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" }, { key: "Em andamento", value: "EM_ANDAMENTO" }, { key: "Finalizado", value: "FINALIZADO" }]);
+        setStatusList([
+          { key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" },
+          { key: "Em andamento", value: "EM_ANDAMENTO" },
+          { key: "Finalizado", value: "FINALIZADO" }
+        ]);
+
+        if (order) {
+          const updatedData = {
+            ...order,
+            // Aqui apenas utilize os valores de cod_sol e cod_tec diretamente do order
+            cod_sol: order.cod_sol,
+            cod_tec: order.cod_tec,
+          };
+          console.log("Updated formData:", updatedData);
+          setFormData(updatedData);
+        }
+
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
     };
+
     fetchData();
-  }, []);
+  }, [order]);
+
+
+
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -41,24 +61,27 @@ function OrderServiceForm({ order, onClose, onDelete }) {
   };
 
   const handleConfirmDelete = () => {
+    deleteOrderService();
     closeModal();
-    if (onDelete) {
-      onDelete();
-      onClose();
-    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(`Changing field: ${name}, Value: ${value}`);
     setFormData({ ...formData, [name]: value });
   };
+
 
   // Função para realizar a atualização da ordem de serviço
   const updateOrderService = async () => {
     try {
       setIsSubmitting(true);
+
       await api.put(`/osmenu/${formData.id}`, formData);
-      alert('Ordem de Serviço atualizada com sucesso!');
+      //alert('Ordem de Serviço atualizada com sucesso!');
+      if (onSave) {
+        onSave(); // Notifica a página principal para recarregar a lista
+      }
       onClose();
     } catch (error) {
       console.error('Erro ao atualizar a Ordem de Serviço:', error);
@@ -68,11 +91,23 @@ function OrderServiceForm({ order, onClose, onDelete }) {
     }
   };
 
+  const deleteOrderService = async () => {
+    try {
+      await api.delete(`/osmenu/${formData.id}`);
+      //alert('Ordem de Serviço excluída com sucesso!');
+      if (onDelete) {
+        onDelete(); // Notifica a página principal para remover a ordem da lista
+      }
+    } catch (error) {
+      console.error('Erro ao excluir a Ordem de Serviço:', error);
+      alert('Houve um erro ao tentar excluir a Ordem de Serviço.');
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Ordem de Serviço Atualizada:', formData);
     updateOrderService();
-    onClose();
   };
 
   return (
@@ -81,56 +116,57 @@ function OrderServiceForm({ order, onClose, onDelete }) {
         <div className={styles.modalContent}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <label htmlFor="requester">Nome Solicitante</label>
+              <label htmlFor="cod_sol">Nome Solicitante</label>
               <select
-                id="requester"
-                name="requester"
-                value={formData.requester}
+                id="cod_sol"
+                name="cod_sol"
+                value={formData.cod_sol}
                 onChange={handleChange}
               >
-                {solicitantes.map((solicitante) => (
-                  <option key={solicitante.id} value={solicitante.id}>
-                    {solicitante.nome}
-                  </option>
-                ))}
+                {solicitantes.map((solicitante) => {
+                  console.log("Solicitante Option:", solicitante);
+                  return (
+                    <option key={solicitante.id} value={solicitante.id}>
+                      {solicitante.nome}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="patrimonio">Número de Patrimônio</label>
+              <label htmlFor="num_patrimonio">Número de Patrimônio</label>
               <input
                 type="number"
-                id="patrimonio"
-                name="patrimonio"
-                value={formData.patrimonio}
+                id="num_patrimonio"
+                name="num_patrimonio"
+                value={formData.num_patrimonio}
                 onChange={handleChange}
               />
             </div>
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="tipoChamado">Tipo Chamado</label>
-                <select
-                  id="tipoChamado"
-                  name="tipoChamado"
-                  value={formData.tipoChamado}
+                <label htmlFor="tipo_chamado">Tipo Chamado</label>
+                <input
+                  type='text'
+                  id="tipo_chamado"
+                  name="tipo_chamado"
+                  value={formData.tipo_chamado}
                   onChange={handleChange}
                 >
-                  <option value="Troca de Peças">Troca de Peças</option>
-                  <option value="Manutenção">Manutenção</option>
-                  {/* Adicione outras opções conforme necessário */}
-                </select>
+                </input>
               </div>
             </div>
 
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="priority">Prioridade</label>
+                <label htmlFor="prioridade">Prioridade</label>
                 <select
-                  id="priority"
-                  name="priority"
-                  value={formData.priority}
+                  id="prioridade"
+                  name="prioridade"
+                  value={formData.prioridade}
                   onChange={handleChange}
                 >
                   {prioridades.map(prio => {
@@ -139,18 +175,21 @@ function OrderServiceForm({ order, onClose, onDelete }) {
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label htmlFor="tecnico">Técnico</label>
+                <label htmlFor="cod_tec">Técnico</label>
                 <select
-                  id="tecnico"
-                  name="tecnico"
-                  value={formData.tecnico}
+                  id="cod_tec"
+                  name="cod_tec"
+                  value={formData.cod_tec}
                   onChange={handleChange}
                 >
-                  {tecnicos.map((tecnico) => (
-                    <option key={tecnico.id} value={tecnico.id}>
-                      {tecnico.nome}
-                    </option>
-                  ))}
+                  {tecnicos.map((tecnico) => {
+                    console.log("Técnico Option:", tecnico);
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nome}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className={styles.formGroup}>
@@ -170,24 +209,24 @@ function OrderServiceForm({ order, onClose, onDelete }) {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="closeDate">Data Finalização</label>
+                <label htmlFor="data_finalizacao">Data Finalização</label>
                 <input
                   type="date"
-                  id="closeDate"
-                  name="closeDate"
-                  value={formData.closeDate}
+                  id="data_finalizacao"
+                  name="data_finalizacao"
+                  value={formData.data_finalizacao}
                   onChange={handleChange}
                 />
               </div>
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="description">Descrição</label>
+              <label htmlFor="descricao">Descrição</label>
               <textarea
-                id="description"
-                name="description"
+                id="descricao"
+                name="descricao"
                 rows="3"
-                value={formData.description}
+                value={formData.descricao}
                 onChange={handleChange}
               />
             </div>
