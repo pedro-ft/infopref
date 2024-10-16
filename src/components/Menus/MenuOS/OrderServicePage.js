@@ -59,6 +59,7 @@ function OrderServicePage() {
   };
 
   const handleOrderClick = (order) => {
+    console.log('Ordem Selecionada:', order);
     setSelectedOrder(order);
   };
 

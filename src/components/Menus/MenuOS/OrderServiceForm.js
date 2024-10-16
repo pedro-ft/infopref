@@ -4,7 +4,7 @@ import styles from './OrderServiceForm.module.css';
 
 function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState(order);
+  //const [formData, setFormData] = useState(order || {});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // States para armazenar dados do banco de dados
@@ -12,6 +12,18 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [prioridades, setPrioridades] = useState([]);
   const [tecnicos, setTecnicos] = useState([]);
   const [statusList, setStatusList] = useState([]);
+
+  const initialFormData = {
+    cod_sol: order?.solicitante?.id || "",
+    cod_tec: order?.tecnico?.id || "",
+    tipo_chamado: order?.tipo_chamado || "",
+    prioridade: order?.prioridade || "",
+    status: order?.status || "",
+    // inclua outros campos necessários
+  };
+
+  // Inicializando o estado `formData` usando `initialFormData`
+  const [formData, setFormData] = useState(initialFormData);
 
   // Função para buscar dados do banco de dados
   useEffect(() => {
@@ -29,16 +41,12 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
           { key: "Finalizado", value: "FINALIZADO" }
         ]);
 
-        if (order) {
-          const updatedData = {
-            ...order,
-            // Aqui apenas utilize os valores de cod_sol e cod_tec diretamente do order
-            cod_sol: order.cod_sol,
-            cod_tec: order.cod_tec,
-          };
-          console.log("Updated formData:", updatedData);
-          setFormData(updatedData);
-        }
+        setFormData({
+          ...order,
+          cod_sol: order?.solicitante?.id || "",
+          cod_tec: order?.tecnico?.id || "",
+        });
+
 
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
@@ -67,9 +75,13 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Changing field: ${name}, Value: ${value}`);
-    setFormData({ ...formData, [name]: value });
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
   };
+
 
 
   // Função para realizar a atualização da ordem de serviço
@@ -120,17 +132,14 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
               <select
                 id="cod_sol"
                 name="cod_sol"
-                value={formData.cod_sol}
+                value={formData.cod_sol || ""}
                 onChange={handleChange}
               >
-                {solicitantes.map((solicitante) => {
-                  console.log("Solicitante Option:", solicitante);
-                  return (
-                    <option key={solicitante.id} value={solicitante.id}>
-                      {solicitante.nome}
-                    </option>
-                  );
-                })}
+                {solicitantes.map((solicitante) => (
+                  <option key={solicitante.id} value={solicitante.id}>
+                    {solicitante.nome}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -179,11 +188,10 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                 <select
                   id="cod_tec"
                   name="cod_tec"
-                  value={formData.cod_tec}
+                  value={formData.cod_tec || ""}
                   onChange={handleChange}
                 >
                   {tecnicos.map((tecnico) => {
-                    console.log("Técnico Option:", tecnico);
                     return (
                       <option key={tecnico.id} value={tecnico.id}>
                         {tecnico.nome}
