@@ -37,7 +37,7 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions }) {
 
   useEffect(() => {
     onSort(selectedSort);
-  }, []);
+  });
 
   return (
     <div className={styles.actionBar}>

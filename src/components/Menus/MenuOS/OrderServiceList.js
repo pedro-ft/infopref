@@ -18,9 +18,9 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
       <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
       {currentItems.map((item) => (
         <OrderServiceItem key={item.id} openDate={format(item.data_abertura, "dd/MM/yyyy")}
-          closeDate={(item.data_finalizacao, "dd/MM/yyyy")}
+          closeDate={item.data_finalizacao ? format(item.data_finalizacao, "dd/MM/yyyy") : ''}
           description={item.descricao}
-          patrimonio={item.equipamentos?.at(0)?.name}
+          patrimonio={item.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
           department={item.solicitante.departamento.nome}
           id={item.id}
           priority={item.prioridade}

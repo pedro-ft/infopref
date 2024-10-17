@@ -48,7 +48,7 @@ const FormularioOS = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  /*const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Payload enviado:', formData);
     try {
@@ -57,11 +57,16 @@ const FormularioOS = () => {
     } catch (error) {
       console.error('Erro ao criar ordem de serviço:', error);
     }
+  };*/
+
+  const handleNext = async (e) => {
+    e.preventDefault();
+    navigate('/selecionar-equipamentos', { state: { formData } });
   };
 
   return (
     <div className={styles.formContainer}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleNext}>
         <div className={styles.formGroup}>
           <label>Data Abertura:</label>
           <input
@@ -98,15 +103,7 @@ const FormularioOS = () => {
             </input>
           </div>
 
-          <div className={styles.formGroup}>
-            <label>Nº Patrimônio:</label>
-            <input
-              type="text"
-              name="num_patrimonio"
-              value={formData.num_patrimonio}
-              onChange={handleInputChange}
-            />
-          </div>
+
         </div>
 
         <div className={styles.formRow}>
@@ -189,7 +186,7 @@ const FormularioOS = () => {
           <Link className={styles.linkBtn} to="/osmenu">
             <button type="button" className={styles.btnBack}>Voltar</button>
           </Link>
-          <button type="submit" className={styles.btnSubmit}>Enviar</button>
+          <button type="submit" className={styles.btnSubmit}>Próximo</button>
         </div>
 
         <p className="form-note">* Campos não obrigatórios</p>

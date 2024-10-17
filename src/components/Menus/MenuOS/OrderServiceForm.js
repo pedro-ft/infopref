@@ -143,17 +143,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
               </select>
             </div>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="num_patrimonio">Número de Patrimônio</label>
-              <input
-                type="number"
-                id="num_patrimonio"
-                name="num_patrimonio"
-                value={formData.num_patrimonio}
-                onChange={handleChange}
-              />
-            </div>
-
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="tipo_chamado">Tipo Chamado</label>
@@ -166,10 +155,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                 >
                 </input>
               </div>
-            </div>
-
-
-            <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="prioridade">Prioridade</label>
                 <select
@@ -183,6 +168,11 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   })}
                 </select>
               </div>
+            </div>
+
+
+            <div className={styles.formRow}>
+
               <div className={styles.formGroup}>
                 <label htmlFor="cod_tec">Técnico</label>
                 <select
