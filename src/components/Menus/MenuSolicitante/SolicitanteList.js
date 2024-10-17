@@ -14,9 +14,9 @@ function SolicitanteList() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('Ordem Alfabética');
   const itemsPerPage = 6;
 
-  // Função para buscar os solicitantes do back-end
   useEffect(() => {
     const fetchSolicitantes = async () => {
       try {
@@ -33,9 +33,25 @@ function SolicitanteList() {
     fetchSolicitantes();
   }, []);
 
-  const filteredSolicitantes = solicitantes.filter(solicitante =>
+  const filteredSolicitantes = solicitantes
+  .filter(solicitante =>
     solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    switch (sortType) {
+      case 'Mais recente':
+        return b.id - a.id;
+      case 'Mais antigo':
+        return a.id - b.id;
+      case 'Secretaria':
+        return a.departamento.secretaria.nome.localeCompare(b.departamento.secretaria.nome);
+      case 'Departamento':
+        return a.departamento.nome.localeCompare(b.departamento.nome);
+      case 'Ordem alfabética':
+      default:
+        return a.nome.localeCompare(b.nome);
+    }
+  });
 
   const totalPages = Math.ceil(filteredSolicitantes.length / itemsPerPage);
 
@@ -61,6 +77,10 @@ function SolicitanteList() {
     setSolicitantes(updatedSolicitantes);
   };
 
+  const handleSort = (type) => {
+    setSortType(type);
+  };
+
   const handleDeleteSolicitante = (id) => {
     setSolicitantes(solicitantes.filter(solicitante => solicitante.id !== id));
   };
@@ -81,7 +101,11 @@ function SolicitanteList() {
   return (
     <main className={styles.solicitanteModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Solicitante' link='novo-solicitante' onSearch={handleSearch} />
+      <ActionBar tipo='Novo Solicitante' 
+      link='novo-solicitante' 
+      onSearch={handleSearch}
+      onSort={handleSort}
+      sortOptions={['Ordem alfabética', 'Secretaria', 'Departamento', 'Mais recente', 'Mais antigo']} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Solicitantes</h2>
         <section className={styles.listSection}>

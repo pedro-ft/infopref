@@ -14,8 +14,8 @@ function OrderServicePage() {
   const [ordemServicos, setOrdemServicos] = useState([]);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('Mais recentes');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
 
@@ -24,7 +24,6 @@ function OrderServicePage() {
     try {
 
       const data = await getAllOrdemServico();
-      // Filtra as ordens de serviço com status EM-ANDAMENTO, AGUARDANDO_PEÇAS ou FINALIZADO
       const filteredData = data.filter(
         (item) =>
           item.status === 'EM_ANDAMENTO' ||
@@ -43,9 +42,34 @@ function OrderServicePage() {
   }, []);
 
 
-  const filteredData = ordemServicos.filter(item =>
+  const filteredData = ordemServicos
+  .filter(item =>
     item.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    switch (sortType) {
+      case 'Mais antigo':
+        return a.id - b.id;
+      case 'Tipo Chamado':
+        return a.tipo_chamado.localeCompare(b.tipo_chamado);
+      case 'Prioridade':
+        const prioridadeOrder = { 'Urgente': 1, 'Normal': 2, 'Baixa': 3 };
+        return prioridadeOrder[a.prioridade] - prioridadeOrder[b.prioridade];
+      case 'Status':
+        return a.status.localeCompare(b.status);
+      case 'Departamento':
+         return a.solicitante.departamento.nome.localeCompare(b.solicitante.departamento.nome);
+      case 'Secretaria':
+        return a.solicitante.departamento.secretaria.nome.localeCompare(b.solicitante.departamento.secretaria.nome);
+      case 'Solicitante':
+        return a.solicitante.nome.localeCompare(b.solicitante.nome);
+      case 'Técnico':
+        return a.tecnico.nome.localeCompare(b.tecnico.nome);
+      case 'Mais recente':
+      default:
+        return b.id - a.id;
+    }
+  });
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -76,23 +100,29 @@ function OrderServicePage() {
   };
 
   const handleSave = () => {
-    fetchOrdemServicos(); // Recarrega a lista após salvar
+    fetchOrdemServicos();
   };
 
   const handleDelete = (deletedOrderId) => {
     setOrdemServicos(prevOrdemServicos =>
       prevOrdemServicos.filter(order => order.id !== deletedOrderId)
     );
-    closeModal(); // Fechar o modal após a exclusão
+    closeModal();
+  };
+
+  const handleSort = (type) => {
+    setSortType(type);
   };
 
   return (
     <div className={styles.orderServicePage}>
       <Cabecalho />
-      <ActionBar onSearch={handleSearch} />
+      <ActionBar onSearch={handleSearch}
+      onSort={handleSort}
+      sortOptions={['Mais recente', 'Mais antigo', 'Prioridade', 'Status', 'Tipo Chamado', 'Secretaria', 'Departamento', 'Solicitante', 'Técnico']} />
       <main className={styles.mainContent}>
         <OrderServiceList
-          data={filteredData} // Passe os dados como props
+          data={filteredData}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           onOrderClick={handleOrderClick}

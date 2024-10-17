@@ -43,7 +43,7 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions }) {
     <div className={styles.actionBar}>
       <button className={styles.actionButton} onClick={handleNewClick}>{tipo}</button>
       <form className={styles.searchForm} onSubmit={handleSubmit}>
-        <label htmlFor="protocolSearch" className={styles.visuallyHidden}>Pesquisar</label>
+        <label htmlFor="Search" className={styles.visuallyHidden}>Pesquisar</label>
         <input
           type="search"
           id="normalSearch"
@@ -52,7 +52,7 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions }) {
           value={searchTerm}
           onChange={handleInputChange}
         />
-        <button type="submit" className={styles.searchButton} onClick={toggleSortOptions}>
+        <button type="button" className={styles.searchButton} onClick={toggleSortOptions}>
           <img src="/imagens/filtros.svg" alt="Ordenar" className={styles.searchIcon} />
         </button>
       </form>

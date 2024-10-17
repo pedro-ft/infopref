@@ -15,13 +15,11 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   }, [id, nome, departamento, secretariat, fone, id_acesso_remoto]);
 
 
-  // Fetch departamentos from the backend
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
-        const response = await api.get('/departamentos');  // Assumindo que você tem essa rota configurada
+        const response = await api.get('/departamentos');
         setDepartamentos(response.data);
-        //console.log('Departamentos carregados:', response.data);  // Verifique os dados retornados
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);
       }
@@ -48,7 +46,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   const fetchDetails = async (solicitanteId) => {
     try {
       const response = await api.get(`/solicitantes/${solicitanteId}`);
-      return response.data; // Deve retornar o solicitante com o usuário associado
+      return response.data; 
     } catch (error) {
       console.error('Erro ao buscar detalhes do solicitante:', error);
       throw error;
@@ -62,11 +60,9 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       if (solicitanteDetails && solicitanteDetails.user && solicitanteDetails.user.id) {
         const userId = solicitanteDetails.user.id;
 
-        // Excluir o solicitante
         await api.delete(`/solicitantes/${id}`);
         console.log("Solicitante removido");
 
-        // Excluir o usuário associado
         await api.delete(`/user/${userId}`);
         console.log("Usuário associado removido");
       } else {
@@ -74,7 +70,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       }
 
       if (onDelete) {
-        onDelete(id); // Atualiza a lista de solicitantes
+        onDelete(id);
       }
       closeModal();
     } catch (error) {
@@ -92,11 +88,11 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   const handleEdit = async (updatedData) => {
     try {
 
-      console.log('Dados atualizados recebidos:', updatedData);  // Verifique os dados recebidos aqui
+      console.log('Dados atualizados recebidos:', updatedData);
 
       const departamento = departamentos.find(dep => dep.id === Number(updatedData.departamento));
       if (!departamento) {
-        console.error("Departamento não encontrado com o ID:", Number(updatedData.departamento));  // Veja qual ID está sendo passado
+        console.error("Departamento não encontrado com o ID:", Number(updatedData.departamento));
         return;
       }
 
@@ -108,7 +104,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
         departamento: {
           id: departamento.id,
           nome: departamento.nome,
-          secretaria: departamento.secretaria // Associando secretaria automaticamente
+          secretaria: departamento.secretaria 
         }
       };
 
@@ -117,7 +113,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       console.log('Objeto editado:', payload);
 
       if (onEdit) {
-        onEdit(payload); // Atualiza o estado no componente pai
+        onEdit(payload);
       }
       setIsEditing(false);
     } catch (error) {
@@ -135,7 +131,6 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
     { name: 'id_acesso_remoto', label: 'ID de Acesso Remoto', type: 'text' },
     {
       label: 'Departamento', name: 'departamento', type: 'select', options: departamentos.map(dep => {
-        //console.log('Mapeando departamento:', dep);
         return { label: dep.nome, value: dep.id };
       })
     },
