@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ActionBar.module.css';
 
@@ -28,10 +28,10 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions }) {
   };
 
   const handleSortChange = (option) => {
-    const newSortType = selectedSort === option ? '' : option; 
-    setSelectedSort(newSortType); 
+    const newSortType = selectedSort === option ? '' : option;
+    setSelectedSort(newSortType);
     if (onSort) {
-      onSort(newSortType); 
+      onSort(newSortType);
     }
   };
 

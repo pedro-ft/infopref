@@ -47,7 +47,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
       await api.put(`/equipamentos/${idEquip}`, payload);
       console.log('Objeto editado:', payload);
       if (onEdit) {
-        onEdit({ ...updatedData, idEquip })
+        onEdit(null);
       }
       setIsEditing(false);
     } catch (error) {
@@ -100,7 +100,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
       });
       setIsDepartmentChangeModalOpen(false);
       if (onEdit) {
-        onEdit(); // Atualiza a lista de equipamentos após a mudança
+        onEdit(null); // Atualiza a lista de equipamentos após a mudança
       }
     } catch (error) {
       console.error('Erro ao alterar departamento:', error);
