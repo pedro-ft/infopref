@@ -8,18 +8,14 @@ const SelecionarEquipamentos = () => {
     const navigate = useNavigate();
     const { formData } = state || {};
     const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
-    //const [equipamentos, setEquipamentos] = useState([]);
     const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
     const [opcoesEquipamentos, setOpcoesEquipamentos] = useState([]);
 
     useEffect(() => {
         const fetchEquipamentos = async () => {
             try {
-                // Buscar o departamento associado ao solicitante
                 const solicitanteResponse = await api.get(`/solicitantes/${formData.cod_sol}`);
                 const departamentoId = solicitanteResponse.data.departamento.id;
-
-                // Buscar os equipamentos do departamento
                 const response = await api.get(`/equipamentos/departamento/${departamentoId}`);
                 setOpcoesEquipamentos(response.data);
             } catch (error) {
@@ -71,7 +67,7 @@ const SelecionarEquipamentos = () => {
                     <input
                         type="number"
                         min="1"
-                        max="5" // Defina um máximo conforme necessário
+                        max="5" 
                         value={quantidadeEquipamentos}
                         onChange={handleQuantidadeChange}
                     />
@@ -93,10 +89,10 @@ const SelecionarEquipamentos = () => {
                 ))}
 
                 <div className={styles.formButtons}>
+                    <button type="submit" className={styles.btnSubmit}>Salvar</button>
                     <Link className={styles.linkBtn} to="/novaos">
                         <button type="button" className={styles.btnBack}>Voltar</button>
                     </Link>
-                    <button type="submit" className={styles.btnSubmit}>Enviar</button>
                 </div>
             </form>
         </div>

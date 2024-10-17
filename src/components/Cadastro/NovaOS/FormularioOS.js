@@ -183,10 +183,10 @@ const FormularioOS = () => {
         </div>
 
         <div className={styles.formButtons}>
+          <button type="submit" className={styles.btnSubmit}>Próximo</button>
           <Link className={styles.linkBtn} to="/osmenu">
             <button type="button" className={styles.btnBack}>Voltar</button>
           </Link>
-          <button type="submit" className={styles.btnSubmit}>Próximo</button>
         </div>
 
         <p className="form-note">* Campos não obrigatórios</p>

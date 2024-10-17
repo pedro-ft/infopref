@@ -8,12 +8,12 @@ import MinhasSolicitacoesItem from './MinhasSolicitacoesItem';
 import styles from './TelasSolicitante.module.css';
 
 function MinhasSolicitacoes() {
-
     const [solicitacoes, setSolicitacoes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const [sortType, setSortType] = useState('Mais recentes');
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const itemsPerPage = 5;
-
     const [solicitanteId, setSolicitanteId] = useState();
 
     const statusMapping = {
@@ -24,7 +24,6 @@ function MinhasSolicitacoes() {
     };
 
     useEffect(() => {
-        // Função para buscar o ID do solicitante do token JWT
         const getSolicitanteIdFromToken = async () => {
             const authToken = localStorage.getItem('authToken');
             if (authToken) {
@@ -67,9 +66,21 @@ function MinhasSolicitacoes() {
         }
     }, [solicitanteId]);
 
-    const filteredSolicitacoes = solicitacoes.filter(solicitacao =>
+    const filteredSolicitacoes = solicitacoes
+    .filter(solicitacao =>
         solicitacao.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
+    .sort((a, b) => {
+        switch (sortType) {
+          case 'Mais antigo':
+            return a.id - b.id;
+          case 'Status':
+            return a.status.localeCompare(b.status);
+          case 'Mais recente':
+          default:
+            return b.id - a.id;
+        }
+      });
 
     const totalPages = Math.ceil(filteredSolicitacoes.length / itemsPerPage);
 
@@ -87,10 +98,18 @@ function MinhasSolicitacoes() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentItems = filteredSolicitacoes.slice(startIndex, startIndex + itemsPerPage);
 
+    const handleSort = (type) => {
+        setSortType(type);
+      };
+
     return (
         <main className={styles.solicitacaoModule}>
             <Cabecalho />
-            <ActionBar tipo='Solicitar Nova Ordem de Serviço' link='solicitar-ordem' onSearch={handleSearch} />
+            <ActionBar tipo='Solicitar Nova Ordem de Serviço' 
+            link='solicitar-ordem' 
+            onSearch={handleSearch}
+            onSort={handleSort}
+            sortOptions={['Mais recente', 'Mais antigo', 'Status']} />
             <div className={styles.contentWrapper}>
                 <h2 className={styles.listTitle}>Minhas Solicitações</h2>
                 <section className={styles.listSection}>
