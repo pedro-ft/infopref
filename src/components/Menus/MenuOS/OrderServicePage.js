@@ -14,7 +14,7 @@ function OrderServicePage() {
   const [ordemServicos, setOrdemServicos] = useState([]);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
@@ -32,10 +32,10 @@ function OrderServicePage() {
           item.status === 'FINALIZADO'
       );
       setOrdemServicos(filteredData);
-      setLoading(false);
+
     } catch (error) {
       console.error('Erro ao carregar ordem de servico:', error);
-      setLoading(false);
+
     }
   };
   useEffect(() => {
@@ -59,6 +59,7 @@ function OrderServicePage() {
   };
 
   const handleOrderClick = (order) => {
+    console.log('Ordem Selecionada:', order);
     setSelectedOrder(order);
   };
 

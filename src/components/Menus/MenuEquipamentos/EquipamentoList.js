@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../../../api/api';
@@ -9,7 +10,6 @@ import styles from './EquipamentosList.module.css';
 
 function EquipamentoList() {
   const { id } = useParams(); // Obtendo o departamentoId da URL
-  console.log('Departamento ID:', id);
 
   const [equipamentos, setEquipamentos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,21 +19,21 @@ function EquipamentoList() {
 
 
 
+  const fetchEquipamentos = async () => {
+    try {
+      const response = await api.get(`/equipamentos/departamento/${id}`);
+      setEquipamentos(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Erro ao carregar os equipamentos:', error);
+    }
+  };
+
   useEffect(() => {
     if (!id) {
       console.error('departamentoId não foi capturado corretamente da URL');
       return;
     }
-    const fetchEquipamentos = async () => {
-      try {
-        const response = await api.get(`/equipamentos/departamento/${id}`);
-        setEquipamentos(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Erro ao carregar os equipamentos:', error);
-      }
-    };
-
     fetchEquipamentos();
   }, [id]);
 
@@ -64,24 +64,24 @@ function EquipamentoList() {
       equipamento.idEquip === updatedEquipamento.idEquip ? updatedEquipamento : equipamento
     );
     setEquipamentos(updatedEquipamentos);
+    fetchEquipamentos();
   };
 
-  /*const handleDeleteEquipamento = async (index) => {
-    try {
-      await api.delete(`/equipamentos/${equipamentos[index].id}`); // Ajuste a URL conforme necessário
-      setEquipamentos(equipamentos.filter((_, i) => i !== index));
-    } catch (error) {
-      console.error('Erro ao excluir o equipamento:', error);
-    }
-  };*/
   const handleDeleteEquipamento = async (idEquip) => {
     try {
-      await api.delete(`/equipamentos/${idEquip}`); // Faz a requisição DELETE ao backend
-      setEquipamentos(equipamentos.filter(equipamento => equipamento.id !== idEquip)); // Atualiza a lista
+      // Primeiro, remova as associações no equip_dep
+      await api.delete(`/equipamentos/equip_dep/equipamento/${idEquip}`);
+
+      // Depois, remova o próprio equipamento
+      //await api.delete(`/equipamentos/${idEquip}`);
+
+      // Atualize a lista de equipamentos no front-end
+      setEquipamentos(equipamentos.filter(equipamento => equipamento.id !== idEquip));
     } catch (error) {
       console.error('Erro ao excluir o equipamento:', error);
     }
   };
+
 
 
   return (
@@ -99,7 +99,7 @@ function EquipamentoList() {
                 num_patrimonio={equipamento.num_patrimonio}
                 modelo={equipamento.modelo}
                 marca={equipamento.marca}
-                data_aquisicao={equipamento.data_aquisicao}
+                data_aquisicao={format(equipamento.data_aquisicao, "dd/MM/yyyy")}
                 descr_tec={equipamento.descr_tec}
                 onEdit={handleEditEquipamento}
                 onDelete={handleDeleteEquipamento} // Adicione essa função no EquipamentoList
