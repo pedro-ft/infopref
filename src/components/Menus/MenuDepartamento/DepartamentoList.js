@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAllDepartamentos } from '../../../api/departamento';
 import ActionBar from '../../ActionBar/ActionBar';
 import Cabecalho from '../../Cabecalho/Cabecalho';
-import { UserContext } from '../../context/UserContext'; // Importa o contexto
+import { UserContext } from '../../context/UserContext';
 import DepartamentoCard from './DepartamentoCard';
 import styles from './DepartamentoList.module.css';
 
@@ -11,10 +11,11 @@ function DepartamentoList() {
   const [departamentos, setDepartamentos] = useState([]);
   const { userProfile } = useContext(UserContext);
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de pesquisa
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('Ordem Alfabética');
   const [loading, setLoading] = useState(true);
-  const itemsPerPage = 6; // ACRESCENTADO
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchDepartamentos = async () => {
@@ -31,19 +32,31 @@ function DepartamentoList() {
     fetchDepartamentos();
   }, []);
 
-  const filteredDepartamentos = departamentos.filter(departamento =>
+  const filteredDepartamentos = departamentos.
+  filter(departamento =>
     departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    switch (sortType) {
+      case 'Mais recente':
+        return b.id - a.id;
+      case 'Mais antigo':
+        return a.id - b.id;
+      case 'Ordem alfabética':
+      default:
+        return a.nome.localeCompare(b.nome);
+    }
+  });
 
   const totalPages = Math.ceil(filteredDepartamentos.length / itemsPerPage); // ACRESCENTADO
 
-  const handlePageChange = (newPage) => { // ACRESCENTADO
+  const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
+  const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredDepartamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
 
   const handleSearch = (term) => {
@@ -56,6 +69,10 @@ function DepartamentoList() {
       departamento.id === updatedDepartamento.id ? updatedDepartamento : departamento
     );
     setDepartamentos(updatedDepartamentos);
+  };
+  
+  const handleSort = (type) => {
+    setSortType(type);
   };
 
   const handleDeleteDepartamento = (id) => {
@@ -74,7 +91,12 @@ function DepartamentoList() {
   return (
     <main className={styles.departamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Departamento' link='novo-departamento' onSearch={handleSearch} />
+      <ActionBar tipo='Novo Departamento' 
+      link='novo-departamento' 
+      onSearch={handleSearch}
+      onSort={handleSort}
+      sortOptions={['Ordem alfabética', 'Mais recente', 'Mais antigo']} 
+      />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
         <section className={styles.listSection}>
