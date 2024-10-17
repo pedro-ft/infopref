@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import NovaOS from './components/Cadastro/NovaOS/NovaOS';
+import SelecionarEquipamentos from './components/Cadastro/NovaOS/SelecionarEquipamentos';
 import NovaSecretaria from './components/Cadastro/NovaSecretaria/NovaSecretaria';
 import NovoTecnico from './components/Cadastro/Novo Técnico/NovoTecnico';
 import NovoDepartamento from './components/Cadastro/NovoDepartamento/NovoDepartamento';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/menu2" element={<ProtectedRoute element={<MenuPrincipalSemADM />} />} />
             <Route path="/osmenu" element={<ProtectedRoute element={<OrderServicePage />} />} />
             <Route path="/novaos" element={<ProtectedRoute element={<NovaOS />} />} />
+            <Route path='/selecionar-equipamentos' element={<ProtectedRoute element={<SelecionarEquipamentos />} />} />
             <Route path="/osSolicitadas" element={<ProtectedRoute element={<OSSolicitadas />} />} />
             <Route path="/solicitantes" element={<ProtectedRoute element={<SolicitanteList />} />} />
             <Route path="/novo-solicitante" element={<ProtectedRoute element={<NovoSolicitante />} />} />

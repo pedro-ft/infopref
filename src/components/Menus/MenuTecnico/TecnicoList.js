@@ -13,7 +13,6 @@ function TecnicoList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortType, setSortType] = useState('Ordem Alfabética');
-  const [loading, setLoading] = useState(true);
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -21,10 +20,8 @@ function TecnicoList() {
       try {
         const data = await getAllTecnicos();
         setTecnicos(data);
-        setLoading(false);
       } catch (error) {
         console.error('Erro ao carregar tecnicos:', error);
-        setLoading(false);
       }
     };
     fetchTecnicos();
@@ -48,14 +45,14 @@ function TecnicoList() {
 
   const totalPages = Math.ceil(filteredTecnicos.length / itemsPerPage);
 
-  const handlePageChange = (newPage) => { 
+  const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredTecnicos.slice(startIndex, startIndex + itemsPerPage); 
+  const currentItems = filteredTecnicos.slice(startIndex, startIndex + itemsPerPage);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -80,9 +77,9 @@ function TecnicoList() {
   return (
     <main className={styles.tecnicosModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Técnico' 
-        link='novo-tecnico' 
-        onSearch={handleSearch} 
+      <ActionBar tipo='Novo Técnico'
+        link='novo-tecnico'
+        onSearch={handleSearch}
         onSort={handleSort}
         sortOptions={['Ordem alfabética', 'Mais recente', 'Mais antigo']}
       />

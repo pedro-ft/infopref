@@ -14,7 +14,6 @@ function DepartamentoList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortType, setSortType] = useState('Ordem Alfabética');
-  const [loading, setLoading] = useState(true);
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -23,20 +22,14 @@ function DepartamentoList() {
         const data = await getAllDepartamentos();
         setDepartamentos(data);
         console.log(data);
-        setLoading(false);
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);
-        setLoading(false);
       }
     };
     fetchDepartamentos();
   }, []);
 
-  const filteredDepartamentos = departamentos.
-  filter(departamento =>
-    departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  .sort((a, b) => {
+  const filteredDepartamentos = departamentos.filter(departamento => departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())).sort((a, b) => {
     switch (sortType) {
       case 'Mais recente':
         return b.id - a.id;
@@ -70,7 +63,7 @@ function DepartamentoList() {
     );
     setDepartamentos(updatedDepartamentos);
   };
-  
+
   const handleSort = (type) => {
     setSortType(type);
   };
@@ -91,11 +84,11 @@ function DepartamentoList() {
   return (
     <main className={styles.departamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Departamento' 
-      link='novo-departamento' 
-      onSearch={handleSearch}
-      onSort={handleSort}
-      sortOptions={['Ordem alfabética', 'Mais recente', 'Mais antigo']} 
+      <ActionBar tipo='Novo Departamento'
+        link='novo-departamento'
+        onSearch={handleSearch}
+        onSort={handleSort}
+        sortOptions={['Ordem alfabética', 'Mais recente', 'Mais antigo']}
       />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
