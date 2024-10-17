@@ -7,7 +7,6 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log(idEquip);
 
   const openModal = () => {
     setIsModalOpen(true);
