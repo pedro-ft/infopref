@@ -8,16 +8,14 @@ import styles from './EquipamentosList.module.css';
 
 
 function EquipamentoList() {
-  const { id } = useParams(); // Obtendo o departamentoId da URL
+  const { id } = useParams();
   console.log('Departamento ID:', id);
-
+  const [departamento, setDepartamento] = useState(null);
   const [equipamentos, setEquipamentos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = 6; // ACRESCENTADO
-
-
-
+  const [sortType, setSortType] = useState('Mais recente');
+  const itemsPerPage = 6;
 
   useEffect(() => {
     if (!id) {
@@ -28,24 +26,49 @@ function EquipamentoList() {
       try {
         const response = await api.get(`/equipamentos/departamento/${id}`);
         setEquipamentos(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Erro ao carregar os equipamentos:', error);
       }
     };
 
+    const fetchDepartamento = async () => {
+      try {
+        const response = await api.get(`/departamentos/${id}`);
+        setDepartamento(response.data); 
+      } catch (error) {
+        console.error('Erro ao carregar o departamento:', error);
+      }
+    };
+
     fetchEquipamentos();
+    fetchDepartamento();
   }, [id]);
 
 
 
-  const filteredEquipamentos = equipamentos.filter(equipamento =>
+  const filteredEquipamentos = equipamentos
+  .filter(equipamento =>
     equipamento.num_patrimonio?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    switch (sortType) {
+      case 'Mais recente':
+      default:
+        return b.id - a.id;
+      case 'Mais antigo':
+        return a.id - b.id;
+      case 'Data de Aquisição':
+        return a.data_aquisicao - b.data_aquisicao;
+      case 'Número de Patrimônio':
+        return a.num_patrimonio - b.num_patrimonio;
+      case 'Marca':
+        return a.marca.localeCompare(b.marca);
+    }
+  });
 
   const totalPages = Math.ceil(filteredEquipamentos.length / itemsPerPage); // ACRESCENTADO
 
-  const handlePageChange = (newPage) => { // ACRESCENTADO
+  const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
@@ -64,6 +87,10 @@ function EquipamentoList() {
       equipamento.idEquip === updatedEquipamento.idEquip ? updatedEquipamento : equipamento
     );
     setEquipamentos(updatedEquipamentos);
+  };
+
+  const handleSort = (type) => {
+    setSortType(type);
   };
 
   /*const handleDeleteEquipamento = async (index) => {
@@ -87,9 +114,13 @@ function EquipamentoList() {
   return (
     <main className={styles.equipamentoModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Equipamento' link={`novo-equipamento/${id}`} onSearch={handleSearch} />
+      <ActionBar tipo='Novo Equipamento' 
+      link={`novo-equipamento/${id}`} 
+      onSearch={handleSearch} 
+      onSort={handleSort}
+      sortOptions={['Mais recente', 'Mais antigo', 'Data de Aquisição', 'Marca', 'Número de Patrimônio']} />
       <div className={styles.contentWrapper}>
-        <h2 className={styles.listTitle}>Lista Equipamentos</h2>
+        <h2 className={styles.listTitle}> Lista Equipamentos {departamento && `- ${departamento.nome}`} </h2>
         <section className={styles.listSection}>
           {currentItems.length > 0 ? (
             currentItems.map((equipamento, index) => (
@@ -102,7 +133,7 @@ function EquipamentoList() {
                 data_aquisicao={equipamento.data_aquisicao}
                 descr_tec={equipamento.descr_tec}
                 onEdit={handleEditEquipamento}
-                onDelete={handleDeleteEquipamento} // Adicione essa função no EquipamentoList
+                onDelete={handleDeleteEquipamento}
               />
             ))
           ) : (

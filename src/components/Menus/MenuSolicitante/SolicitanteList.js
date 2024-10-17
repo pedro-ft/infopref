@@ -111,7 +111,7 @@ function SolicitanteList() {
         <section className={styles.listSection}>
           {currentItems.length > 0 ? (
             currentItems.map((solicitante, index) => (
-              <SolicitanteCard key={solicitante.id} // Usar o id como chave
+              <SolicitanteCard key={solicitante.id}
                 nome={solicitante.nome}
                 departamento={solicitante.departamento.nome}
                 secretariat={solicitante.departamento.secretaria.nome}
