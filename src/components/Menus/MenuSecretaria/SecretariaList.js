@@ -12,10 +12,11 @@ function SecretariaList() {
   const [secretarias, setSecretarias] = useState([]);
   const { userProfile } = useContext(UserContext);
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1); // ACRESCENTADO
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('Ordem Alfabética');
   const [loading, setLoading] = useState(true);
-  const itemsPerPage = 6; // ACRESCENTADO
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchSecretarias = async () => {
@@ -31,9 +32,21 @@ function SecretariaList() {
     fetchSecretarias();
   }, []);
 
-  const filteredSecretarias = secretarias.filter(secretaria =>
+  const filteredSecretarias = secretarias
+  .filter(secretaria =>
     secretaria.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    switch (sortType) {
+      case 'Mais recente':
+        return b.id - a.id;
+      case 'Mais antigo':
+        return a.id - b.id;
+      case 'Ordem alfabética':
+      default:
+        return a.nome.localeCompare(b.nome);
+    }
+  });
 
   const totalPages = Math.ceil(filteredSecretarias.length / itemsPerPage);
 
@@ -58,6 +71,9 @@ function SecretariaList() {
     setSecretarias(updatedSecretarias);
   };
 
+  const handleSort = (type) => {
+    setSortType(type);
+  };
 
   const handleDeleteSecretaria = (id) => {
     setSecretarias(secretarias.filter(secretaria => secretaria.id !== id));
@@ -74,7 +90,11 @@ function SecretariaList() {
   return (
     <main className={styles.secretariasModule}>
       <Cabecalho />
-      <ActionBar tipo='Nova Secretaria' link='nova-secretaria' onSearch={handleSearch} />
+      <ActionBar tipo='Nova Secretaria' 
+      link='nova-secretaria' 
+      onSearch={handleSearch}
+      onSort={handleSort}
+      sortOptions={['Ordem alfabética', 'Mais recente', 'Mais antigo']} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Secretarias</h2>
         <section className={styles.listSection}>

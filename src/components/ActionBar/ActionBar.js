@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ActionBar.module.css';
 
-function ActionBarPadrao({ tipo, link, onSearch }) {
+function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate(); // Usando o hook useNavigate
-
-
+  const [showSortOptions, setShowSortOptions] = useState(false);
+  const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
+  const navigate = useNavigate();
 
   const handleNewClick = () => {
     navigate(`/${link}`);
@@ -14,10 +14,8 @@ function ActionBarPadrao({ tipo, link, onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSearch) {  // Verifique se onSearch foi passado como prop
+    if (onSearch) {
       onSearch(searchTerm);
-    } else {
-      console.error("onSearch não foi fornecido como prop ao ActionBar");
     }
   };
 
@@ -25,6 +23,21 @@ function ActionBarPadrao({ tipo, link, onSearch }) {
     setSearchTerm(e.target.value);
   };
 
+  const toggleSortOptions = () => {
+    setShowSortOptions(!showSortOptions);
+  };
+
+  const handleSortChange = (option) => {
+    const newSortType = selectedSort === option ? '' : option; 
+    setSelectedSort(newSortType); 
+    if (onSort) {
+      onSort(newSortType); 
+    }
+  };
+
+  useEffect(() => {
+    onSort(selectedSort);
+  }, []);
 
   return (
     <div className={styles.actionBar}>
@@ -39,10 +52,25 @@ function ActionBarPadrao({ tipo, link, onSearch }) {
           value={searchTerm}
           onChange={handleInputChange}
         />
-        <button type="submit" className={styles.searchButton}>
-          <img src="/imagens/filtros.svg" alt="Pesquisar" className={styles.searchIcon} />
+        <button type="submit" className={styles.searchButton} onClick={toggleSortOptions}>
+          <img src="/imagens/filtros.svg" alt="Ordenar" className={styles.searchIcon} />
         </button>
       </form>
+
+      {showSortOptions && (
+        <div className={styles.sortOptions}>
+          {sortOptions.map((option, index) => (
+            <label key={index} className={styles.sortOptionsLabel}>
+              <input
+                type="checkbox"
+                checked={selectedSort === option}
+                onChange={() => handleSortChange(option)}
+              />
+              {option}
+            </label>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
