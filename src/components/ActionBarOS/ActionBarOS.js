@@ -43,11 +43,11 @@ function ActionBar({ onSearch, onSort, sortOptions}) {
       <button className={styles.actionButton} onClick={handleNewOSClick}>Nova O. S.</button>
       <button className={styles.actionButton} onClick={handleOSSolicitadasClick}>O. S. Solicitadas</button>
       <form className={styles.searchForm} onSubmit={handleSubmit}>
-        <label htmlFor="protocolSearch" className={styles.visuallyHidden}>Pesquisar Nº de protocolo</label>
+        <label htmlFor="protocolSearch" className={styles.visuallyHidden}>Pesquisar</label>
         <input
           type="search"
           id="protocolSearch"
-          placeholder="Pesquisar Nº de protocolo"
+          placeholder="Pesquisar"
           className={styles.searchInput}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

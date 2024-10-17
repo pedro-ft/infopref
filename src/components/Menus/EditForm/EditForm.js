@@ -5,9 +5,8 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
   const [formData, setFormData] = useState(initialValues || {});
 
   const formatPhoneNumber = (value) => {
-    let formattedValue = value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    let formattedValue = value.replace(/\D/g, '');
 
-    // Aplica a formatação (xx) xxxxx-xxxx
     if (formattedValue.length <= 10) {
       formattedValue = formattedValue.replace(/^(\d{2})(\d)/, '($1) $2');
       formattedValue = formattedValue.replace(/(\d{4})(\d{1,4})$/, '$1-$2');
@@ -18,12 +17,23 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
     return formattedValue;
   };
 
+  const formatRemoteId = (value) => {
+    let formattedValue = value.replace(/\D/g, '');
+
+    formattedValue = formattedValue.slice(0, 9);
+    formattedValue = formattedValue.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+
+    return formattedValue;
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     let newValue = value;
 
     if (name === 'fone') {
       newValue = formatPhoneNumber(value);
+    }else if (name === 'id_acesso_remoto') {
+      newValue = formatRemoteId(value);
     }
 
     setFormData({
@@ -42,6 +52,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <h2>Editar</h2>
           {fields.map((field, index) => (
             <div key={index} className={styles.formGroup}>
               <label htmlFor={field.name}>{field.label}</label>

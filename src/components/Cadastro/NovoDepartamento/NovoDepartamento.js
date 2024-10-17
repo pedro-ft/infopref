@@ -7,13 +7,12 @@ import styles from '../Novo.module.css';
 const NovoDepartamento = () => {
   const [secretarias, setSecretarias] = useState([]);
 
-  // Fetch secretarias from the backend
   useEffect(() => {
     const fetchSecretarias = async () => {
       try {
-        const response = await api.get('/secretarias');  // Assumindo que você tem essa rota configurada
+        const response = await api.get('/secretarias');
         setSecretarias(response.data);
-        console.log(response.data);  // Verifique os dados retornados
+        console.log(response.data);
       } catch (error) {
         console.error('Erro ao carregar secretarias:', error);
       }
@@ -28,12 +27,13 @@ const NovoDepartamento = () => {
       label: 'Secretaria',
       name: 'secretariaId',
       type: 'select',
-      options: secretarias.map(sec => {
-        console.log(sec); // Verifique os dados de cada secretaria
+      options: secretarias
+      .sort((a, b) => a.nome.localeCompare(b.nome))
+      .map(sec => {
         return { label: sec.nome, value: sec.id };
-      })  // Gerando as opções
-    }
-  ]
+      })
+  }
+];
 
   const handleFormSubmit = async (formData) => {
     try {

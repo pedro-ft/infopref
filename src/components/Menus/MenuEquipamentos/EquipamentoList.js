@@ -58,7 +58,7 @@ function EquipamentoList() {
         case 'Mais antigo':
           return a.id - b.id;
         case 'Data de Aquisição':
-          return a.data_aquisicao - b.data_aquisicao;
+          return new Date(b.data_aquisicao) - new Date(a.data_aquisicao);
         case 'Número de Patrimônio':
           return a.num_patrimonio - b.num_patrimonio;
         case 'Marca':
@@ -98,7 +98,6 @@ function EquipamentoList() {
 
   const handleDeleteEquipamento = async (idEquip) => {
     try {
-      //await api.delete(`/equipamentos/${idEquip}`);
       const response = await api.get(`/equipamentos/departamento/${id}`);
       setEquipamentos(response.data);
     } catch (error) {

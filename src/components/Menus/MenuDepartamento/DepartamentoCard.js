@@ -102,7 +102,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir o departamento {nome}?</p>
+            <p>Tem certeza que deseja excluir o {nome}?</p>
             {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>} {/* Exibe a mensagem de erro */}
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>

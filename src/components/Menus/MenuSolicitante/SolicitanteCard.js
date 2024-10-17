@@ -130,7 +130,9 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
     { name: 'fone', label: 'Telefone', type: 'text' },
     { name: 'id_acesso_remoto', label: 'ID de Acesso Remoto', type: 'text' },
     {
-      label: 'Departamento', name: 'departamento', type: 'select', options: departamentos.map(dep => {
+      label: 'Departamento', name: 'departamento', type: 'select', options: departamentos
+      .sort((a, b) => a.nome.localeCompare(b.nome))
+      .map(dep => {
         return { label: dep.nome, value: dep.id };
       })
     },

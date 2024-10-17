@@ -44,7 +44,9 @@ function OrderServicePage() {
 
   const filteredData = ordemServicos
   .filter(item =>
-    item.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    item.id.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.solicitante.departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
   )
   .sort((a, b) => {
     switch (sortType) {

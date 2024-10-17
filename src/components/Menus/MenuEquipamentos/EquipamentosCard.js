@@ -24,7 +24,6 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
   const handleConfirmDelete = async () => {
     try {
       await api.delete(`/equipamentos/${idEquip}`);
-      console.log("equipamento removido");
       if (onDelete) {
         onDelete(idEquip);
       }
@@ -36,7 +35,6 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
 
   const handleEdit = async (updatedData) => {
     try {
-      console.log('Dados enviados para o servidor:', updatedData);
       const payload = {
         num_patrimonio: updatedData.num_patrimonio,
         modelo: updatedData.modelo,
@@ -45,7 +43,6 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
         descr_tec: updatedData.descr_tec,
       };
       await api.put(`/equipamentos/${idEquip}`, payload);
-      console.log('Objeto editado:', payload);
       if (onEdit) {
         onEdit(null);
       }
@@ -62,11 +59,9 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
   const fields = [
     { name: 'modelo', label: 'Modelo', type: 'text' },
     { name: 'marca', label: 'Marca', type: 'text' },
-    //{ name: 'data_aquisicao', label: 'Data de Aquisição', type: 'date' },
-    { name: 'descr_tec', label: 'Descrição Técnica', type: 'text' },
+    { name: 'descr_tec', label: 'Descrição Técnica', type: 'text' }
   ];
 
-  // Fetch para carregar departamentos
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
@@ -82,16 +77,14 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
     }
   }, [isDepartmentChangeModalOpen]);
 
-  // Função para alternar para o modo de alteração de departamento
   const handleChangeDepartmentClick = () => {
     setIsDepartmentChangeModalOpen(true);
   };
 
   const closeDepartmentChangeModal = () => {
-    setIsDepartmentChangeModalOpen(false); // Fechar modal de alteração de departamento
+    setIsDepartmentChangeModalOpen(false); 
   };
 
-  // Função para salvar as mudanças de departamento e data de aquisição
   const handleSaveDepartmentChange = async () => {
     try {
       await api.put(`/equipamentos/${idEquip}/alterar-departamento`, {
@@ -100,7 +93,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
       });
       setIsDepartmentChangeModalOpen(false);
       if (onEdit) {
-        onEdit(null); // Atualiza a lista de equipamentos após a mudança
+        onEdit(null);
       }
     } catch (error) {
       console.error('Erro ao alterar departamento:', error);
@@ -123,7 +116,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
             </div>
             <div className={styles.cardSideSection}>
               <p className={styles.descrTec}>Data de Aquisição: {data_aquisicao}</p>
-              <button onClick={handleChangeDepartmentClick} className={styles.confirmButton} aria-label="Alterar Departamento">Alterar Departamento</button>
+              <button onClick={handleChangeDepartmentClick} className={styles.changeButton} aria-label="Alterar Departamento">Alterar Departamento</button>
             </div>
             <div className={styles.actions}>
               <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
@@ -161,7 +154,9 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
               onChange={(e) => setSelectedDepartamento(e.target.value)}
             >
               <option value="">Selecione um departamento</option>
-              {departamentos.map((departamento) => (
+              {departamentos
+              .sort((a, b) => a.nome.localeCompare(b.nome))
+              .map((departamento) => (
                 <option key={departamento.id} value={departamento.id}>
                   {departamento.nome}
                 </option>
@@ -177,7 +172,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
             />
 
             <div className={styles.modalActions}>
-              <button onClick={handleSaveDepartmentChange} className={styles.confirmButton}>Salvar Alterações</button>
+              <button onClick={handleSaveDepartmentChange} className={styles.confirmButton}>Salvar</button>
               <button onClick={closeDepartmentChangeModal} className={styles.cancelButton}>Cancelar</button>
             </div>
           </div>

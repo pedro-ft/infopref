@@ -79,7 +79,7 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
-            <p>Tem certeza que deseja excluir a secretaria {nome}?</p>
+            <p>Tem certeza que deseja excluir a {nome}?</p>
             <div className={styles.modalActions}>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>

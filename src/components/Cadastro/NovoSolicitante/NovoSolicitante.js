@@ -8,13 +8,12 @@ const NovoSolicitante = () => {
 
   const [departamentos, setDepartamentos] = useState([]);
 
-  // Fetch departamentos from the backend
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
-        const response = await api.get('/departamentos');  // Assumindo que você tem essa rota configurada
+        const response = await api.get('/departamentos');  
         setDepartamentos(response.data);
-        console.log(response.data);  // Verifique os dados retornados
+        console.log(response.data);  
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);
       }
@@ -27,8 +26,9 @@ const NovoSolicitante = () => {
     { label: 'Fone', name: 'fone', type: 'text' },
     { label: 'ID de Acesso Remoto', name: 'id_acesso_remoto', type: 'text' },
     {
-      label: 'Departamento', name: 'departamento', type: 'select', options: departamentos.map(dep => {
-        console.log(dep);
+      label: 'Departamento', name: 'departamento', type: 'select', options: departamentos
+      .sort((a, b) => a.nome.localeCompare(b.nome))
+      .map(dep => {
         return { label: dep.nome, value: dep.id };
       })
     },
@@ -38,29 +38,25 @@ const NovoSolicitante = () => {
 
   const handleFormSubmit = async (formData) => {
     try {
-      // Criar o usuário primeiro
       const userPayload = {
         username: formData.username,
         password: formData.password,
       };
 
-      //console.log('Teste user payload',userPayload);
       const userResponse = await api.post('/user/solicitante', userPayload);
-      const userId = userResponse.data.id; // Supondo que o backend retorna o ID do usuário criado
+      const userId = userResponse.data.id;
 
       if (!userId) {
         throw new Error('ID do usuário não retornado pelo backend');
       }
 
-      // Criar o solicitante com o cod_usuario do usuário recém-criado
       const solicitantePayload = {
         nome: formData.nome,
         fone: formData.fone,
         id_acesso_remoto: formData.id_acesso_remoto,
         departamento: { id: formData.departamento },
-        user: { id: userId }, // Vincular com o usuário criado
+        user: { id: userId },
       };
-
 
       console.log('Payload do solicitante:', solicitantePayload);
       await api.post('/solicitantes', solicitantePayload);
