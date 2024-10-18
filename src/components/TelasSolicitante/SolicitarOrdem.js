@@ -1,13 +1,19 @@
 import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 import Cabecalho from '../Cabecalho/Cabecalho';
-import Formulario from '../Cadastro/Formulario/Formulario';
 import styles from '../Cadastro/Novo.module.css';
 
 const SolicitarOS = () => {
-
+  const navigate = useNavigate();
   const [solicitanteId, setSolicitanteId] = useState(null);
+  const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
+  const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
+  const [opcoesEquipamentos, setOpcoesEquipamentos] = useState([]);
+  const [descricao, setDescricao] = useState("");
+
+
   // Função para obter o nome do solicitante a partir do token JWT
   useEffect(() => {
     const getSolicitanteNomeFromToken = async () => {
@@ -25,6 +31,13 @@ const SolicitarOS = () => {
           const response = await api.get(`/solicitantes/usuario/${userId}`);
           console.log('Solicitante response:', response.data);
           setSolicitanteId(response.data.id); // Armazena o nome do solicitante
+
+          // Carregar equipamentos disponíveis no departamento do solicitante
+          const deptResponse = await api.get(`/solicitantes/${response.data.id}`);
+          const departamentoId = deptResponse.data.departamento.id;
+          const equipResponse = await api.get(`/equipamentos/departamento/${departamentoId}`);
+          setOpcoesEquipamentos(equipResponse.data);
+
         } catch (error) {
           console.error('Erro ao buscar o nome do solicitante:', error);
         }
@@ -34,29 +47,46 @@ const SolicitarOS = () => {
     getSolicitanteNomeFromToken();
   }, []);
 
-  const campos = [
-    { label: 'Número de Patrimônio', name: 'num_patrimonio', type: 'number' },
-    { label: 'Descrição', name: 'descricao', type: 'text' }
-  ]
+  const handleQuantidadeChange = (e) => {
+    const qtd = parseInt(e.target.value);
+    setQuantidadeEquipamentos(qtd);
+    setEquipamentosSelecionados(Array(qtd).fill(''));
+  };
 
-  const handleFormSubmit = async (formData) => {
+  const handleEquipamentoChange = (index, value) => {
+    const updatedEquipamentos = [...equipamentosSelecionados];
+    updatedEquipamentos[index] = value;
+    setEquipamentosSelecionados(updatedEquipamentos);
+  };
+
+  const handleDescricaoChange = (e) => {
+    setDescricao(e.target.value);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
     if (!solicitanteId) {
-      console.error('Nome do solicitante não está definido.');
+      console.error('ID do solicitante não está definido.');
       return;
     }
+    if (equipamentosSelecionados.some(equip => !equip)) {
+      console.error('Todos os equipamentos devem ser selecionados.');
+      return;
+    }
+
     const osData = {
-      num_patrimonio: formData.num_patrimonio,
-      descricao: formData.descricao,
-      cod_sol: solicitanteId, // Inclui o nome do solicitante no payload
-      status: 'EM_ABERTO',              // Status padrão
-      tipo_chamado: 'MANUTENÇÃO',    // Tipo de chamado padrão
-      prioridade: 'Baixa',           // Prioridade padrão
-      data_abertura: new Date()     // Data de abertura
-      //data_finalizacao: new Date()        // Data de finalização indefinida no início
+      descricao,
+      cod_sol: solicitanteId,
+      status: 'EM_ABERTO',
+      tipo_chamado: 'MANUTENÇÃO',
+      prioridade: 'Baixa',
+      data_abertura: new Date(),
+      equipamentosIds: equipamentosSelecionados
     };
 
     try {
-      const response = await api.post('/osmenu', osData); // Endpoint para criar nova OS
+      const response = await api.post('/osmenu', osData);
+      navigate('/minhas-solicitacoes');
       console.log('Ordem de Serviço criada com sucesso:', response.data);
     } catch (error) {
       console.error('Erro ao criar a Ordem de Serviço:', error);
@@ -68,7 +98,49 @@ const SolicitarOS = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Solicitar OS</h1>
-        <Formulario campos={campos} onSubmit={handleFormSubmit} voltarUrl="/minhas-solicitacoes" />
+        <form onSubmit={handleFormSubmit}>
+          <div className={styles.formGroup}>
+            <label>Descrição</label>
+            <textarea
+              value={descricao}
+              onChange={handleDescricaoChange}
+              placeholder="Descreva o problema ou solicitação..."
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Quantidade de Equipamentos:</label>
+            <input
+              type="number"
+              min="1"
+              max="5"
+              value={quantidadeEquipamentos}
+              onChange={handleQuantidadeChange}
+            />
+          </div>
+
+          {[...Array(quantidadeEquipamentos)].map((_, index) => (
+            <div key={index} className={styles.formGroup}>
+              <label>Equipamento {index + 1}:</label>
+              <select
+                value={equipamentosSelecionados[index] || ''}
+                onChange={(e) => handleEquipamentoChange(index, e.target.value)}
+              >
+                <option value="">Selecione o equipamento</option>
+                {opcoesEquipamentos.map(equip => (
+                  <option key={equip.id} value={equip.id}>{equip.num_patrimonio}</option>
+                ))}
+              </select>
+            </div>
+          ))}
+
+          <div className={styles.formButtons}>
+            <Link className={styles.linkBtn} to="/minhas-solicitacoes">
+              <button type="button" className={styles.btnBack}>Voltar</button>
+            </Link>
+            <button type="submit" className={styles.btnSubmit}>Salvar</button>
+          </div>
+        </form>
       </main>
     </div>
   );

@@ -82,8 +82,9 @@ const Formulario = ({ campos, onSubmit, voltarUrl }) => {
         ))}
 
         <div className={styles.formButtons}>
-          <button type="submit" className={styles.btnSubmit}>Salvar</button>
           <button type="button" className={styles.btnBack} onClick={handleVoltar}>Voltar</button>
+          <button type="submit" className={styles.btnSubmit}>Salvar</button>
+
         </div>
       </form>
     </div>

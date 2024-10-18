@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
 import styles from './FormularioOS.module.css';
 
 const FormularioOS = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const initialFormData = location.state?.formData || {
+    data_abertura: '',
+    cod_sol: '',
+    tipo_chamado: '',
+    num_patrimonio: '',
+    status: '',
+    prioridade: '',
+    cod_tec: '',
+    data_finalizacao: '',
+    descricao: '',
+    resolucao: ''
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
   const [solicitante, setSolicitantes] = useState([]);
   const [status, setStatus] = useState([]);
   const [prioridade, setPrioridades] = useState([]);
@@ -30,34 +45,12 @@ const FormularioOS = () => {
     fetchSelects();
   }, []);
 
-  const [formData, setFormData] = useState({
-    data_abertura: '',
-    cod_sol: '',
-    tipo_chamado: '',
-    num_patrimonio: '',
-    status: '',
-    prioridade: '',
-    cod_tec: '',
-    data_finalizacao: '',
-    descricao: '',
-    resolucao: ''
-  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  /*const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Payload enviado:', formData);
-    try {
-      await api.post('/osmenu', formData);  // Enviando o payload correto
-      navigate('/osmenu');
-    } catch (error) {
-      console.error('Erro ao criar ordem de serviço:', error);
-    }
-  };*/
 
   const handleNext = async (e) => {
     e.preventDefault();
@@ -183,10 +176,11 @@ const FormularioOS = () => {
         </div>
 
         <div className={styles.formButtons}>
-          <button type="submit" className={styles.btnSubmit}>Próximo</button>
           <Link className={styles.linkBtn} to="/osmenu">
             <button type="button" className={styles.btnBack}>Voltar</button>
           </Link>
+          <button type="submit" className={styles.btnSubmit}>Próximo</button>
+
         </div>
 
         <p className="form-note">* Campos não obrigatórios</p>

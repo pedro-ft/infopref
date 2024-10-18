@@ -67,7 +67,7 @@ const SelecionarEquipamentos = () => {
                     <input
                         type="number"
                         min="1"
-                        max="5" 
+                        max="5"
                         value={quantidadeEquipamentos}
                         onChange={handleQuantidadeChange}
                     />
@@ -89,10 +89,11 @@ const SelecionarEquipamentos = () => {
                 ))}
 
                 <div className={styles.formButtons}>
-                    <button type="submit" className={styles.btnSubmit}>Salvar</button>
-                    <Link className={styles.linkBtn} to="/novaos">
+                    <Link className={styles.linkBtn} to="/novaos" state={{ formData }}>
                         <button type="button" className={styles.btnBack}>Voltar</button>
                     </Link>
+                    <button type="submit" className={styles.btnSubmit}>Salvar</button>
+
                 </div>
             </form>
         </div>
