@@ -12,7 +12,6 @@ function MinhasSolicitacoes() {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortType, setSortType] = useState('Mais recentes');
-    const [selectedOrder, setSelectedOrder] = useState(null);
     const itemsPerPage = 5;
     const [solicitanteId, setSolicitanteId] = useState();
 
