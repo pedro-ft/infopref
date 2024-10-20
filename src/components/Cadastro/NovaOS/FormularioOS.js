@@ -78,7 +78,9 @@ const FormularioOS = () => {
             onChange={handleInputChange}
           >
             <option value="">Selecione o solicitante</option>
-            {solicitante.map(sol => (
+            {solicitante
+            .sort((a, b) => a.nome.localeCompare(b.nome))
+            .map(sol => (
               <option key={sol.id} value={sol.id}>{sol.nome}</option>
             ))}
           </select>
@@ -139,7 +141,9 @@ const FormularioOS = () => {
               onChange={handleInputChange}
             >
               <option value="">Selecione o técnico</option>
-              {tecnico.map(x => (
+              {tecnico
+              .sort((a, b) => a.nome.localeCompare(b.nome))
+              .map(x => (
                 <option key={x.id} value={x.id}>{x.nome}</option>
               ))}
             </select>

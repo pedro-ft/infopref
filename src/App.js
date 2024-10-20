@@ -49,8 +49,8 @@ function App() {
             <Route path="/novo-departamento" element={<ProtectedRoute element={<NovoDepartamento />} />} />
             <Route path="/departamentos/:id/equipamentos" element={<EquipamentoList />} />
             <Route path="/novo-equipamento/:id" element={<ProtectedRoute element={<NovoEquipamento />} />} />
-            <Route path="/infoInternet" element={<ProtectedRoute element={<InfoInternetList />} />} />
-            <Route path="/novo-info-internet" element={<ProtectedRoute element={<NovaInfoInternet />} />} />
+            <Route path="/departamentos/:id/infoInternet" element={<ProtectedRoute element={<InfoInternetList />} />} />
+            <Route path="/novo-info-internet/:id" element={<ProtectedRoute element={<NovaInfoInternet />} />} />
             <Route path="/relatorios" element={<ProtectedRoute element={<GerarRelatorio />} />} />
           </Routes>
         </Router>

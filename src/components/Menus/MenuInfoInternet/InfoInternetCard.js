@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../../api/api';
 import EditForm from '../EditForm/EditForm'
 import styles from './InfoInternetCard.module.css';
 
-function TecnicoCard({ nomeRede, senha, ip, onEdit, onDelete }) {
+function TecnicoCard({ idInfoInternet, nomeRede, senha, ip, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -14,17 +15,33 @@ function TecnicoCard({ nomeRede, senha, ip, onEdit, onDelete }) {
     setIsModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    closeModal();
-    if (onDelete) {
-      onDelete(); // Chame a função onDelete para realizar a exclusão do elemento
+  const handleConfirmDelete = async () => {
+    try {
+      await api.delete(`/infointernet/${idInfoInternet}`);
+      if (onDelete) {
+        onDelete(idInfoInternet);
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Erro ao deletar infoInternet: ", error);
     }
   };
 
-  const handleEdit = (updatedData) => {
-    setIsEditing(false);
-    onEdit(updatedData); // Chama a função de edição passando os novos dados
-    console.log('Objeto editado:', updatedData);
+  const handleEdit = async (updatedData) => {
+    try {
+      const payload = {
+       nomeRede: updatedData.nomeRede,
+       senha: updatedData.senha,
+       ip: updatedData.ip,
+      };
+      await api.put(`/infointernet/${idInfoInternet}`, payload);
+      if (onEdit) {
+        onEdit(null);
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Erro ao atualizar infointernet: ", error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -78,7 +95,7 @@ function TecnicoCard({ nomeRede, senha, ip, onEdit, onDelete }) {
         <EditForm
           fields={fields}
           initialValues={{ nomeRede, senha, ip }}
-          onSubmit={handleEdit}
+          onSubmit={(updatedData) => handleEdit({ ...updatedData, idInfoInternet })}
           onCancel={handleCancelEdit}
         />
       )}

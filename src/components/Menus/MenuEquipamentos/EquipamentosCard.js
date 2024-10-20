@@ -11,8 +11,6 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
   const [selectedDepartamento, setSelectedDepartamento] = useState('');
   const [newDataAquisicao, setNewDataAquisicao] = useState('');
 
-
-
   const openModal = () => {
     setIsModalOpen(true);
   };

@@ -105,8 +105,6 @@ function EquipamentoList() {
     }
   };
 
-
-
   return (
     <main className={styles.equipamentoModule}>
       <Cabecalho />

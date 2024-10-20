@@ -1,64 +1,62 @@
-import React,  { useState } from 'react';
+import React,  { useState, useEffect } from 'react';
 import styles from './InfoInternetList.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import InfoInternetCard from './InfoInternetCard';
 import ActionBar from '../../ActionBar/ActionBar';
-import {Link} from 'react-router-dom';
-
-const initialInfosInternet = [
-  {
-    nomeRede: "adm2024",
-    senha: "pref2024adm",
-    ip: "192.168.1.1",
-    imageUrl: "/imagens/Internet.svg"
-  },
-  {
-    nomeRede: "adm02",
-    senha: "pref2024adm2",
-    ip: "192.168.1.2",
-    imageUrl: "/imagens/Internet.svg"
-  },
-  {
-    nomeRede: "adm2024",
-    senha: "pref2024adm",
-    ip: "192.168.1.1",
-    imageUrl: "/imagens/Internet.svg"
-  },
-  {
-    nomeRede: "adm2024",
-    senha: "pref2024adm",
-    ip: "192.168.1.1",
-    imageUrl: "/imagens/Internet.svg"
-  },
-  {
-    nomeRede: "adm2024",
-    senha: "pref2024adm",
-    ip: "192.168.1.1",
-    imageUrl: "/imagens/Internet.svg"
-  },
-  {
-    nomeRede: "adm2024",
-    senha: "pref2024adm",
-    ip: "192.168.1.1",
-    imageUrl: "/imagens/Internet.svg"
-  },
-  {
-    nomeRede: "adm2024",
-    senha: "pref2024adm",
-    ip: "192.168.1.1",
-    imageUrl: "/imagens/Internet.svg"
-  },
-];
+import {Link, useParams} from 'react-router-dom';
+import api from '../../../api/api';
 
 function InfoInternetList() {
-  const [infosInternet, setInfosInternet] = useState(initialInfosInternet);
+  const { id } = useParams();
+  const [departamento, setDepartamento] = useState(null);
+  const [infosInternet, setInfosInternet] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('Mais recente');
   const itemsPerPage = 6;
 
-  const filteredInfoInternet = infosInternet.filter(infoInternet =>
+  useEffect(() => {
+    if (!id) {
+      console.error('departamentoId não foi capturado corretamente da URL');
+      return;
+    }
+    const fetchInfoInternet = async () => {
+      try {
+        const response = await api.get(`/infointernet/departamento/${id}`);
+        setInfosInternet(response.data);
+      } catch (error) {
+        console.error('Erro ao carregar as InfoInternet', error);
+      }
+    };
+
+    const fetchDepartamento = async () => {
+      try {
+        const response = await api.get(`/departamentos/${id}`);
+        setDepartamento(response.data);
+      } catch (error) {
+        console.error('Erro ao carregar o departamento:', error);
+      }
+    };
+
+    fetchInfoInternet();
+    fetchDepartamento();
+  }, [id]);
+
+  const filteredInfoInternet = infosInternet
+  .filter(infoInternet =>
     infoInternet.nomeRede.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    switch (sortType) {
+      case 'Mais recente':
+      default:
+        return b.id - a.id;
+      case 'Mais antigo':
+        return a.id - b.id;
+      case 'Nome da Rede':
+          return a.nomeRede.localeCompare(b.nomeRede);
+    }
+  });
 
   const totalPages = Math.ceil(filteredInfoInternet.length / itemsPerPage); // ACRESCENTADO
 
@@ -76,24 +74,55 @@ function InfoInternetList() {
     setCurrentPage(1);
   }
 
-  const handleEditInfoInternet = (index, updatedInfoInternet) => {
-    const updatedInfosInternet = [...infosInternet];
-    updatedInfosInternet[index] = updatedInfoInternet;
-    setInfosInternet(updatedInfosInternet);
+  const handleEditInfoInternet = async () => {
+    try {
+      const response = await api.get(`/infointernet/departamento/${id}`);
+      setInfosInternet(response.data);
+    } catch (error) {
+      console.error('Erro ao carregar as InfoInternet:', error);
+    }
+  };
+
+  const handleSort = (type) => {
+    setSortType(type);
+  };
+
+  const handleDeleteInfoInternet = async (idInfoInternet) => {
+    try {
+      const response = await api.get(`/infointernet/departamento/${id}`);
+      setInfosInternet(response.data);
+    } catch (error) {
+      console.error('Erro ao excluir a InfoInternet:', error);
+    }
   };
 
   return (
     <main className={styles.infoInternetModule}>
       <Cabecalho />
-      <ActionBar tipo='Nova Informação de Internet' link='novo-info-internet' onSearch={handleSearch} />
+      <ActionBar 
+      tipo='Nova Informação de Internet' 
+      link={`novo-info-internet/${id}`}
+      onSearch={handleSearch} 
+      onSort={handleSort}
+      sortOptions={['Mais recente', 'Mais antigo', 'Nome da Rede']}/>
       <div className={styles.contentWrapper}>
-        <h2 className={styles.listTitle}>Lista Informações de Internet</h2>
+        <h2 className={styles.listTitle}>Lista Informações de Internet {departamento && `- ${departamento.nome}`}</h2>
         <section className={styles.listSection}>
-          {currentItems.map((infoInternet, index) => (
-            <InfoInternetCard key={index} {...infoInternet} 
-            onEdit={(updatedInfoInternet) => handleEditInfoInternet(startIndex + index, updatedInfoInternet)}
+          {currentItems.length > 0 ? (
+            currentItems.map((infoInternet, index) => (
+            <InfoInternetCard 
+            key={index}
+            idInfoInternet={infoInternet.id}
+            nomeRede={infoInternet.nomeRede}
+            senha={infoInternet.senha}
+            ip={infoInternet.ip}
+            onEdit={handleEditInfoInternet}
+            onDelete={handleDeleteInfoInternet}
             />
-          ))}
+          ))
+        ) : (
+          <p>Nenhuma Informação de Internet encontrada.</p>
+        )}
         </section>
       </div>
       <div className={styles.pagination}>

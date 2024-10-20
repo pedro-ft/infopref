@@ -4,7 +4,7 @@ import styles from './OrderServiceForm.module.css';
 
 function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //const [formData, setFormData] = useState(order || {});
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // States para armazenar dados do banco de dados
@@ -19,13 +19,10 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
     tipo_chamado: order?.tipo_chamado || "",
     prioridade: order?.prioridade || "",
     status: order?.status || "",
-    // inclua outros campos necessários
   };
 
-  // Inicializando o estado `formData` usando `initialFormData`
   const [formData, setFormData] = useState(initialFormData);
 
-  // Função para buscar dados do banco de dados
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,10 +53,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
     fetchData();
   }, [order]);
 
-
-
-
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -82,17 +75,13 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
     }));
   };
 
-
-
-  // Função para realizar a atualização da ordem de serviço
   const updateOrderService = async () => {
     try {
       setIsSubmitting(true);
 
       await api.put(`/osmenu/${formData.id}`, formData);
-      //alert('Ordem de Serviço atualizada com sucesso!');
       if (onSave) {
-        onSave(); // Notifica a página principal para recarregar a lista
+        onSave();
       }
       onClose();
     } catch (error) {
@@ -106,9 +95,8 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const deleteOrderService = async () => {
     try {
       await api.delete(`/osmenu/${formData.id}`);
-      //alert('Ordem de Serviço excluída com sucesso!');
       if (onDelete) {
-        onDelete(); // Notifica a página principal para remover a ordem da lista
+        onDelete(); 
       }
     } catch (error) {
       console.error('Erro ao excluir a Ordem de Serviço:', error);
@@ -127,6 +115,7 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
           <form className={styles.form} onSubmit={handleSubmit}>
+            <h2>Editar</h2>
             <div className={styles.formGroup}>
               <label htmlFor="cod_sol">Nome Solicitante</label>
               <select
@@ -135,7 +124,9 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                 value={formData.cod_sol || ""}
                 onChange={handleChange}
               >
-                {solicitantes.map((solicitante) => (
+                {solicitantes
+                .sort((a, b) => a.nome.localeCompare(b.nome))
+                .map((solicitante) => (
                   <option key={solicitante.id} value={solicitante.id}>
                     {solicitante.nome}
                   </option>
@@ -168,11 +159,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   })}
                 </select>
               </div>
-            </div>
-
-
-            <div className={styles.formRow}>
-
               <div className={styles.formGroup}>
                 <label htmlFor="cod_tec">Técnico</label>
                 <select
@@ -181,7 +167,9 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   value={formData.cod_tec || ""}
                   onChange={handleChange}
                 >
-                  {tecnicos.map((tecnico) => {
+                  {tecnicos
+                  .sort((a, b) => a.nome.localeCompare(b.nome))
+                  .map((tecnico) => {
                     return (
                       <option key={tecnico.id} value={tecnico.id}>
                         {tecnico.nome}
@@ -190,6 +178,10 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   })}
                 </select>
               </div>
+            </div>
+
+
+            <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="status">Status</label>
                 <select
@@ -203,9 +195,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   })}
                 </select>
               </div>
-            </div>
-
-            <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="data_finalizacao">Data Finalização</label>
                 <input
