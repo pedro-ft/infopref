@@ -1,10 +1,10 @@
-import React,  { useState, useEffect } from 'react';
-import styles from './InfoInternetList.module.css';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import api from '../../../api/api';
+import ActionBar from '../../ActionBar/ActionBar';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import InfoInternetCard from './InfoInternetCard';
-import ActionBar from '../../ActionBar/ActionBar';
-import {Link, useParams} from 'react-router-dom';
-import api from '../../../api/api';
+import styles from './InfoInternetList.module.css';
 
 function InfoInternetList() {
   const { id } = useParams();
@@ -22,7 +22,7 @@ function InfoInternetList() {
     }
     const fetchInfoInternet = async () => {
       try {
-        const response = await api.get(`/infointernet/departamento/${id}`);
+        const response = await api.get(`/infoInternet/departamento/${id}`);
         setInfosInternet(response.data);
       } catch (error) {
         console.error('Erro ao carregar as InfoInternet', error);
@@ -43,20 +43,20 @@ function InfoInternetList() {
   }, [id]);
 
   const filteredInfoInternet = infosInternet
-  .filter(infoInternet =>
-    infoInternet.nomeRede.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  .sort((a, b) => {
-    switch (sortType) {
-      case 'Mais recente':
-      default:
-        return b.id - a.id;
-      case 'Mais antigo':
-        return a.id - b.id;
-      case 'Nome da Rede':
-          return a.nomeRede.localeCompare(b.nomeRede);
-    }
-  });
+    .filter(infoInternet =>
+      infoInternet.nome?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      switch (sortType) {
+        case 'Mais recente':
+        default:
+          return b.id - a.id;
+        case 'Mais antigo':
+          return a.id - b.id;
+        case 'Nome da Rede':
+          return a.nome.localeCompare(b.nome);
+      }
+    });
 
   const totalPages = Math.ceil(filteredInfoInternet.length / itemsPerPage); // ACRESCENTADO
 
@@ -76,7 +76,7 @@ function InfoInternetList() {
 
   const handleEditInfoInternet = async () => {
     try {
-      const response = await api.get(`/infointernet/departamento/${id}`);
+      const response = await api.get(`/infoInternet/departamento/${id}`);
       setInfosInternet(response.data);
     } catch (error) {
       console.error('Erro ao carregar as InfoInternet:', error);
@@ -89,7 +89,7 @@ function InfoInternetList() {
 
   const handleDeleteInfoInternet = async (idInfoInternet) => {
     try {
-      const response = await api.get(`/infointernet/departamento/${id}`);
+      const response = await api.get(`/infoInternet/departamento/${id}`);
       setInfosInternet(response.data);
     } catch (error) {
       console.error('Erro ao excluir a InfoInternet:', error);
@@ -99,49 +99,49 @@ function InfoInternetList() {
   return (
     <main className={styles.infoInternetModule}>
       <Cabecalho />
-      <ActionBar 
-      tipo='Nova Informação de Internet' 
-      link={`novo-info-internet/${id}`}
-      onSearch={handleSearch} 
-      onSort={handleSort}
-      sortOptions={['Mais recente', 'Mais antigo', 'Nome da Rede']}/>
+      <ActionBar
+        tipo='Nova Informação de Internet'
+        link={`novo-info-internet/${id}`}
+        onSearch={handleSearch}
+        onSort={handleSort}
+        sortOptions={['Mais recente', 'Mais antigo', 'Nome da Rede']} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Informações de Internet {departamento && `- ${departamento.nome}`}</h2>
         <section className={styles.listSection}>
           {currentItems.length > 0 ? (
             currentItems.map((infoInternet, index) => (
-            <InfoInternetCard 
-            key={index}
-            idInfoInternet={infoInternet.id}
-            nomeRede={infoInternet.nomeRede}
-            senha={infoInternet.senha}
-            ip={infoInternet.ip}
-            onEdit={handleEditInfoInternet}
-            onDelete={handleDeleteInfoInternet}
-            />
-          ))
-        ) : (
-          <p>Nenhuma Informação de Internet encontrada.</p>
-        )}
+              <InfoInternetCard
+                key={index}
+                idInfoInternet={infoInternet.id}
+                nome={infoInternet.nome}
+                senha={infoInternet.senha}
+                ip={infoInternet.ip}
+                onEdit={handleEditInfoInternet}
+                onDelete={handleDeleteInfoInternet}
+              />
+            ))
+          ) : (
+            <p>Nenhuma Informação de Internet encontrada.</p>
+          )}
         </section>
       </div>
       <div className={styles.pagination}>
-        <button 
-          onClick={() => handlePageChange(currentPage - 1)} 
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
           Anterior
         </button>
         <span>{currentPage} de {totalPages}</span>
-        <button 
-          onClick={() => handlePageChange(currentPage + 1)} 
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
           Próximo
         </button>
       </div>
       <Link to="/departamentos" className={styles.backButtonLink}>
-      <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
+        <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
       </Link>
     </main>
   );
