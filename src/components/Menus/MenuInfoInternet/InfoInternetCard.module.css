@@ -59,7 +59,7 @@
     margin-right: 15px;
   }
   
-  .editButton
+  .editButton,
   .deleteButton {
     background: none;
     border: none;
