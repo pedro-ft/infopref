@@ -144,7 +144,9 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
             }}>
 
               <option value="">Selecione o técnico responsável</option> {/* Adicione uma opção padrão */}
-              {Array.isArray(tecnicos) && tecnicos.map(tecnico => (
+              {Array.isArray(tecnicos) && tecnicos
+              .sort((a, b) => a.nome.localeCompare(b.nome))
+              .map(tecnico => (
                 <option key={tecnico.id} value={tecnico.id}>{tecnico.nome}</option>
               ))}
             </select>
@@ -161,8 +163,8 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
             <input type="text" value={tipoChamado} onChange={(e) => setTipoChamado(e.target.value)} />
 
             <div className={styles.modalActions}>
-              <button onClick={handleConfirmAccept} className={styles.confirmButton}>Aceitar</button>
               <button onClick={closeAcceptModal} className={styles.cancelButton}>Cancelar</button>
+              <button onClick={handleConfirmAccept} className={styles.confirmButton}>Aceitar</button>
             </div>
           </div>
         </div>
@@ -174,8 +176,8 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
             <h2>Confirmar Rejeição</h2>
             <p>Tem certeza que deseja rejeitar essa Ordem de Serviço?</p>
             <div className={styles.modalActions}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
+              <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
           </div>
         </div>

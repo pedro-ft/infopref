@@ -85,8 +85,8 @@ function InfoInternetCard({ idInfoInternet, nome, senha, ip, onEdit, onDelete })
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir a Informação da Internet {nome}?</p>
             <div className={styles.modalActions}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
+              <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
           </div>
         </div>

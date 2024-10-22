@@ -91,11 +91,11 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
           ))}
 
           <div className={styles.formButtons}>
-            <button type="submit" className={styles.btnSubmit}>
-              Salvar
-            </button>
             <button type="button" className={styles.btnBack} onClick={onCancel}>
               Cancelar
+            </button>
+            <button type="submit" className={styles.btnSubmit}>
+              Salvar
             </button>
           </div>
         </form>

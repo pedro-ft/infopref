@@ -71,7 +71,7 @@
   
   /* Estilos do modal */
   .modal {
-    background-color: white;
+    background-color: #f9f9f9;
     padding: 20px 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -85,6 +85,14 @@
     margin-top: 20px;
     display: flex;
     justify-content: space-around;
+  }
+
+  .modal p{
+    font: 400 17px/1 Roboto, sans-serif;
+  }
+
+  .modal h2{
+    font: 700 24px/1 Roboto, sans-serif;
   }
   
   .confirmButton, .cancelButton {

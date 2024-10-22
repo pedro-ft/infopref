@@ -134,8 +134,8 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir o equipamento {num_patrimonio}?</p>
             <div className={styles.modalActions}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
+              <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
           </div>
         </div>
@@ -170,8 +170,8 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
             />
 
             <div className={styles.modalActions}>
-              <button onClick={handleSaveDepartmentChange} className={styles.confirmButton}>Salvar</button>
               <button onClick={closeDepartmentChangeModal} className={styles.cancelButton}>Cancelar</button>
+              <button onClick={handleSaveDepartmentChange} className={styles.confirmButton}>Salvar</button>
             </div>
           </div>
         </div>

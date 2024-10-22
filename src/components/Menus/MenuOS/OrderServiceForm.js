@@ -228,10 +228,10 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
               />
             </div>
             <div className={styles.formActions}>
+              <button type="button" className={styles.cancelButton} onClick={onClose}>Cancelar</button>
               <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
                 {isSubmitting ? 'Salvando...' : 'Salvar'}
               </button>
-              <button type="button" className={styles.cancelButton} onClick={onClose}>Cancelar</button>
               <button type="button" className={styles.deleteButton} onClick={openModal}>Excluir Ordem</button>
             </div>
           </form>
@@ -243,8 +243,8 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir a Ordem de Serviço {formData.id}?</p>
             <div className={styles.modalActions2}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton2}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton2}>Não</button>
+              <button onClick={handleConfirmDelete} className={styles.confirmButton2}>Sim</button>
             </div>
           </div>
         </div>
