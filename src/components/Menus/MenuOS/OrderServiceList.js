@@ -12,6 +12,14 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
     EM_ANDAMENTO: "Em andamento",
     FINALIZADO: "Finalizado",
   };
+  const tipoChamadoMapping = {
+    HARDWARE: "Hardware",
+    SOFTWARE: "Software",
+    REDE: "Rede",
+    SEGURANCA: "Segurança",
+    SUPORTE_GERAL: "Suporte Geral",
+    MANUTENCAO_PREVENTIVA: "Manutenção Preventiva",
+  };
 
   return (
     <section className={styles.orderServiceList}>
@@ -29,7 +37,7 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
           secretariat={item.solicitante.departamento.secretaria.nome}
           status={statusMapping[item.status]}
           tecnico={item.tecnico?.nome}
-          tipo_chamado={item.tipo_chamado}
+          tipo_chamado={tipoChamadoMapping[item.tipo_chamado]}
           onClick={() => onOrderClick(item)}
         />
       ))}

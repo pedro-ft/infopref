@@ -22,6 +22,7 @@ const FormularioOS = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [solicitante, setSolicitantes] = useState([]);
   const [status, setStatus] = useState([]);
+  const [tipo_chamado, setTipoChamado] = useState([]);
   const [prioridade, setPrioridades] = useState([]);
   const [tecnico, setTecnicos] = useState([]);
 
@@ -33,6 +34,8 @@ const FormularioOS = () => {
 
         response = await api.get('/solicitantes');
         setSolicitantes(response.data);
+
+        setTipoChamado([{ key: "Hardware", value: "HARDWARE" }, { key: "Software", value: "SOFTWARE" }, { key: "Rede", value: "REDE" }, { key: "Segurança", value: "SEGURANCA" }, { key: "Suporte Geral", value: "SUPORTE_GERAL" }, { key: "Manutenção Preventiva", value: "MANUTENCAO_PREVENTIVA" }]);
 
         setStatus([{ key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" }, { key: "Em andamento", value: "EM_ANDAMENTO" }, { key: "Finalizado", value: "FINALIZADO" }]);
 
@@ -79,23 +82,26 @@ const FormularioOS = () => {
           >
             <option value="">Selecione o solicitante</option>
             {solicitante
-            .sort((a, b) => a.nome.localeCompare(b.nome))
-            .map(sol => (
-              <option key={sol.id} value={sol.id}>{sol.nome}</option>
-            ))}
+              .sort((a, b) => a.nome.localeCompare(b.nome))
+              .map(sol => (
+                <option key={sol.id} value={sol.id}>{sol.nome}</option>
+              ))}
           </select>
         </div>
 
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label>Tipo Chamado:</label>
-            <input
-              type='text'
+            <select
               name="tipo_chamado"
               value={formData.tipo_chamado}
               onChange={handleInputChange}
             >
-            </input>
+              <option value="">Selecione o Tipo do Chamado</option>
+              {tipo_chamado.map(stat => {
+                return <option key={stat.key} value={stat.value}>{stat.key}</option>
+              })}
+            </select>
           </div>
 
 
@@ -142,10 +148,10 @@ const FormularioOS = () => {
             >
               <option value="">Selecione o técnico</option>
               {tecnico
-              .sort((a, b) => a.nome.localeCompare(b.nome))
-              .map(x => (
-                <option key={x.id} value={x.id}>{x.nome}</option>
-              ))}
+                .sort((a, b) => a.nome.localeCompare(b.nome))
+                .map(x => (
+                  <option key={x.id} value={x.id}>{x.nome}</option>
+                ))}
             </select>
           </div>
 

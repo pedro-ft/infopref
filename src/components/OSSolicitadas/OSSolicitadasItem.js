@@ -158,7 +158,15 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
             </select>
 
             <label>Tipo de Chamado</label>
-            <input type="text" value={tipoChamado} onChange={(e) => setTipoChamado(e.target.value)} />
+            <select value={tipoChamado} onChange={(e) => setTipoChamado(e.target.value)}>
+              <option value="">Selecione uma tipo de chamado</option> {/* Adicione uma opção padrão */}
+              <option value="HARDWARE">Hardware</option>
+              <option value="SOFTWARE">Software</option>
+              <option value="REDE">Rede</option>
+              <option value="SEGURANCA">Segurança</option>
+              <option value="SUPORTE_GERAL">Suporte Geral</option>
+              <option value="MANUTENCAO_PREVENTIVA">Manutenção Preventiva</option>
+            </select>
 
             <div className={styles.modalActions}>
               <button onClick={handleConfirmAccept} className={styles.confirmButton}>Aceitar</button>
