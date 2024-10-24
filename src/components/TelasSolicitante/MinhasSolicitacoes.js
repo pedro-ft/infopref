@@ -114,19 +114,19 @@ function MinhasSolicitacoes() {
                 <h2 className={styles.listTitle}>Minhas Solicitações</h2>
                 <section className={styles.listSection}>
                     {currentItems.length > 0 ? (
-                       currentItems.map((solicitacao, index) => (
-                        <MinhasSolicitacoesItem key={index} id={solicitacao.id}
-                            data_abertura={format(solicitacao.data_abertura, "dd/MM/yyyy")}
-                            data_finalizacao={solicitacao.data_finalizacao ? format(solicitacao.data_finalizacao, "dd/MM/yyyy") : ''}
-                            descricao={solicitacao.descricao}
-                            resolucao={solicitacao.resolucao}
-                            patrimonio={solicitacao.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
-                            status={statusMapping[solicitacao.status]}
-                        />
-                    ))
-                ) : (
-                    <p>Nenhuma solitação encontrada.</p>
-                )}
+                        currentItems.map((solicitacao, index) => (
+                            <MinhasSolicitacoesItem key={index} id={solicitacao.id}
+                                data_abertura={solicitacao.data_abertura ? format(new Date(solicitacao.data_abertura), "dd/MM/yyyy") : ''}
+                                data_finalizacao={solicitacao.data_finalizacao ? format(new Date(solicitacao.data_finalizacao), "dd/MM/yyyy") : ''}
+                                descricao={solicitacao.descricao}
+                                resolucao={solicitacao.resolucao}
+                                patrimonio={solicitacao.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
+                                status={statusMapping[solicitacao.status]}
+                            />
+                        ))
+                    ) : (
+                        <p>Nenhuma solitação encontrada.</p>
+                    )}
                 </section>
             </div>
             <div className={styles.pagination}>

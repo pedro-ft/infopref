@@ -35,8 +35,8 @@ function OSSolicitadas() {
                     {solicitadas.length > 0 ? (
                         solicitadas.map((solicitada, index) => (
                             <OSSolicitadasItem key={solicitada.id}
-                                dataAbertura={format(solicitada.data_abertura, "dd/MM/yyyy")}
-                                patrimonio={solicitada.equipamentos?.at(0)?.name}
+                                dataAbertura={solicitada.data_abertura ? format(new Date(solicitada.data_abertura), "dd/MM/yyyy") : ''}
+                                patrimonio={solicitada.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
                                 descricao={solicitada.descricao}
                                 id={solicitada.id}
                                 solicitante={solicitada.solicitante.nome}

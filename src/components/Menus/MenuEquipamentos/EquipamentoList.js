@@ -124,7 +124,7 @@ function EquipamentoList() {
                 num_patrimonio={equipamento.num_patrimonio}
                 modelo={equipamento.modelo}
                 marca={equipamento.marca}
-                data_aquisicao={format(equipamento.data_aquisicao, "dd/MM/yyyy")}
+                data_aquisicao={equipamento.data_aquisicao ? format(new Date(equipamento.data_aquisicao), "dd/MM/yyyy") : ''}
                 descr_tec={equipamento.descr_tec}
                 onEdit={handleEditEquipamento}
                 onDelete={handleDeleteEquipamento}

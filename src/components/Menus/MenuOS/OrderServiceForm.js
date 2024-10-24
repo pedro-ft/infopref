@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import api from '../../../api/api';
 import styles from './OrderServiceForm.module.css';
@@ -12,6 +13,7 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [prioridades, setPrioridades] = useState([]);
   const [tecnicos, setTecnicos] = useState([]);
   const [statusList, setStatusList] = useState([]);
+  const [tipo_chamado, setTipoChamado] = useState([]);
 
   const initialFormData = {
     cod_sol: order?.solicitante?.id || "",
@@ -22,6 +24,13 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+
+  // Conversão para o formato "yyyy-MM-dd"
+  const toDateInputValue = (date) => {
+    if (!date) return "";
+    return format(new Date(date), 'yyyy-MM-dd');
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,10 +47,13 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
           { key: "Finalizado", value: "FINALIZADO" }
         ]);
 
+        setTipoChamado([{ key: "Hardware", value: "HARDWARE" }, { key: "Software", value: "SOFTWARE" }, { key: "Rede", value: "REDE" }, { key: "Segurança", value: "SEGURANCA" }, { key: "Suporte Geral", value: "SUPORTE_GERAL" }, { key: "Manutenção Preventiva", value: "MANUTENCAO_PREVENTIVA" }]);
+
         setFormData({
           ...order,
           cod_sol: order?.solicitante?.id || "",
           cod_tec: order?.tecnico?.id || "",
+          data_finalizacao: toDateInputValue(order?.data_finalizacao)
         });
 
 
@@ -79,7 +91,13 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
     try {
       setIsSubmitting(true);
 
-      await api.put(`/osmenu/${formData.id}`, formData);
+      // Certifique-se de enviar a data no formato esperado pelo backend (ISO 8601)
+      const updatedFormData = {
+        ...formData,
+        data_finalizacao: formData.data_finalizacao ? new Date(formData.data_finalizacao).toISOString().split('T')[0] : null,
+      };
+
+      await api.put(`/osmenu/${formData.id}`, updatedFormData);
       if (onSave) {
         onSave();
       }
@@ -96,7 +114,7 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
     try {
       await api.delete(`/osmenu/${formData.id}`);
       if (onDelete) {
-        onDelete(); 
+        onDelete();
       }
     } catch (error) {
       console.error('Erro ao excluir a Ordem de Serviço:', error);
@@ -125,26 +143,27 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                 onChange={handleChange}
               >
                 {solicitantes
-                .sort((a, b) => a.nome.localeCompare(b.nome))
-                .map((solicitante) => (
-                  <option key={solicitante.id} value={solicitante.id}>
-                    {solicitante.nome}
-                  </option>
-                ))}
+                  .sort((a, b) => a.nome.localeCompare(b.nome))
+                  .map((solicitante) => (
+                    <option key={solicitante.id} value={solicitante.id}>
+                      {solicitante.nome}
+                    </option>
+                  ))}
               </select>
             </div>
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="tipo_chamado">Tipo Chamado</label>
-                <input
-                  type='text'
-                  id="tipo_chamado"
+                <label htmlFor="tipo_chamado">Tipo de Chamado</label>
+                <select
                   name="tipo_chamado"
                   value={formData.tipo_chamado}
                   onChange={handleChange}
                 >
-                </input>
+                  {tipo_chamado.map(stat => {
+                    return <option key={stat.key} value={stat.value}>{stat.key}</option>
+                  })}
+                </select>
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="prioridade">Prioridade</label>
@@ -168,14 +187,14 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   onChange={handleChange}
                 >
                   {tecnicos
-                  .sort((a, b) => a.nome.localeCompare(b.nome))
-                  .map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nome}
-                      </option>
-                    );
-                  })}
+                    .sort((a, b) => a.nome.localeCompare(b.nome))
+                    .map((tecnico) => {
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nome}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
             </div>

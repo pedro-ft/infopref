@@ -78,7 +78,7 @@ const SolicitarOS = () => {
       descricao,
       cod_sol: solicitanteId,
       status: 'EM_ABERTO',
-      tipo_chamado: 'MANUTENÇÃO',
+      tipo_chamado: 'HARDWARE',
       prioridade: 'Baixa',
       data_abertura: new Date(),
       equipamentosIds: equipamentosSelecionados
@@ -98,50 +98,50 @@ const SolicitarOS = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Solicitar OS</h1>
-      <div className={styles.formContainer}> 
-        <form onSubmit={handleFormSubmit}>
-          <div className={styles.formGroup}>
-            <label>Descrição</label>
-            <textarea
-              value={descricao}
-              onChange={handleDescricaoChange}
-              placeholder="Descreva o problema ou solicitação..."
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Quantidade de Equipamentos:</label>
-            <input
-              type="number"
-              min="1"
-              max="5"
-              value={quantidadeEquipamentos}
-              onChange={handleQuantidadeChange}
-            />
-          </div>
-
-          {[...Array(quantidadeEquipamentos)].map((_, index) => (
-            <div key={index} className={styles.formGroup}>
-              <label>Equipamento {index + 1}:</label>
-              <select
-                value={equipamentosSelecionados[index] || ''}
-                onChange={(e) => handleEquipamentoChange(index, e.target.value)}
-              >
-                <option value="">Selecione o equipamento</option>
-                {opcoesEquipamentos.map(equip => (
-                  <option key={equip.id} value={equip.id}>{equip.num_patrimonio}</option>
-                ))}
-              </select>
+        <div className={styles.formContainer}>
+          <form onSubmit={handleFormSubmit}>
+            <div className={styles.formGroup}>
+              <label>Descrição</label>
+              <textarea
+                value={descricao}
+                onChange={handleDescricaoChange}
+                placeholder="Descreva o problema ou solicitação..."
+              />
             </div>
-          ))}
 
-          <div className={styles.formButtons}>
-            <Link className={styles.linkBtn} to="/minhas-solicitacoes">
-              <button type="button" className={styles.btnBack}>Voltar</button>
-            </Link>
-            <button type="submit" className={styles.btnSubmit}>Salvar</button>
-          </div>
-        </form>
+            <div className={styles.formGroup}>
+              <label>Quantidade de Equipamentos:</label>
+              <input
+                type="number"
+                min="1"
+                max="5"
+                value={quantidadeEquipamentos}
+                onChange={handleQuantidadeChange}
+              />
+            </div>
+
+            {[...Array(quantidadeEquipamentos)].map((_, index) => (
+              <div key={index} className={styles.formGroup}>
+                <label>Equipamento {index + 1}:</label>
+                <select
+                  value={equipamentosSelecionados[index] || ''}
+                  onChange={(e) => handleEquipamentoChange(index, e.target.value)}
+                >
+                  <option value="">Selecione o equipamento</option>
+                  {opcoesEquipamentos.map(equip => (
+                    <option key={equip.id} value={equip.id}>{equip.num_patrimonio}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+
+            <div className={styles.formButtons}>
+              <Link className={styles.linkBtn} to="/minhas-solicitacoes">
+                <button type="button" className={styles.btnBack}>Voltar</button>
+              </Link>
+              <button type="submit" className={styles.btnSubmit}>Salvar</button>
+            </div>
+          </form>
         </div>
       </main>
     </div>
