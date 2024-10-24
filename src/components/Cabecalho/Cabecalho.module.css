@@ -1,119 +1,137 @@
 .header {
-    align-self: stretch;
-    display: flex;
-    width: auto;
-    gap: 20px;
-    line-height: 1;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 5px 45px;
-    background: linear-gradient(90deg, rgba(210,210,210,1) 0%, rgba(21,108,221,1) 100%);
-  }
-  
-  .logo {
-    aspect-ratio: 1.15;
-    object-fit: contain;
-    object-position: center;
-    width: 161px;
-    max-width: 100%;
-  }
-  
-  .userInfo {
-    display: flex;
-    gap: 40px 100px;
-    margin: auto 0;
-  }
-  
-  .userProfile {
-    align-self: start;
-    display: flex;
-    gap: 23px;
-  }
-  
-  .avatar {
-    aspect-ratio: 1;
-    object-fit: contain;
-    object-position: center;
-    width: 40px;
-  }
-  
-  .userName {
-    font-size: 17px;
-    color: #FFFFFF;
-    align-self: start;
-    margin-top: 13px;
-    flex-basis: auto
-  }
-  
-  .logoutIcon {
-    aspect-ratio: 1;
-    object-fit: contain;
-    object-position: center;
-    width: fit-content;
-    padding: 0;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
+  align-self: stretch;
+  display: flex;
+  width: auto;
+  gap: 20px;
+  line-height: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 5px 45px;
+  background: linear-gradient(90deg, rgba(210, 210, 210, 1) 0%, rgba(21, 108, 221, 1) 100%);
+}
 
-  .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  /* Estilos do modal */
-  .modal {
-    background-color: #f9f9f9;
-    padding: 20px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  /* Estilos dos botões de ação do modal */
-  .modalActions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-  }
+.logo {
+  aspect-ratio: 1.15;
+  object-fit: contain;
+  object-position: center;
+  width: 161px;
+  max-width: 100%;
+}
 
-  .modal p{
-    font: 400 17px/1 Roboto, sans-serif;
-  }
+.userInfo {
+  display: flex;
+  gap: 40px 100px;
+  margin: auto 0;
+}
 
-  .modal h2{
-    font: 700 24px/1 Roboto, sans-serif;
-  }
-  
-  .confirmButton, .cancelButton {
-    padding: 10px 20px;
-    font: 400 17px/1 Roboto, sans-serif;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-  }
-  
-  .confirmButton {
-    background-color: #156cdd;
-    color: white;
-  }
-  
-  .cancelButton {
-    background-color: #ccc;
-    color: black;
-  }
-  
-  /* Transições suaves */
-  .modalActions button:hover {
-    opacity: 0.8;
-  }
+.userProfile {
+  align-self: start;
+  display: flex;
+  gap: 23px;
+}
+
+.avatar {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 40px;
+}
+
+.userName {
+  font-size: 17px;
+  color: #FFFFFF;
+  align-self: start;
+  margin-top: 13px;
+  flex-basis: auto
+}
+
+.logoutIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: fit-content;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Estilos do modal */
+.modal {
+  background-color: #f9f9f9;
+  padding: 20px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Estilos dos botões de ação do modal */
+.modalActions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal p {
+  font: 400 17px/1 Roboto, sans-serif;
+}
+
+.modal h2 {
+  font: 700 24px/1 Roboto, sans-serif;
+}
+
+.confirmButton,
+.cancelButton {
+  padding: 10px 20px;
+  font: 400 17px/1 Roboto, sans-serif;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.confirmButton {
+  background-color: #156cdd;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Transições suaves */
+.modalActions button:hover {
+  opacity: 0.8;
+}
+
+.changePasswordIcon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 8px;
+}
+
+.changePasswordIcon img {
+  width: 25px;
+  height: 25px;
+}
+
+.changePasswordIcon :hover {
+  transform: scale(1.15);
+}

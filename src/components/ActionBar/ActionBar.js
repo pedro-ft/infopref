@@ -6,7 +6,6 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChange
   const [searchTerm, setSearchTerm] = useState('');
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const navigate = useNavigate();
 
   const handleNewClick = () => {
@@ -36,19 +35,6 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChange
     }
   };
 
-  const openPasswordModal = () => {
-    setShowPasswordModal(true);
-  };
-
-  const closePasswordModal = () => {
-    setShowPasswordModal(false);
-  };
-
-  const handlePasswordSave = () => {
-    // Lógica para salvar a nova senha
-    closePasswordModal();
-  };
-
   useEffect(() => {
     onSort(selectedSort);
   });
@@ -56,11 +42,7 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChange
   return (
     <div className={styles.actionBar}>
       <button className={styles.actionButton} onClick={handleNewClick}>{tipo}</button>
-      {showChangePassword && (
-        <button className={styles.actionButton} onClick={openPasswordModal}>
-          Alterar Senha
-        </button>
-      )}
+
 
       <form className={styles.searchForm} onSubmit={handleSubmit}>
         <label htmlFor="Search" className={styles.visuallyHidden}>Pesquisar</label>
@@ -89,21 +71,6 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChange
               {option}
             </label>
           ))}
-        </div>
-      )}
-       {showPasswordModal && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>Alterar Senha</h2>
-            <label>Senha Antiga</label>
-            <input type="password" />
-            <label>Senha Nova</label>
-            <input type="password" />
-            <div className={styles.modalActions}>
-              <button className={styles.cancelButton} onClick={closePasswordModal}>Cancelar</button>
-              <button className={styles.confirmButton} onClick={handlePasswordSave}>Salvar</button>
-            </div>
-          </div>
         </div>
       )}
     </div>
