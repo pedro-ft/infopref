@@ -108,11 +108,13 @@ function MinhasSolicitacoes() {
                 link='solicitar-ordem'
                 onSearch={handleSearch}
                 onSort={handleSort}
-                sortOptions={['Mais recente', 'Mais antigo', 'Status']} />
+                sortOptions={['Mais recente', 'Mais antigo', 'Status']}
+                showChangePassword={true} />
             <div className={styles.contentWrapper}>
                 <h2 className={styles.listTitle}>Minhas Solicitações</h2>
                 <section className={styles.listSection}>
-                    {currentItems.map((solicitacao, index) => (
+                    {currentItems.length > 0 ? (
+                       currentItems.map((solicitacao, index) => (
                         <MinhasSolicitacoesItem key={index} id={solicitacao.id}
                             data_abertura={format(solicitacao.data_abertura, "dd/MM/yyyy")}
                             data_finalizacao={solicitacao.data_finalizacao ? format(solicitacao.data_finalizacao, "dd/MM/yyyy") : ''}
@@ -121,7 +123,10 @@ function MinhasSolicitacoes() {
                             patrimonio={solicitacao.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
                             status={statusMapping[solicitacao.status]}
                         />
-                    ))}
+                    ))
+                ) : (
+                    <p>Nenhuma solitação encontrada.</p>
+                )}
                 </section>
             </div>
             <div className={styles.pagination}>

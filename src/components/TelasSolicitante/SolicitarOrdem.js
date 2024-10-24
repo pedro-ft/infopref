@@ -98,6 +98,7 @@ const SolicitarOS = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Solicitar OS</h1>
+      <div className={styles.formContainer}> 
         <form onSubmit={handleFormSubmit}>
           <div className={styles.formGroup}>
             <label>Descrição</label>
@@ -141,6 +142,7 @@ const SolicitarOS = () => {
             <button type="submit" className={styles.btnSubmit}>Salvar</button>
           </div>
         </form>
+        </div>
       </main>
     </div>
   );

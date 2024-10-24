@@ -45,8 +45,8 @@ const Cabecalho = () => {
             <h2>Confirmar Logout</h2>
             <p>Tem certeza que deseja sair?</p>
             <div className={styles.modalActions}>
-              <button onClick={handleConfirmLogout} className={styles.confirmButton}>Sim</button>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
+              <button onClick={handleConfirmLogout} className={styles.confirmButton}>Sim</button>
             </div>
           </div>
         </div>
