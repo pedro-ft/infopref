@@ -109,6 +109,16 @@
     width: 100%;
   }
 
+  .modal input{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font: 400 17px/1 Roboto, sans-serif;
+    color: #666;
+  }
+
   /* Estilos dos botões de ação do modal */
   .modalActions {
     margin-top: 20px;
