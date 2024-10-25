@@ -67,7 +67,8 @@ function MinhasSolicitacoes() {
 
     const filteredSolicitacoes = solicitacoes
         .filter(solicitacao =>
-            solicitacao.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            solicitacao.id.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+            solicitacao.status.toString().toLowerCase().includes(searchTerm.toLowerCase())
         )
         .sort((a, b) => {
             switch (sortType) {

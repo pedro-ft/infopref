@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import styles from '../../Cadastro/Novo.module.css';
+import { UserContext } from '../../context/UserContext';
 
 const GerarRelatorio = () => {
     //const { userProfile } = useContext(UserContext);
@@ -11,6 +12,8 @@ const GerarRelatorio = () => {
     const [subTipoSelecionado, setSubTipoSelecionado] = useState('');
     const [dataInicio, setDataInicio] = useState('');
     const [dataFim, setDataFim] = useState('');
+    const { userProfile } = useContext(UserContext);
+    const navigate = useNavigate();
 
     /*let url = '';
     if (userProfile === 'ADM') {
@@ -127,8 +130,13 @@ const GerarRelatorio = () => {
         }
     };
 
-
-
+    const handleBackClick = () => {
+        if (userProfile === 'ADM') {
+          navigate('/menu');
+        } else if (userProfile === 'TECNICO') {
+          navigate('/menu2');
+        }
+      };
 
     return (
         <div className={styles.container}>
@@ -185,9 +193,7 @@ const GerarRelatorio = () => {
                         </div>
                     )}
                     <div className={styles.formButtons}>
-                    <Link to="/menu" className={styles.linkBtn}>
-                        <button className={styles.btnBack} aria-label='Voltar'>Voltar</button>
-                    </Link>
+                    <button className={styles.btnBack} aria-label='Voltar' onClick={handleBackClick}>Voltar</button>
                     <button type="submit" className={styles.btnSubmit}>
                         Gerar Relatório
                     </button>

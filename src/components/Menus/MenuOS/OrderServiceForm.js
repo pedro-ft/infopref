@@ -160,7 +160,8 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   value={formData.tipo_chamado}
                   onChange={handleChange}
                 >
-                  {tipo_chamado.map(stat => {
+                  {tipo_chamado
+                  .map(stat => {
                     return <option key={stat.key} value={stat.value}>{stat.key}</option>
                   })}
                 </select>
