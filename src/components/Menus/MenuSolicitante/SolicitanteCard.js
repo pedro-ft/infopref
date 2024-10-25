@@ -6,6 +6,8 @@ import styles from './SolicitanteCard.module.css';
 function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_remoto, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // Novo estado para o modal de senha
+  const [newPassword, setNewPassword] = useState('');
 
   const [departamentos, setDepartamentos] = useState([]);
   const [selectedDepartamento, setSelectedDepartamento] = useState(null);
@@ -43,10 +45,20 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
     setIsModalOpen(false);
   };
 
+  const openPasswordModal = () => {
+    setIsPasswordModalOpen(true); // Abre o modal de senha
+  };
+
+  const closePasswordModal = () => {
+    setIsPasswordModalOpen(false); // Fecha o modal de senha
+    setNewPassword(''); // Limpa a nova senha
+  };
+
+
   const fetchDetails = async (solicitanteId) => {
     try {
       const response = await api.get(`/solicitantes/${solicitanteId}`);
-      return response.data; 
+      return response.data;
     } catch (error) {
       console.error('Erro ao buscar detalhes do solicitante:', error);
       throw error;
@@ -104,7 +116,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
         departamento: {
           id: departamento.id,
           nome: departamento.nome,
-          secretaria: departamento.secretaria 
+          secretaria: departamento.secretaria
         }
       };
 
@@ -121,6 +133,31 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
     }
   };
 
+  const handleResetPassword = async () => {
+    if (newPassword) {
+      try {
+        // Buscar detalhes do solicitante para obter o ID do usuário associado
+        const solicitanteDetails = await fetchDetails(id);
+
+        if (solicitanteDetails && solicitanteDetails.user && solicitanteDetails.user.id) {
+          const userId = solicitanteDetails.user.id;
+
+          // Usar o ID do usuário associado para redefinir a senha
+          await api.put(`/user/${userId}/reset-password`, newPassword);
+          alert("Senha redefinida com sucesso!");
+          closePasswordModal();
+        } else {
+          console.error("Nenhum usuário associado encontrado para o solicitante");
+          alert("Erro ao redefinir a senha. Nenhum usuário associado encontrado.");
+        }
+      } catch (error) {
+        console.error("Erro ao redefinir a senha:", error);
+        alert("Erro ao redefinir a senha. Tente novamente.");
+      }
+    }
+  };
+
+
   const handleCancelEdit = () => {
     setIsEditing(false);
   };
@@ -131,10 +168,10 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
     { name: 'id_acesso_remoto', label: 'ID de Acesso Remoto', type: 'text' },
     {
       label: 'Departamento', name: 'departamento', type: 'select', options: departamentos
-      .sort((a, b) => a.nome.localeCompare(b.nome))
-      .map(dep => {
-        return { label: dep.nome, value: dep.id };
-      })
+        .sort((a, b) => a.nome.localeCompare(b.nome))
+        .map(dep => {
+          return { label: dep.nome, value: dep.id };
+        })
     },
 
 
@@ -155,6 +192,10 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
               <p>{departamento}</p>
               <p>Fone: {fone}</p>
               <p>ID de Acesso Remoto: {id_acesso_remoto}</p>
+              <button className={styles.changeButton} onClick={openPasswordModal}>
+                Redefinir Senha
+              </button>
+
             </div>
             <div className={styles.actions}>
               <button className={styles.editButton} aria-label="Edit" onClick={handleEditClick}>
@@ -180,6 +221,27 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
           </div>
         </div>
       )}
+
+      {isPasswordModalOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Redefinir Senha</h2>
+            <input
+              type="password"
+              placeholder="Digite a nova senha"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className={styles.input}
+            />
+            <div className={styles.modalActions}>
+              <button onClick={closePasswordModal} className={styles.cancelButton}>Cancelar</button>
+              <button onClick={handleResetPassword} className={styles.confirmButton}>Confirmar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       {isEditing && (
         <EditForm
           fields={fields}
