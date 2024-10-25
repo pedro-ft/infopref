@@ -93,7 +93,8 @@ function DepartamentoList() {
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Departamentos</h2>
         <section className={styles.listSection}>
-          {currentItems.map((departamento, index) => (
+          {currentItems.length > 0 ? (
+            currentItems.map((departamento, index) => (
             <DepartamentoCard key={index}
               id={departamento.id}
               nome={departamento.nome}
@@ -101,7 +102,10 @@ function DepartamentoList() {
               onDelete={handleDeleteDepartamento}
               onEdit={handleEditDepartamento}
             />
-          ))}
+          ))
+        ) : (
+          <p>Nenhum departamento encontrado.</p>
+        )}
         </section>
       </div>
       <div className={styles.pagination}>

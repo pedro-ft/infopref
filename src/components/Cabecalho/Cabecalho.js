@@ -31,10 +31,8 @@ const Cabecalho = () => {
   };
 
   const handleConfirmLogout = () => {
-
-
     closeLogoutModal();
-    navigate('/'); // Redireciona para a página de login
+    navigate('/');
   };
 
   const handlePasswordSave = async () => {
@@ -68,9 +66,11 @@ const Cabecalho = () => {
           <div className={styles.userProfile}>
             <img loading="lazy" src={urlCorreto} className={styles.avatar} alt="User avatar" />
             <span className={styles.userName}>{displayName}</span>
-            <button className={styles.changePasswordIcon} onClick={openPasswordModal} aria-label="Change Password">
-              <img loading="lazy" src="/imagens/key-icon.svg" alt="Alterar Senha" />
-            </button>
+            {userProfile === 'SOLICITANTE' && (
+              <button className={styles.changePasswordIcon} onClick={openPasswordModal} aria-label="Change Password">
+                <img loading="lazy" src="/imagens/key-icon.svg" alt="Alterar Senha" />
+              </button>
+            )}
           </div>
           <button className={styles.logoutIcon} onClick={openLogoutModal} aria-label="Logout">
             <img loading="lazy" src="/imagens/sair.svg" alt="Logout" />

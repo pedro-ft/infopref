@@ -86,14 +86,18 @@ function TecnicoList() {
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Técnicos</h2>
         <section className={styles.listSection}>
-          {currentItems.map((tecnico, index) => (
+          {currentItems.length > 0 ? (
+            currentItems.map((tecnico, index) => (
             <TecnicoCard key={index} nome={tecnico.nome}
               fone={tecnico.fone}
               id={tecnico.id}
               onDelete={handleDeleteTecnico}
               onEdit={handleEditTecnico}
             />
-          ))}
+          ))
+        ) : (
+          <p>Nenhum técnico encontrado.</p>
+        )}
         </section>
       </div>
       <div className={styles.pagination}>

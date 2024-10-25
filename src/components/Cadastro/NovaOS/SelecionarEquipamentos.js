@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
 import styles from './FormularioOS.module.css';
+import Cabecalho from '../../Cabecalho/Cabecalho';
 
 const SelecionarEquipamentos = () => {
     const { state } = useLocation();
@@ -60,6 +61,8 @@ const SelecionarEquipamentos = () => {
 
 
     return (
+        <>
+        <Cabecalho />   
         <div className={styles.formContainer}>
             <form onSubmit={handleSubmit}>
                 <div className={styles.formGroup}>
@@ -97,6 +100,7 @@ const SelecionarEquipamentos = () => {
                 </div>
             </form>
         </div>
+        </>
     );
 };
 

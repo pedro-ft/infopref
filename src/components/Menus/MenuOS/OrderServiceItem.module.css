@@ -6,6 +6,10 @@
     margin-bottom: 2%;
     cursor: pointer;
   }
+
+  .orderServiceItem:hover {
+    background-color: #d3d3d3; /* Cor de fundo cinza ao passar o mouse */
+  }
   
   .itemIcon {
     width: 75px;

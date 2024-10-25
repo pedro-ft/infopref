@@ -95,7 +95,8 @@ function SecretariaList() {
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Secretarias</h2>
         <section className={styles.listSection}>
-          {currentItems.map((secretaria, index) => (
+          {currentItems.length > 0 ? (
+            currentItems.map((secretaria, index) => (
             <SecretariaCard key={index} nome={secretaria.nome}
               fone={secretaria.fone}
               id={secretaria.id}
@@ -103,7 +104,10 @@ function SecretariaList() {
               onEdit={handleEditSecretaria}
 
             />
-          ))}
+          ))
+        ) : (
+          <p>Nenhuma secretaria encontrada.</p>
+        )}
         </section>
       </div>
       <div className={styles.pagination}>

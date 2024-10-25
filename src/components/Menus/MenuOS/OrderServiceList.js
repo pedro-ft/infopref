@@ -24,7 +24,8 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
   return (
     <section className={styles.orderServiceList}>
       <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
-      {currentItems.map((item) => (
+      {currentItems.length > 0 ? (
+        currentItems.map((item) => (
         <OrderServiceItem key={item.id} openDate={item.data_abertura ? format(new Date(item.data_abertura), "dd/MM/yyyy") : ''}
           closeDate={item.data_finalizacao ? format(new Date(item.data_finalizacao), "dd/MM/yyyy") : ''}
           description={item.descricao}
@@ -40,7 +41,10 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
           tipo_chamado={tipoChamadoMapping[item.tipo_chamado]}
           onClick={() => onOrderClick(item)}
         />
-      ))}
+      ))
+    ) : (
+      <p>Nenhuma ordem de serviço encontrada.</p>
+    )}
     </section>
   );
 }

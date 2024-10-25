@@ -38,11 +38,11 @@
 }
 
 .userName {
-  font-size: 17px;
   color: #FFFFFF;
   align-self: start;
   margin-top: 13px;
-  flex-basis: auto
+  flex-basis: auto;
+  font: 400 17px/1 Roboto, sans-serif;
 }
 
 .logoutIcon {

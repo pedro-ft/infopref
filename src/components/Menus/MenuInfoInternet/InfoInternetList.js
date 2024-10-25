@@ -121,7 +121,7 @@ function InfoInternetList() {
               />
             ))
           ) : (
-            <p>Nenhuma Informação de Internet encontrada.</p>
+            <p>Nenhuma informação de internet encontrada.</p>
           )}
         </section>
       </div>

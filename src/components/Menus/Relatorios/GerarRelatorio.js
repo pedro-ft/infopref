@@ -135,8 +135,8 @@ const GerarRelatorio = () => {
             <Cabecalho />
             <main className={styles.mainContent}>
                 <h1 className={styles.pageTitle}>Gerar Relatório</h1>
-                <form onSubmit={handleFormSubmit} className={styles.form}>
-                    <div className={styles.inputGroup}>
+                <form onSubmit={handleFormSubmit} className={styles.formContainer}>
+                    <div className={styles.formGroup}>
                         <label>Data Início</label>
                         <input
                             type="date"
@@ -144,7 +144,7 @@ const GerarRelatorio = () => {
                             onChange={(e) => setDataInicio(e.target.value)}
                         />
                     </div>
-                    <div className={styles.inputGroup}>
+                    <div className={styles.formGroup}>
                         <label>Data Final</label>
                         <input
                             type="date"
@@ -152,7 +152,7 @@ const GerarRelatorio = () => {
                             onChange={(e) => setDataFim(e.target.value)}
                         />
                     </div>
-                    <div className={styles.inputGroup}>
+                    <div className={styles.formGroup}>
                         <label>Relatório por</label>
                         <select
                             value={tipoSelecionado}
@@ -167,7 +167,7 @@ const GerarRelatorio = () => {
                         </select>
                     </div>
                     {tipoSelecionado && (
-                        <div className={styles.inputGroup}>
+                        <div className={styles.formGroup}>
                             <label>{`Selecione o ${tipoSelecionado}`}</label>
                             <select
                                 name="subTipo"
@@ -184,12 +184,14 @@ const GerarRelatorio = () => {
 
                         </div>
                     )}
-                    <Link to="/menu" className={styles.backButtonLink}>
-                        <button className={styles.backButton} aria-label='Voltar'>Voltar</button>
+                    <div className={styles.formButtons}>
+                    <Link to="/menu" className={styles.linkBtn}>
+                        <button className={styles.btnBack} aria-label='Voltar'>Voltar</button>
                     </Link>
-                    <button type="submit" className={styles.submitButton}>
+                    <button type="submit" className={styles.btnSubmit}>
                         Gerar Relatório
                     </button>
+                    </div>
                 </form>
             </main>
         </div>

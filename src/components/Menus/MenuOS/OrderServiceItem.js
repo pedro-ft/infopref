@@ -19,7 +19,7 @@ function OrderServiceItem({
 }) {
   return (
     <article className={styles.orderServiceItem} onClick={onClick}>
-      <img src="/imagens/ordem.svg" alt="" className={styles.itemIcon} />
+      <img src="/imagens/lupa.svg" alt="" className={styles.itemIcon} />
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
           <h3 className={styles.protocolNumber}>Número de Protocolo: {id}</h3>
