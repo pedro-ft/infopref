@@ -1,3 +1,4 @@
+// Cabecalho.js
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/api';
@@ -5,7 +6,7 @@ import { UserContext } from '../context/UserContext';
 import styles from './Cabecalho.module.css';
 
 const Cabecalho = () => {
-  const { username, avatarUrl } = useContext(UserContext);
+  const { username, realName, avatarUrl, userProfile } = useContext(UserContext);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -30,6 +31,8 @@ const Cabecalho = () => {
   };
 
   const handleConfirmLogout = () => {
+
+
     closeLogoutModal();
     navigate('/'); // Redireciona para a página de login
   };
@@ -54,6 +57,9 @@ const Cabecalho = () => {
     }
   };
 
+  const displayName = userProfile === 'ADM' ? username : (realName || username);
+
+
   return (
     <>
       <header className={styles.header}>
@@ -61,7 +67,7 @@ const Cabecalho = () => {
         <div className={styles.userInfo}>
           <div className={styles.userProfile}>
             <img loading="lazy" src={urlCorreto} className={styles.avatar} alt="User avatar" />
-            <span className={styles.userName}>{username}</span>
+            <span className={styles.userName}>{displayName}</span>
             <button className={styles.changePasswordIcon} onClick={openPasswordModal} aria-label="Change Password">
               <img loading="lazy" src="/imagens/key-icon.svg" alt="Alterar Senha" />
             </button>
