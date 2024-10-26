@@ -23,7 +23,6 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick }) {
 
   return (
     <section className={styles.orderServiceList}>
-      <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
       {currentItems.length > 0 ? (
         currentItems.map((item) => (
         <OrderServiceItem key={item.id} openDate={item.data_abertura ? format(new Date(item.data_abertura), "dd/MM/yyyy") : ''}
