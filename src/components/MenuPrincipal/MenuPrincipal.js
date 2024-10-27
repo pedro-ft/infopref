@@ -18,6 +18,7 @@ const MenuPrincipal = () => {
 
   const [ordensEmAberto, setOrdensEmAberto] = useState(0);
   const [ordensEmAndamento, setOrdensEmAndamento] = useState(0);
+  const [ordensAguardando, setOrdensAguardando] = useState(0);
   const [ordensFinalizadasMes, setOrdensFinalizadasMes] = useState(0);
   const [ordensUrgentes, setOrdensUrgentes] = useState(0);
 
@@ -28,6 +29,10 @@ const MenuPrincipal = () => {
 
     api.get('/osmenu/count/status/EM_ANDAMENTO')
       .then(response => setOrdensEmAndamento(response.data))
+      .catch(error => console.error(error));
+
+    api.get('/osmenu/count/status/AGUARDANDO_PEÇAS')
+      .then(response => setOrdensAguardando(response.data))
       .catch(error => console.error(error));
 
     api.get('/osmenu/count/finalized-this-month')
@@ -54,7 +59,7 @@ const MenuPrincipal = () => {
         <main className={styles.mainContent}>
           <div className={styles.cardsContainer}>
             <div className={styles.card}>Ordens em Aberto: {ordensEmAberto}</div>
-            <div className={styles.card}>Ordens em Andamento: {ordensEmAndamento}</div>
+            <div className={styles.card}>Ordens em Andamento: {ordensEmAndamento + ordensAguardando}</div>
             <div className={styles.card}>Ordens Finalizadas Este Mês: {ordensFinalizadasMes}</div>
             <div className={styles.card}>Ordens com Prioridade Urgente: {ordensUrgentes}</div>
           </div>
