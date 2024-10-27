@@ -1,0 +1,16 @@
+.headerRow {
+    display: flex;
+    padding: 10px;
+    color: white;
+    background-color: #156cdd;
+    font: 700 17px/1 Roboto, sans-serif;
+    border-bottom: 1px solid #ccc;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.headerField {
+    flex: 1;
+    padding: 5px;
+    text-align: left;
+}

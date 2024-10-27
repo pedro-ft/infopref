@@ -17,8 +17,9 @@ function OrderServicePage() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [isListView, setIsListView] = useState(true);
   const navigate = useNavigate();
-  const itemsPerPage = 5;
+  const itemsPerPage = isListView ? 30 : 5;
 
   const fetchOrdemServicos = async () => {
     try {
@@ -134,7 +135,7 @@ function OrderServicePage() {
       onSort={handleSort}
       sortOptions={['Mais recente', 'Mais antigo', 'Prioridade', 'Status', 'Tipo Chamado', 'Secretaria', 'Departamento', 'Solicitante', 'Técnico']} />
       <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
-      <h3>Filtre as Ordens de Serviços exibidas por um período:</h3>
+      <h3 className={styles.filterTitle}>Filtre as Ordens de Serviços exibidas por um período:</h3>
       <div className={styles.filterContainer}>
         <label>
           Data de Início: 
@@ -144,6 +145,9 @@ function OrderServicePage() {
           Data de Fim: 
           <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </label>
+        <button className={styles.toggleButton} onClick={() => setIsListView(!isListView)}>
+        Exibir em {isListView ? 'Cards' : 'Linhas'}
+      </button>
       </div>
       <main className={styles.mainContent}>
         <OrderServiceList
@@ -151,6 +155,7 @@ function OrderServicePage() {
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           onOrderClick={handleOrderClick}
+          isListView={isListView}
         />
         <div className={styles.pagination}>
           <button

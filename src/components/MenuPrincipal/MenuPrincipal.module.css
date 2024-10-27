@@ -11,9 +11,9 @@
 }
 
 .sidebar {
-  width: 250px;
-  background-color: #156cdd;
-  padding: 20px;
+  width: 18%;
+  background: rgba(20,34,71,1);
+  padding: 20px 0px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  gap: 30px;
+  gap: 20px;
   /* Espaço entre os itens */
 }
 
@@ -37,45 +37,32 @@
 .mainContent {
   flex: 1;
   padding: 20px;
-  background-color: #ecf0f1;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .cardsContainer {
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
   /* Alinha os cards verticalmente */
-  gap: 60px;
+  gap: 35px;
   width: 70%;
   /* Ajuste de largura para deixar os cards maiores */
 }
 
 .card {
-  background-color: #3486f2;
+  background: rgba(20,34,71,1);
   color: white;
   padding: 30px;
   /* Mais espaço interno */
-  border-radius: 8px;
+  border-radius: 10px;
   text-align: center;
-  font-size: 40px;
+  font: 400 36px/1 Roboto, sans-serif;
   /* Tamanho de fonte aumentado */
   flex: 1;
-}
-
-/* Estilos originais para reutilização */
-.menuPrincipal {
-  background-color: #fff;
-  display: flex;
-  padding-bottom: 0px;
-  flex-direction: column;
-  text-align: center;
-  letter-spacing: 0.5px;
-  font: 400 24px/1 Roboto, sans-serif;
-  height: 100vh;
 }
 
 .menuItem {
@@ -86,10 +73,10 @@
   /* Maior espaço para ocupar verticalmente */
   text-align: left;
   cursor: pointer;
-  font-size: 24px;
+  font: 400 24px/1 Roboto, sans-serif;
   /* Aumentado para melhor visibilidade */
   width: 100%;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: background 0.3s;
 }
 

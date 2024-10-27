@@ -15,7 +15,19 @@
     padding: 0px 44px;
   }
 
-  .orderServicePage h3{
+  .toggleButton{
+    background-color: #156cdd;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 30px;
+    font: 400 17px/1 Roboto, sans-serif;
+    margin-bottom: 17px;
+    margin-left: auto;
+}
+
+  .filterTitle{
     font: 400 17px/1 Roboto, sans-serif;
     padding: 0px 44px;
   }
@@ -42,7 +54,7 @@
     border-radius: 5px;
     font: 400 17px/1 Roboto, sans-serif;
     color: #666;
-    margin-bottom: 40px;
+    margin-bottom: 17px;
   }
   
   .mainContent {

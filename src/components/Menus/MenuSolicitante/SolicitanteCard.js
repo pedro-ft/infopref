@@ -6,7 +6,7 @@ import styles from './SolicitanteCard.module.css';
 function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_remoto, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // Novo estado para o modal de senha
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
   const [newPassword, setNewPassword] = useState('');
 
   const [departamentos, setDepartamentos] = useState([]);
@@ -136,13 +136,10 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   const handleResetPassword = async () => {
     if (newPassword) {
       try {
-        // Buscar detalhes do solicitante para obter o ID do usuário associado
         const solicitanteDetails = await fetchDetails(id);
 
         if (solicitanteDetails && solicitanteDetails.user && solicitanteDetails.user.id) {
           const userId = solicitanteDetails.user.id;
-
-          // Usar o ID do usuário associado para redefinir a senha
           await api.put(`/user/${userId}/reset-password`, newPassword);
           alert("Senha redefinida com sucesso!");
           closePasswordModal();
@@ -156,7 +153,6 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       }
     }
   };
-
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -195,7 +191,6 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
               <button className={styles.changeButton} onClick={openPasswordModal}>
                 Redefinir Senha
               </button>
-
             </div>
             <div className={styles.actions}>
               <button className={styles.editButton} aria-label="Edit" onClick={handleEditClick}>
