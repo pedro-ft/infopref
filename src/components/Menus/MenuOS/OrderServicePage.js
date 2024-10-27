@@ -11,17 +11,18 @@ import styles from './OrderServicePage.module.css';
 function OrderServicePage() {
   const { userProfile } = useContext(UserContext);
   const [ordemServicos, setOrdemServicos] = useState([]);
-  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortType, setSortType] = useState('Mais recentes');
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const itemsPerPage = 5;
-
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isListView, setIsListView] = useState(true);
+  const navigate = useNavigate();
+  const itemsPerPage = isListView ? 30 : 5;
 
   const fetchOrdemServicos = async () => {
     try {
-
       const data = await getAllOrdemServico();
       const filteredData = data.filter(
         (item) =>
@@ -30,7 +31,6 @@ function OrderServicePage() {
           item.status === 'FINALIZADO'
       );
       setOrdemServicos(filteredData);
-
     } catch (error) {
       console.error('Erro ao carregar ordem de servico:', error);
 
@@ -42,13 +42,24 @@ function OrderServicePage() {
 
 
   const filteredData = ordemServicos
-  .filter(item =>
-    item.id.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.tecnico.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.solicitante.departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  .filter(item => {
+    const searchParts = searchTerm.toLowerCase().split(" ");
+    return searchParts.every(part =>
+      item.id.toString().toLowerCase().includes(part) ||
+      item.solicitante.nome.toLowerCase().includes(part) ||
+      item.tecnico.nome.toLowerCase().includes(part) ||
+      item.status.toLowerCase().includes(part) ||
+      item.solicitante.departamento.nome.toLowerCase().includes(part) ||
+      item.solicitante.departamento.secretaria.nome.toLowerCase().includes(part) ||
+      item.prioridade.toLowerCase().includes(part)
+    );
+  })
+  .filter(item => {
+    const itemDate = new Date(item.data_abertura);
+    const start = startDate ? new Date(startDate + 'T00:00:00') : null;  
+    const end = endDate ? new Date(endDate + 'T23:59:59') : null;        
+    return (!start || itemDate >= start) && (!end || itemDate <= end);
+  })
   .sort((a, b) => {
     switch (sortType) {
       case 'Mais antigo':
@@ -123,12 +134,28 @@ function OrderServicePage() {
       <ActionBar onSearch={handleSearch}
       onSort={handleSort}
       sortOptions={['Mais recente', 'Mais antigo', 'Prioridade', 'Status', 'Tipo Chamado', 'Secretaria', 'Departamento', 'Solicitante', 'Técnico']} />
+      <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
+      <h3 className={styles.filterTitle}>Filtre as Ordens de Serviços exibidas por um período:</h3>
+      <div className={styles.filterContainer}>
+        <label>
+          Data de Início: 
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        </label>
+        <label>
+          Data de Fim: 
+          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        </label>
+        <button className={styles.toggleButton} onClick={() => setIsListView(!isListView)}>
+        Exibir em {isListView ? 'Cards' : 'Linhas'}
+      </button>
+      </div>
       <main className={styles.mainContent}>
         <OrderServiceList
           data={filteredData}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           onOrderClick={handleOrderClick}
+          isListView={isListView}
         />
         <div className={styles.pagination}>
           <button

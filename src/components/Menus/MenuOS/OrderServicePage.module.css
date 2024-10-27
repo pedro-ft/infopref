@@ -5,6 +5,57 @@
     padding-bottom: 56px;
     display: flex;
   }
+
+  .listTitle {
+    color: #000;
+    letter-spacing: 0.5px;
+    font: 400 24px/1 Roboto, sans-serif;
+    margin-bottom: 10px;
+    margin-top: 40px;
+    padding: 0px 44px;
+  }
+
+  .toggleButton{
+    background-color: #156cdd;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 30px;
+    font: 400 17px/1 Roboto, sans-serif;
+    margin-bottom: 17px;
+    margin-left: auto;
+}
+
+  .filterTitle{
+    font: 400 17px/1 Roboto, sans-serif;
+    padding: 0px 44px;
+  }
+
+  .filterContainer{
+    padding: 0px 44px;
+    font: 400 17px/1 Roboto, sans-serif;
+    display: flex;
+    gap: 10px; 
+    align-items: center; 
+  }
+
+  .filterContainer label{
+    margin-bottom: 5px;
+    font-weight: normal;
+  }
+
+  .filterContainer input{
+    width: auto; 
+    flex: 1; 
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font: 400 17px/1 Roboto, sans-serif;
+    color: #666;
+    margin-bottom: 17px;
+  }
   
   .mainContent {
     flex: 1;
