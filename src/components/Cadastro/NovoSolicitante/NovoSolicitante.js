@@ -11,9 +11,9 @@ const NovoSolicitante = () => {
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
-        const response = await api.get('/departamentos');  
+        const response = await api.get('/departamentos');
         setDepartamentos(response.data);
-        console.log(response.data);  
+        console.log(response.data);
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);
       }
@@ -27,29 +27,33 @@ const NovoSolicitante = () => {
     { label: 'ID de Acesso Remoto', name: 'id_acesso_remoto', type: 'text' },
     {
       label: 'Departamento', name: 'departamento', type: 'select', options: departamentos
-      .sort((a, b) => a.nome.localeCompare(b.nome))
-      .map(dep => {
-        return { label: dep.nome, value: dep.id };
-      })
+        .sort((a, b) => a.nome.localeCompare(b.nome))
+        .map(dep => {
+          return { label: dep.nome, value: dep.id };
+        })
     },
     { label: 'Usuário', name: 'username', type: 'text' },
     { label: 'Senha', name: 'password', type: 'text' }
   ]
 
   const handleFormSubmit = async (formData) => {
+    let userId; // Declara `userId` fora do bloco `try` para que fique disponível no `catch`
+
     try {
+      // Criar o usuário primeiro para obter o ID
       const userPayload = {
         username: formData.username,
         password: formData.password,
       };
 
       const userResponse = await api.post('/user/solicitante', userPayload);
-      const userId = userResponse.data.id;
+      userId = userResponse.data.id; // Atribui o ID retornado à variável `userId`
 
       if (!userId) {
         throw new Error('ID do usuário não retornado pelo backend');
       }
 
+      // Depois, criar o solicitante usando o ID do usuário
       const solicitantePayload = {
         nome: formData.nome,
         fone: formData.fone,
@@ -58,13 +62,21 @@ const NovoSolicitante = () => {
         user: { id: userId },
       };
 
-      console.log('Payload do solicitante:', solicitantePayload);
       await api.post('/solicitantes', solicitantePayload);
-      console.log('Solicitante criado com sucesso:', solicitantePayload);
+
+      console.log('Solicitante e usuário criados com sucesso:', solicitantePayload, userPayload);
     } catch (error) {
       console.error('Erro ao criar o solicitante ou usuário:', error);
+
+      // Em caso de erro na criação do solicitante, excluir o usuário criado para manter a integridade
+      if (userId) {
+        await api.delete(`/user/${userId}`);
+      }
     }
   };
+
+
+
 
   return (
     <div className={styles.container}>

@@ -13,35 +13,41 @@ const NovoTecnico = () => {
   ]
 
   const handleFormSubmit = async (formData) => {
+    let userId;
     try {
-      // Criar o usuário primeiro
+      // Criar o usuário primeiro para obter o ID
       const userPayload = {
         username: formData.username,
         password: formData.password,
       };
 
       const userResponse = await api.post('/user', userPayload);
-      const userId = userResponse.data.id; // Supondo que o backend retorna o ID do usuário criado
+      userId = userResponse.data.id;
 
       if (!userId) {
         throw new Error('ID do usuário não retornado pelo backend');
       }
 
-      // Criar o técnico com o cod_usuario do usuário recém-criado
+      // Depois, criar o técnico usando o ID do usuário
       const tecnicoPayload = {
         nome: formData.nome,
         fone: formData.fone,
-        user: { id: userId }, // Vincular com o usuário criado
+        user: { id: userId },
       };
 
-
-      console.log('Payload do técnico:', tecnicoPayload);
       await api.post('/tecnicos', tecnicoPayload);
-      console.log('Técnico criado com sucesso:', tecnicoPayload);
+
+      console.log('Técnico e usuário criados com sucesso:', tecnicoPayload, userPayload);
     } catch (error) {
       console.error('Erro ao criar o técnico ou usuário:', error);
+
+      // Em caso de erro na criação do técnico, excluir o usuário criado para manter a integridade
+      if (userId) {
+        await api.delete(`/user/${userId}`);
+      }
     }
   };
+
 
   return (
     <div className={styles.container}>
