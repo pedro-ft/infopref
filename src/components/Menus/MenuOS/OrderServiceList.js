@@ -64,7 +64,7 @@ function OrderServiceList({ data, currentPage, itemsPerPage, onOrderClick, isLis
               openDate={item.data_abertura ? format(new Date(item.data_abertura), "dd/MM/yyyy") : ''}
               closeDate={item.data_finalizacao ? format(new Date(item.data_finalizacao), "dd/MM/yyyy") : ''}
               description={item.descricao}
-              patrimonio={item.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
+              patrimonio={item.equipamentos.length > 0 ? item.equipamentos.map(eq => eq.num_patrimonio).join(', ') : item.equipamentoPatrimonio}
               department={item.solicitante.departamento.nome}
               id={item.id}
               priority={item.prioridade}
