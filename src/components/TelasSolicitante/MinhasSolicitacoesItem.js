@@ -14,7 +14,8 @@ function MinhasSolicitacoesItem({ id, data_abertura, data_finalizacao, status, p
             <p>Data Abertura: {data_abertura}</p>
             {data_finalizacao && <p>Data Finalização: {data_finalizacao}</p>}
             <p>Status: {status}</p>
-            <p>Nº de patrimônio: {patrimonio}</p>
+            <p>Nº de patrimônio: {patrimonio && patrimonio.length > 0 ? patrimonio : "Não especificado"}</p>
+
           </div>
           <div className={styles.cardSideSection}>
             <p className={styles.descricao}>Descrição: {descricao}</p>

@@ -10,41 +10,28 @@ const SolicitarOS = () => {
   const [solicitanteId, setSolicitanteId] = useState(null);
   const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
   const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
-  const [opcoesEquipamentos, setOpcoesEquipamentos] = useState([]);
   const [descricao, setDescricao] = useState("");
 
-
-  // Função para obter o nome do solicitante a partir do token JWT
+  // Função para obter o ID do solicitante a partir do token JWT
   useEffect(() => {
-    const getSolicitanteNomeFromToken = async () => {
+    const getSolicitanteIdFromToken = async () => {
       const authToken = localStorage.getItem('authToken');
       if (authToken) {
         try {
           const token = authToken.replace('Bearer ', '');
           const decoded = jwtDecode(token);
-          console.log('Decoded token:', decoded);
-
           const userId = decoded.jti;
-          console.log('User ID:', userId);
 
           // Buscar informações do solicitante com base no ID do usuário
           const response = await api.get(`/solicitantes/usuario/${userId}`);
-          console.log('Solicitante response:', response.data);
-          setSolicitanteId(response.data.id); // Armazena o nome do solicitante
-
-          // Carregar equipamentos disponíveis no departamento do solicitante
-          const deptResponse = await api.get(`/solicitantes/${response.data.id}`);
-          const departamentoId = deptResponse.data.departamento.id;
-          const equipResponse = await api.get(`/equipamentos/departamento/${departamentoId}`);
-          setOpcoesEquipamentos(equipResponse.data);
-
+          setSolicitanteId(response.data.id);
         } catch (error) {
-          console.error('Erro ao buscar o nome do solicitante:', error);
+          console.error('Erro ao buscar o ID do solicitante:', error);
         }
       }
     };
 
-    getSolicitanteNomeFromToken();
+    getSolicitanteIdFromToken();
   }, []);
 
   const handleQuantidadeChange = (e) => {
@@ -70,7 +57,7 @@ const SolicitarOS = () => {
       return;
     }
     if (equipamentosSelecionados.some(equip => !equip)) {
-      console.error('Todos os equipamentos devem ser selecionados.');
+      console.error('Todos os equipamentos devem ser preenchidos.');
       return;
     }
 
@@ -81,7 +68,7 @@ const SolicitarOS = () => {
       tipo_chamado: 'HARDWARE',
       prioridade: 'Baixa',
       data_abertura: new Date(),
-      equipamentosIds: equipamentosSelecionados
+      equipamentoPatrimonio: equipamentosSelecionados
     };
 
     try {
@@ -123,15 +110,12 @@ const SolicitarOS = () => {
             {[...Array(quantidadeEquipamentos)].map((_, index) => (
               <div key={index} className={styles.formGroup}>
                 <label>Equipamento {index + 1}:</label>
-                <select
+                <input
+                  type="number" // Tipo "number" para aceitar apenas números
                   value={equipamentosSelecionados[index] || ''}
                   onChange={(e) => handleEquipamentoChange(index, e.target.value)}
-                >
-                  <option value="">Selecione o equipamento</option>
-                  {opcoesEquipamentos.map(equip => (
-                    <option key={equip.id} value={equip.id}>{equip.num_patrimonio}</option>
-                  ))}
-                </select>
+                  placeholder="Digite o número de patrimônio"
+                />
               </div>
             ))}
 

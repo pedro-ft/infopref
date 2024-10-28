@@ -121,7 +121,7 @@ function MinhasSolicitacoes() {
                                 data_finalizacao={solicitacao.data_finalizacao ? format(new Date(solicitacao.data_finalizacao), "dd/MM/yyyy") : ''}
                                 descricao={solicitacao.descricao}
                                 resolucao={solicitacao.resolucao}
-                                patrimonio={solicitacao.equipamentos.map(eq => eq.num_patrimonio).join(', ')}
+                                patrimonio={solicitacao.equipamentoPatrimonio}
                                 status={statusMapping[solicitacao.status]}
                             />
                         ))

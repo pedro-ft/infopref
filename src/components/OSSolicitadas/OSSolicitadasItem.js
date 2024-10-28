@@ -53,7 +53,10 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
         cod_tec: tecnicoSelecionado,
         prioridade,
         tipo_chamado: tipoChamado,
-        status: "EM_ANDAMENTO"
+        status: "EM_ANDAMENTO",
+        equipamentoPatrimonio: Array.isArray(ordemServicoAtual.equipamentoPatrimonio)
+          ? ordemServicoAtual.equipamentoPatrimonio.join(", ")
+          : ordemServicoAtual.equipamentoPatrimonio
       };
 
       console.log("Ordem de Serviço atualizada:", updatedOrdemServico); // Adicione isto para depuração
@@ -72,8 +75,14 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
 
   const updateOrdemServico = async (ordemServico) => {
+    // Converta equipamentoPatrimonio para string, se for um array.
+    if (Array.isArray(ordemServico.equipamentoPatrimonio)) {
+      ordemServico.equipamentoPatrimonio = ordemServico.equipamentoPatrimonio.join(', ');
+    }
+
     return await api.put(`/osmenu/${ordemServico.id}`, ordemServico);  // URL correta para a atualização
   };
+
 
   const closeAcceptModal = () => {
     setIsAcceptModalOpen(false);
@@ -145,10 +154,10 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
               <option value="">Selecione o técnico responsável</option> {/* Adicione uma opção padrão */}
               {Array.isArray(tecnicos) && tecnicos
-              .sort((a, b) => a.nome.localeCompare(b.nome))
-              .map(tecnico => (
-                <option key={tecnico.id} value={tecnico.id}>{tecnico.nome}</option>
-              ))}
+                .sort((a, b) => a.nome.localeCompare(b.nome))
+                .map(tecnico => (
+                  <option key={tecnico.id} value={tecnico.id}>{tecnico.nome}</option>
+                ))}
             </select>
 
             <label>Prioridade</label>

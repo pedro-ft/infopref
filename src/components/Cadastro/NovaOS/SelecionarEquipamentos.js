@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
-import styles from './FormularioOS.module.css';
 import Cabecalho from '../../Cabecalho/Cabecalho';
+import styles from './FormularioOS.module.css';
 
 const SelecionarEquipamentos = () => {
     const { state } = useLocation();
@@ -11,6 +11,8 @@ const SelecionarEquipamentos = () => {
     const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
     const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
     const [opcoesEquipamentos, setOpcoesEquipamentos] = useState([]);
+
+
 
     useEffect(() => {
         const fetchEquipamentos = async () => {
@@ -48,7 +50,7 @@ const SelecionarEquipamentos = () => {
 
         const osPayload = {
             ...formData,
-            equipamentosIds: equipamentosSelecionados
+            equipamentoPatrimonio: equipamentosSelecionados.join(", ")
         };
 
         try {
@@ -62,44 +64,41 @@ const SelecionarEquipamentos = () => {
 
     return (
         <>
-        <Cabecalho />   
-        <div className={styles.formContainer}>
-            <form onSubmit={handleSubmit}>
-                <div className={styles.formGroup}>
-                    <label>Quantidade de Equipamentos:</label>
-                    <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        value={quantidadeEquipamentos}
-                        onChange={handleQuantidadeChange}
-                    />
-                </div>
-
-                {[...Array(quantidadeEquipamentos)].map((_, index) => (
-                    <div key={index} className={styles.formGroup}>
-                        <label>Equipamento {index + 1}:</label>
-                        <select
-                            value={equipamentosSelecionados[index] || ''}
-                            onChange={(e) => handleEquipamentoChange(index, e.target.value)}
-                        >
-                            <option value="">Selecione o equipamento</option>
-                            {opcoesEquipamentos.map(equip => (
-                                <option key={equip.id} value={equip.id}>{equip.num_patrimonio}</option>
-                            ))}
-                        </select>
+            <Cabecalho />
+            <div className={styles.formContainer}>
+                <form onSubmit={handleSubmit}>
+                    <div className={styles.formGroup}>
+                        <label>Quantidade de Equipamentos:</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            value={quantidadeEquipamentos}
+                            onChange={handleQuantidadeChange}
+                        />
                     </div>
-                ))}
 
-                <div className={styles.formButtons}>
-                    <Link className={styles.linkBtn} to="/novaos" state={{ formData }}>
-                        <button type="button" className={styles.btnBack}>Voltar</button>
-                    </Link>
-                    <button type="submit" className={styles.btnSubmit}>Salvar</button>
+                    {[...Array(quantidadeEquipamentos)].map((_, index) => (
+                        <div key={index} className={styles.formGroup}>
+                            <label>Equipamento {index + 1}:</label>
+                            <input
+                                type="number" // Tipo "number" para aceitar apenas números
+                                value={equipamentosSelecionados[index] || ''}
+                                onChange={(e) => handleEquipamentoChange(index, e.target.value)}
+                                placeholder="Digite o número de patrimônio"
+                            />
+                        </div>
+                    ))}
 
-                </div>
-            </form>
-        </div>
+                    <div className={styles.formButtons}>
+                        <Link className={styles.linkBtn} to="/novaos" state={{ formData }}>
+                            <button type="button" className={styles.btnBack}>Voltar</button>
+                        </Link>
+                        <button type="submit" className={styles.btnSubmit}>Salvar</button>
+
+                    </div>
+                </form>
+            </div>
         </>
     );
 };
