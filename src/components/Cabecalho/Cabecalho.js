@@ -1,18 +1,21 @@
 // Cabecalho.js
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 import { UserContext } from '../context/UserContext';
 import styles from './Cabecalho.module.css';
+import HelpModal from './HelpModal';
 
 const Cabecalho = () => {
   const { username, realName, avatarUrl, userProfile } = useContext(UserContext);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const urlCorreto = `/${avatarUrl}`;
   const navigate = useNavigate();
+  const location = useLocation();
 
   const openLogoutModal = () => {
     setIsLogoutModalOpen(true);
@@ -34,6 +37,15 @@ const Cabecalho = () => {
     closeLogoutModal();
     navigate('/');
   };
+
+  const openHelpModal = () => {
+    setIsHelpModalOpen(true);
+  };
+
+  const closeHelpModal = () => {
+    setIsHelpModalOpen(false);
+  };
+
 
   const handlePasswordSave = async () => {
     try {
@@ -57,6 +69,13 @@ const Cabecalho = () => {
 
   const displayName = userProfile === 'ADM' ? username : (realName || username);
 
+  const getInitialHelpTab = () => {
+    if (location.pathname.includes('ordens-de-servico')) return 'Ordens de Serviço';
+    if (location.pathname.includes('nova-ordem-de-servico')) return 'Nova Ordem de Serviço';
+    if (location.pathname.includes('secretaria')) return 'Secretaria';
+    if (location.pathname.includes('nova-secretaria')) return 'Nova Secretaria';
+    return 'Ordens de Serviço';
+  };
 
   return (
     <>
@@ -71,6 +90,9 @@ const Cabecalho = () => {
                 <img loading="lazy" src="/imagens/key-icon.svg" alt="Alterar Senha" />
               </button>
             )}
+            <button className={styles.helpButton} onClick={openHelpModal} aria-label="Help">
+              <img loading="lazy" src="/imagens/help.svg" alt="Alterar Senha" />
+            </button>
           </div>
           <button className={styles.logoutIcon} onClick={openLogoutModal} aria-label="Logout">
             <img loading="lazy" src="/imagens/sair.svg" alt="Logout" />
@@ -101,6 +123,12 @@ const Cabecalho = () => {
           </div>
         </div>
       )}
+
+      <HelpModal
+        isOpen={isHelpModalOpen}
+        onClose={closeHelpModal}
+        initialTab={getInitialHelpTab()}
+      />
 
       {isLogoutModalOpen && (
         <div className={styles.modalOverlay}>

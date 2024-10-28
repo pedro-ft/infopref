@@ -7,7 +7,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 5px 45px;
-  background: linear-gradient(90deg, rgba(20,34,71,1) 0%, rgba(21,108,221,1) 100%);
+  background: linear-gradient(90deg, rgba(20, 34, 71, 1) 0%, rgba(21, 108, 221, 1) 100%);
 }
 
 .logo {
@@ -94,7 +94,7 @@
   font: 700 24px/1 Roboto, sans-serif;
 }
 
-.modal input{
+.modal input {
   box-sizing: border-box;
   width: 100%;
   padding: 8px;
@@ -141,5 +141,21 @@
 }
 
 .changePasswordIcon :hover {
+  transform: scale(1.15);
+}
+
+.helpButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-top: 8px;
+}
+
+.helpButton img {
+  width: 25px;
+  height: 25px;
+}
+
+.helpButton:hover img {
   transform: scale(1.15);
 }
