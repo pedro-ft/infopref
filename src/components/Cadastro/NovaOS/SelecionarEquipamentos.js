@@ -50,6 +50,7 @@ const SelecionarEquipamentos = () => {
     return (
         <>
             <Cabecalho />
+            <h1 className={styles.pageTitle}>Nova O. S.</h1>
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>

@@ -10,6 +10,15 @@
   .formGroup {
     margin-bottom: 15px;
   }
+
+  .pageTitle {
+    color: #000;
+    letter-spacing: 0.5px;
+    font: 400 24px/1 Roboto, sans-serif;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    padding: 0px 44px;
+  }
   
   label {
     display: block;
