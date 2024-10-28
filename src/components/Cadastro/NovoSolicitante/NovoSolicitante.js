@@ -7,6 +7,7 @@ import styles from '../Novo.module.css';
 const NovoSolicitante = () => {
 
   const [departamentos, setDepartamentos] = useState([]);
+  const [senhaValida, setSenhaValida] = useState(true);
 
   useEffect(() => {
     const fetchDepartamentos = async () => {
@@ -33,10 +34,28 @@ const NovoSolicitante = () => {
         })
     },
     { label: 'Usuário', name: 'username', type: 'text' },
-    { label: 'Senha', name: 'password', type: 'text' }
+    { label: 'Senha', name: 'password', type: 'text', onChange: (e) => handlePasswordChange(e.target.value) }
   ]
 
+
+  const isPasswordValid = (password) => {
+    return (
+      password.length >= 5 &&
+      password.length <= 20 &&
+      /[A-Za-z]/.test(password) && // Verifica se há pelo menos uma letra
+      /\d/.test(password)          // Verifica se há pelo menos um número
+    );
+  };
+
+  const handlePasswordChange = (password) => {
+    setSenhaValida(isPasswordValid(password));
+  };
+
   const handleFormSubmit = async (formData) => {
+    if (!isPasswordValid(formData.password)) {
+      alert('A senha precisa atender aos requisitos.');
+      return;
+    }
     let userId; // Declara `userId` fora do bloco `try` para que fique disponível no `catch`
 
     try {
@@ -83,7 +102,8 @@ const NovoSolicitante = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Novo Solicitante</h1>
-        <Formulario campos={campos} onSubmit={handleFormSubmit} voltarUrl="/solicitantes" />
+        <Formulario campos={campos} onSubmit={handleFormSubmit} voltarUrl="/solicitantes" isSubmitDisabled={!senhaValida}
+          mostrarRequisitosSenha={true} />
       </main>
     </div>
   );

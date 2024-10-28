@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
 import Cabecalho from '../../Cabecalho/Cabecalho';
@@ -10,23 +10,8 @@ const SelecionarEquipamentos = () => {
     const { formData } = state || {};
     const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
     const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
-    const [opcoesEquipamentos, setOpcoesEquipamentos] = useState([]);
 
 
-
-    useEffect(() => {
-        const fetchEquipamentos = async () => {
-            try {
-                const solicitanteResponse = await api.get(`/solicitantes/${formData.cod_sol}`);
-                const departamentoId = solicitanteResponse.data.departamento.id;
-                const response = await api.get(`/equipamentos/departamento/${departamentoId}`);
-                setOpcoesEquipamentos(response.data);
-            } catch (error) {
-                console.error('Erro ao carregar equipamentos:', error);
-            }
-        };
-        fetchEquipamentos();
-    }, [formData.cod_sol]);
 
 
     const handleQuantidadeChange = (e) => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Formulario.module.css';
 
-const Formulario = ({ campos, onSubmit, voltarUrl }) => {
+const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
@@ -80,12 +80,16 @@ const Formulario = ({ campos, onSubmit, voltarUrl }) => {
             )}
           </div>
         ))}
-
+        {mostrarRequisitosSenha && (
+          <p className={styles.passwordRequirements}>
+            A senha deve ter entre 5 e 20 caracteres, incluindo pelo menos uma letra e um número.
+          </p>
+        )}
         <div className={styles.formButtons}>
           <button type="button" className={styles.btnBack} onClick={handleVoltar}>Voltar</button>
           <button type="submit" className={styles.btnSubmit}>Salvar</button>
-
         </div>
+
       </form>
     </div>
   );
