@@ -19,7 +19,7 @@
     position: relative;
     display: flex;
     width: 80%;
-    max-width: 800px;
+    max-width: 1000px;
     height: 70vh;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -35,6 +35,8 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
+    max-height: 100%;
+    overflow-y: auto;
 }
 
 .sidebar h2 {
@@ -51,6 +53,9 @@
     text-align: left;
     padding: 12px;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     transition: background 0.2s ease;
 }
 
@@ -59,6 +64,12 @@
     background-color: #34495e;
     transform: scale(1.02);
     font-weight: bold;
+}
+
+/* Estilo para a seta */
+.arrow {
+    font-size: 12px;
+    margin-left: 8px;
 }
 
 /* Conteúdo principal do modal */
@@ -80,11 +91,43 @@
     line-height: 1.6;
 }
 
+/* Conteúdo do texto */
+.contentText {
+    font-size: 18px;
+    line-height: 1.2;
+    color: #333;
+
+    /* Mantém as quebras de linha */
+}
+
+/* Negrito para títulos e subtítulos */
+.contentText strong {
+    font-weight: bold;
+}
+
+/* Estilos para listas */
+.contentText ul {
+    margin: 30px 0;
+    padding-left: 40px;
+    list-style-type: disc;
+}
+
+.contentText li {
+    margin-bottom: 20px;
+}
+
+/* Estilo de parágrafos */
+.contentText p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+
 /* Botão de fechar o modal */
 .closeButton {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 25px;
     background-color: #144792;
     color: white;
     border: none;
@@ -97,4 +140,30 @@
 
 .closeButton:hover {
     background-color: #142247;
+}
+
+/* Container dos subitens na sidebar */
+.subTabContainer {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Coloca subitens em coluna */
+}
+
+/* Botão dos subitens */
+.subTabButton {
+    font: 400 14px/1.5 Roboto, sans-serif;
+    color: #d1d1d1;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 8px 12px 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.subTabButton:hover,
+.subTabButton.active {
+    background-color: #34495e;
+    color: #ffffff;
 }
