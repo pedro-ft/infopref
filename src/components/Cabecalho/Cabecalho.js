@@ -1,4 +1,3 @@
-// Cabecalho.js
 import React, { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
@@ -10,6 +9,8 @@ const Cabecalho = () => {
   const { username, realName, avatarUrl, userProfile } = useContext(UserContext);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible2, setIsPasswordVisible2] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -31,6 +32,14 @@ const Cabecalho = () => {
 
   const closePasswordModal = () => {
     setIsPasswordModalOpen(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const togglePasswordVisibility2 = () => {
+    setIsPasswordVisible2(!isPasswordVisible2);
   };
 
   const handleConfirmLogout = () => {
@@ -105,17 +114,35 @@ const Cabecalho = () => {
           <div className={styles.modal}>
             <h2>Alterar Senha</h2>
             <label>Senha Atual</label>
+            <div className={styles.inputContainer}>
             <input
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
             />
+            <img
+              src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+              alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
+              className={styles.inputIcon}
+              onClick={togglePasswordVisibility} 
+              style={{ cursor: "pointer" }}
+            />
+            </div>
             <label>Senha Nova</label>
+            <div className={styles.inputContainer}>
             <input
-              type="password"
+              type={isPasswordVisible2 ? "text" : "password"}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
+            <img
+              src={isPasswordVisible2 ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+              alt={isPasswordVisible2 ? "Ocultar senha" : "Exibir senha"}
+              className={styles.inputIcon}
+              onClick={togglePasswordVisibility2}
+              style={{ cursor: "pointer" }}
+            />
+            </div>
             <div className={styles.modalActions}>
               <button className={styles.cancelButton} onClick={closePasswordModal}>Cancelar</button>
               <button className={styles.confirmButton} onClick={handlePasswordSave}>Salvar</button>

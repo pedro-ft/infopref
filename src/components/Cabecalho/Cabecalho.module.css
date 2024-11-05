@@ -115,7 +115,7 @@
 }
 
 .confirmButton {
-  background-color: #156cdd;
+  background-color: #14458e;
   color: white;
 }
 
@@ -158,4 +158,18 @@
 
 .helpButton:hover img {
   transform: scale(1.15);
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 10px;
+  top: 35%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
 }

@@ -1,12 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styles from './ActionBarOS.module.css';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 function ActionBar({ onSearch, onSort, sortOptions }) {
+  const { userProfile } = useContext(UserContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
   const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
+      navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
+    }
+  };
 
   const handleNewOSClick = () => {
     navigate('/novaos');
@@ -40,6 +50,11 @@ function ActionBar({ onSearch, onSort, sortOptions }) {
 
   return (
     <div className={styles.actionBar}>
+      {userProfile !== 'SOLICITANTE' && (
+      <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>
+        <img loading="lazy" src="/imagens/Voltar.svg" alt="Voltar" />
+      </button>
+      )}
       <button className={styles.actionButton} onClick={handleNewOSClick}>Nova O. S.</button>
       <button className={styles.actionButton} onClick={handleOSSolicitadasClick}>O. S. Solicitadas</button>
       <form className={styles.searchForm} onSubmit={handleSubmit}>

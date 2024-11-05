@@ -61,7 +61,7 @@
 
 .tabButton:hover,
 .tabButton.active {
-    background-color: #34495e;
+    background-color: #14458e;
     transform: scale(1.02);
     font-weight: bold;
 }
@@ -81,7 +81,7 @@
 
 .content h3 {
     font: 700 22px Roboto, sans-serif;
-    color: #142247;
+    color: #14458e;
     margin-bottom: 10px;
 }
 
@@ -128,7 +128,7 @@
     position: absolute;
     top: 10px;
     right: 25px;
-    background-color: #144792;
+    background-color: #14458e;
     color: white;
     border: none;
     border-radius: 4px;

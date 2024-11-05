@@ -4,6 +4,7 @@ import styles from './Formulario.module.css';
 
 const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => {
   const [formData, setFormData] = useState({});
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const formatPhoneNumber = (value) => {
@@ -71,15 +72,26 @@ const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => 
                 ))}
               </select>
             ) : (
+              <div className={styles.inputContainer}>
               <input
-                type={campo.type}
+                type={campo.name === 'password' && !isPasswordVisible ? 'password' : 'text'}
                 name={campo.name}
                 value={formData[campo.name] || ''}
                 onChange={handleInputChange}
               />
-            )}
-          </div>
-        ))}
+              {campo.name === 'password' && (
+                <img
+                  src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+                  alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
+                  className={styles.inputIcon}
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      ))}
         {mostrarRequisitosSenha && (
           <p className={styles.passwordRequirements}>
             A senha deve ter entre 5 e 20 caracteres, incluindo pelo menos uma letra e um número.
