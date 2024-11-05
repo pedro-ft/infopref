@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ActionBar.module.css';
+import { UserContext } from '../context/UserContext';
 
 function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChangePassword }) {
+  const { userProfile } = useContext(UserContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
@@ -16,6 +18,14 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChange
     e.preventDefault();
     if (onSearch) {
       onSearch(searchTerm);
+    }
+  };
+
+  const handleBackClick = () => {
+    if (userProfile === 'ADM') {
+      navigate('/menu');
+    } else if (userProfile === 'TECNICO') {
+      navigate('/menu2');
     }
   };
 
@@ -41,9 +51,12 @@ function ActionBarPadrao({ tipo, link, onSearch, onSort, sortOptions, showChange
 
   return (
     <div className={styles.actionBar}>
+      {userProfile !== 'SOLICITANTE' && (
+      <button onClick={handleBackClick} className={styles.backButton} aria-label='Voltar'>
+        <img loading="lazy" src="/imagens/Voltar.svg" alt="Voltar" />
+      </button>
+      )}
       <button className={styles.actionButton} onClick={handleNewClick}>{tipo}</button>
-
-
       <form className={styles.searchForm} onSubmit={handleSubmit}>
         <label htmlFor="Search" className={styles.visuallyHidden}>Pesquisar</label>
         <input

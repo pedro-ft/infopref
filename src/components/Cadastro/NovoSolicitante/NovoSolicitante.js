@@ -5,7 +5,6 @@ import Formulario from '../Formulario/Formulario';
 import styles from '../Novo.module.css';
 
 const NovoSolicitante = () => {
-
   const [departamentos, setDepartamentos] = useState([]);
   const [senhaValida, setSenhaValida] = useState(true);
 
@@ -34,7 +33,7 @@ const NovoSolicitante = () => {
         })
     },
     { label: 'Usuário', name: 'username', type: 'text' },
-    { label: 'Senha', name: 'password', type: 'text', onChange: (e) => handlePasswordChange(e.target.value) }
+    { label: 'Senha', name: 'password', type: 'password', onChange: (e) => handlePasswordChange(e.target.value) }
   ]
 
 

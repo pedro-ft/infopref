@@ -8,7 +8,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   const [isEditing, setIsEditing] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
   const [newPassword, setNewPassword] = useState('');
-
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [departamentos, setDepartamentos] = useState([]);
   const [selectedDepartamento, setSelectedDepartamento] = useState(null);
 
@@ -46,14 +46,17 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   };
 
   const openPasswordModal = () => {
-    setIsPasswordModalOpen(true); // Abre o modal de senha
+    setIsPasswordModalOpen(true);
   };
 
   const closePasswordModal = () => {
-    setIsPasswordModalOpen(false); // Fecha o modal de senha
-    setNewPassword(''); // Limpa a nova senha
+    setIsPasswordModalOpen(false); 
+    setNewPassword(''); 
   };
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const fetchDetails = async (solicitanteId) => {
     try {
@@ -221,13 +224,22 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Redefinir Senha</h2>
+            <div className={styles.inputContainer}>
             <input
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               placeholder="Digite a nova senha"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               className={styles.input}
             />
+             <img
+              src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+              alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
+              className={styles.inputIcon}
+              onClick={togglePasswordVisibility} // Chamando a função ao clicar no ícone
+              style={{ cursor: "pointer" }}
+            />
+            </div>
             <div className={styles.modalActions}>
               <button onClick={closePasswordModal} className={styles.cancelButton}>Cancelar</button>
               <button onClick={handleResetPassword} className={styles.confirmButton}>Confirmar</button>
