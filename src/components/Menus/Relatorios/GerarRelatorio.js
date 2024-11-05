@@ -6,27 +6,19 @@ import styles from '../../Cadastro/Novo.module.css';
 import { UserContext } from '../../context/UserContext';
 
 const GerarRelatorio = () => {
-    //const { userProfile } = useContext(UserContext);
     const [tipoSelecionado, setTipoSelecionado] = useState('');
     const [subTipoOptions, setSubTipoOptions] = useState([]);
     const [subTipoSelecionado, setSubTipoSelecionado] = useState('');
     const [dataInicio, setDataInicio] = useState('');
     const [dataFim, setDataFim] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const { userProfile } = useContext(UserContext);
     const navigate = useNavigate();
 
-    /*let url = '';
-    if (userProfile === 'ADM') {
-        url = '/menu';
-    } else {
-        url = '/menu2';
-    }*/
-
     const handleTipoChange = (tipo) => {
         setTipoSelecionado(tipo);
-        setSubTipoSelecionado(''); // Resetar seleção anterior
+        setSubTipoSelecionado('');
 
-        // Fetch dynamic options based on the selected type
         switch (tipo) {
             case 'solicitante':
                 fetchSolicitantes();
@@ -48,7 +40,6 @@ const GerarRelatorio = () => {
         }
     };
 
-    // Fetch functions to get data from backend
     const fetchSolicitantes = async () => {
         try {
             const response = await api.get('/solicitantes');
@@ -87,7 +78,7 @@ const GerarRelatorio = () => {
         } catch (error) {
             console.error('Erro ao buscar técnicos:', error);
         }
-    };
+    }
 
     const fetchTiposChamado = () => {
         const options = [
@@ -105,10 +96,10 @@ const GerarRelatorio = () => {
         e.preventDefault();
 
         if (!dataInicio || !dataFim || !tipoSelecionado || !subTipoSelecionado) {
-            alert("Por favor, preencha todos os campos.");
+            setErrorMessage("Por favor, preencha todos os campos.");
             return;
         }
-
+        setErrorMessage('');
         try {
             const response = await api.get('/relatorios/ordens-de-servico', {
                 params: {
@@ -126,7 +117,7 @@ const GerarRelatorio = () => {
             window.open(fileURL, '_blank'); // Abre o PDF em uma nova aba
         } catch (error) {
             console.error("Erro ao gerar relatório:", error);
-            alert("Ocorreu um erro ao gerar o relatório. Tente novamente.");
+            setErrorMessage("Ocorreu um erro ao gerar o relatório. Tente novamente.");
         }
     };
 
@@ -198,6 +189,7 @@ const GerarRelatorio = () => {
                         Gerar Relatório
                     </button>
                     </div>
+                    {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
                 </form>
             </main>
         </div>

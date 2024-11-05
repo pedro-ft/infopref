@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styles from './LoginPage.module.css';
 
 function InputGroup({ label, iconSrc, iconAlt, value, onChange }) {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Estado para controlar visibilidade da senha
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const inputId = `${label.toLowerCase()}Input`;
 
   const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible); // Alterna entre mostrar e esconder senha
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -27,11 +27,11 @@ function InputGroup({ label, iconSrc, iconAlt, value, onChange }) {
         {label === "Senha" ? (
           <img
             loading="lazy"
-            src={isPasswordVisible ? "imagens/iconeOculto.svg" : iconSrc}  // Alterna ícone de exibir/ocultar
+            src={isPasswordVisible ? "imagens/iconeOculto.svg" : iconSrc} 
             alt={isPasswordVisible ? "Ocultar senha" : iconAlt}
             className={styles.inputIcon}
-            onClick={togglePasswordVisibility}  // Manipulador de clique para alternar visibilidade
-            style={{ cursor: "pointer" }}  // Ícone clicável
+            onClick={togglePasswordVisibility} 
+            style={{ cursor: "pointer" }}
           />
         ) : (
           <img loading="lazy" src={iconSrc} alt={iconAlt} className={styles.inputIcon} />

@@ -45,24 +45,31 @@
 }
 
 .cardsContainer {
-  display: flex;
-  flex-direction: column;
-  /* Alinha os cards verticalmente */
-  gap: 35px;
-  width: 70%;
-  /* Ajuste de largura para deixar os cards maiores */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  width: 80%;
 }
 
 .card {
   background: linear-gradient(90deg, rgba(20,57,118,255) 0%, rgba(20,98,202,255) 100%);
   color: white;
-  padding: 30px;
-  /* Mais espaço interno */
+  padding: 20px;
   border-radius: 10px;
   text-align: center;
   font: 400 36px/1 Roboto, sans-serif;
-  /* Tamanho de fonte aumentado */
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 80%;
+}
+
+.card span{
+  margin-top: 10%;
+  font: 400 72px/1 Roboto, sans-serif;
 }
 
 .menuItem {
