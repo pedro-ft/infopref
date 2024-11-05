@@ -569,11 +569,99 @@ const helpContent = {
             },
         }
     },
+    'Minhas Solicitações': {
+        title: 'Ajuda: Minhas Solicitações',
+        content: 'Aqui estão as informações sobre a tela de Minhas Solicitações...',
+        subTabs: {
+            'Minhas Solicitações': {
+                title: 'Ajuda: Minhas Solicitações',
+                content: `<p>Esta tela exibe todas as ordens de serviço solicitadas pelo usuário atual em formato de cards, facilitando a visualização e gerenciamento de suas solicitações.</p>
+
+<p><strong>Conteúdo dos Cards de Ordens de Serviço</strong>:</p>
+<ul>
+    <li><strong>Número de Protocolo</strong>: Número único gerado automaticamente para identificação da ordem de serviço.</li>
+    <li><strong>Data de Abertura</strong>: Data em que a ordem de serviço foi registrada.</li>
+    <li><strong>Data de Finalização</strong>: Data em que a ordem foi concluída, se já estiver finalizada.</li>
+    <li><strong>Status</strong>: Estado atual da ordem de serviço, que pode ser “Em aberto”, “Em andamento”, “Aguardando peças” ou “Finalizado”.</li>
+    <li><strong>Nº de Patrimônio</strong>: Número(s) de patrimônio do(s) equipamento(s) relacionado(s) à ordem de serviço.</li>
+    <li><strong>Descrição</strong>: Detalhes do problema relatado pelo solicitante.</li>
+    <li><strong>Resolução</strong>: Informações sobre a resolução do problema, exibida apenas se a ordem já estiver finalizada.</li>
+</ul>
+
+<p><strong>Funcionalidades de Pesquisa e Ordenação</strong>:</p>
+<ul>
+    <li><strong>Barra de Pesquisa</strong>: Permite ao solicitante buscar ordens de serviço por número de protocolo ou status.</li>
+    <li><strong>Opções de Ordenação</strong>: Na barra de pesquisa, o solicitante pode ordenar os resultados por:
+        <ul>
+            <li><strong>Mais Recente</strong> (padrão)</li>
+            <li><strong>Mais Antigo</strong></li>
+            <li><strong>Status</strong></li>
+        </ul>
+    </li>
+</ul>
+
+<p><strong>Navegação por Páginas</strong>: Na parte inferior da tela, botões de paginação permitem ao solicitante acessar ordens mais antigas.</p>
+
+<p><strong>Solicitar Nova Ordem de Serviço</strong>: Para abrir uma nova solicitação, o solicitante deve clicar no botão <strong>“Solicitar Nova Ordem de Serviço”</strong> no canto superior da tela, que redirecionará para o formulário de nova OS.</p>
+
+                `
+            },
+        }
+    },
+    'Solicitar Ordem de Serviço': {
+        title: 'Ajuda: Solicitar Ordem de Serviço',
+        content: 'Aqui estão as informações sobre a tela de Solicitar Ordem de Serviço...',
+        subTabs: {
+            'Solicitar Ordem de Serviço': {
+                title: 'Ajuda: Solicitar Ordem de Serviço',
+                content: `<p>Esta tela permite ao solicitante criar uma nova ordem de serviço, especificando o problema e os equipamentos relacionados para que um técnico possa avaliar e resolver a solicitação.</p>
+
+<p><strong>Campos Obrigatórios para Solicitar uma Nova Ordem de Serviço</strong>:</p>
+<ul>
+    <li><strong>Descrição</strong>: Campo para descrever o problema ou situação que precisa de atenção técnica. É importante fornecer o máximo de detalhes possível para facilitar a análise do técnico.</li>
+    <li><strong>Quantidade de Equipamentos</strong>: Selecione quantos equipamentos estão relacionados à solicitação (limite de até 5 equipamentos por ordem de serviço).</li>
+    <li><strong>Número de Patrimônio</strong>: Após escolher a quantidade de equipamentos, preencha o número de patrimônio de cada equipamento envolvido na ordem de serviço. Este número identifica cada equipamento de forma única.</li>
+</ul>
+
+<p><strong>Envio da Ordem de Serviço</strong>:</p>
+
+    <p>Após preencher todos os campos obrigatórios, clique no botão <strong>“Salvar”</strong> para enviar a solicitação. A ordem será enviada automaticamente para o técnico, com o status inicial “Em aberto”. O técnico poderá então visualizar a solicitação e decidir pela aceitação da ordem.</p>
+
+
+<p><strong>Visualização da Ordem Solicitada</strong>:</p>
+
+    <p>Após o envio, a ordem de serviço aparecerá na tela inicial das <strong>“Minhas Solicitações”</strong>, permitindo ao solicitante acompanhar o status e o andamento da solicitação.</p>
+
+
+                `
+            },
+        }
+    },
+    'Cabeçalho': {
+        title: 'Ajuda: Cabeçalho',
+        content: 'Aqui estão as informações sobre a tela de Cabeçalho...',
+        subTabs: {
+            'Cabeçalho': {
+                title: 'Ajuda: Cabeçalho',
+                content: `
+            <p>O cabeçalho está presente em todas as telas da aplicação, fornecendo as seguintes funcionalidades:</p>
+            <ul>
+                <li><strong>Nome do Usuário</strong>: Exibe o nome do usuário logado, indicando o perfil de acesso.
+                <li><strong>Ícone de Ajuda</strong>: Ao clicar no ícone de interrogação, abre-se a tela de ajuda (esta tela), oferecendo informações e orientações sobre o uso do sistema.
+                <li><strong>Ícone de Chave</strong>: Ao clicar no ícone de chave, abre-se a tela para alterar sua própria senha, fornecendo a senha atual e a nova senha para a conclusão da alteração.
+                <li><strong>Botão de Logout</strong>: Representado pelo ícone de saída, permite ao usuário sair da conta e retornar à tela de login.
+            </ul>
+            <p>Utilize o cabeçalho para acessar rapidamente o conteúdo de ajuda ou para fazer logout da aplicação.</p>
+        `
+            },
+        }
+    },
 };
 
 // Mapeamento entre URLs e abas/sub-abas do modal
 const urlToHelpTab = {
     '/menu': { tab: 'Menu Principal', subTab: 'Menu Principal' },
+    '/menu2': { tab: 'Menu Principal', subTab: 'Menu Principal' },
     '/osmenu': { tab: 'Ordem de Serviço', subTab: 'Ordem de Serviço' },
     '/novaos': { tab: 'Ordem de Serviço', subTab: 'Nova Ordem de Serviço' },
     '/selecionar-equipamentos': { tab: 'Ordem de Serviço', subTab: 'Nova Ordem de Serviço' },
@@ -591,6 +679,8 @@ const urlToHelpTab = {
     '/tecnicos': { tab: 'Técnicos', subTab: 'Técnicos' },
     '/novo-tecnico': { tab: 'Técnicos', subTab: 'Novo Técnico' },
     '/relatorios': { tab: 'Relatórios', subTab: 'Relatórios' },
+    '/minhas-solicitacoes': { tab: 'Minhas Solicitações', subTab: 'Minhas Solicitações' },
+    '/solicitar-ordem': { tab: 'Solicitar Ordem de Serviço', subTab: 'Solicitar Ordem de Serviço' }
 };
 
 // Função para remover IDs das URLs dinâmicas
@@ -598,10 +688,23 @@ const normalizeUrl = (path) => {
     return path.replace(/\/\d+(?=\/|$)/g, '');
 };
 
-const HelpModal = ({ isOpen, onClose }) => {
+// Função para filtrar o conteúdo de ajuda com base no perfil
+const getFilteredHelpContent = (profile) => {
+    if (profile === 'ADM' || profile === 'TECNICO') {
+        return ['Menu Principal', 'Ordem de Serviço', 'Solicitante', 'Secretaria', 'Departamento', 'Equipamentos', 'Informações de Internet', 'Técnicos', 'Relatórios'];
+    } else if (profile === 'SOLICITANTE') {
+        return ['Minhas Solicitações', 'Solicitar Ordem de Serviço', 'Cabeçalho'];
+    }
+    return [];
+};
+
+const HelpModal = ({ isOpen, onClose, userProfile }) => {
     const [currentTab, setCurrentTab] = useState('');
     const [expandedTabs, setExpandedTabs] = useState({});
     const [currentMainTab, setCurrentMainTab] = useState('');
+
+    // Filtra o conteúdo de ajuda com base no perfil do usuário
+    const availableTabs = getFilteredHelpContent(userProfile);
 
     useEffect(() => {
         if (isOpen) {
@@ -609,9 +712,9 @@ const HelpModal = ({ isOpen, onClose }) => {
             const normalizedPath = normalizeUrl(path);
             const { tab, subTab } = urlToHelpTab[normalizedPath] || {};
 
-            if (tab && subTab) {
-                setCurrentMainTab(tab); // Define a aba principal
-                setCurrentTab(subTab); // Define a sub-aba
+            if (tab && subTab && availableTabs.includes(tab)) {
+                setCurrentMainTab(tab);
+                setCurrentTab(subTab);
                 setExpandedTabs((prev) => ({ ...prev, [tab]: true }));
             }
         }
@@ -647,7 +750,7 @@ const HelpModal = ({ isOpen, onClose }) => {
             <div className={styles.modal}>
                 <div className={styles.sidebar}>
                     <h2>Ajuda</h2>
-                    {Object.keys(helpContent).map((tab) => (
+                    {availableTabs.map((tab) => (
                         <div key={tab}>
                             <button
                                 className={`${styles.tabButton} ${expandedTabs[tab] ? styles.expanded : ''}`}

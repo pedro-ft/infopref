@@ -115,33 +115,33 @@ const Cabecalho = () => {
             <h2>Alterar Senha</h2>
             <label>Senha Atual</label>
             <div className={styles.inputContainer}>
-            <input
-              type={isPasswordVisible ? "text" : "password"}
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <img
-              src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
-              alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
-              className={styles.inputIcon}
-              onClick={togglePasswordVisibility} 
-              style={{ cursor: "pointer" }}
-            />
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+              <img
+                src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+                alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
+                className={styles.inputIcon}
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer" }}
+              />
             </div>
             <label>Senha Nova</label>
             <div className={styles.inputContainer}>
-            <input
-              type={isPasswordVisible2 ? "text" : "password"}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <img
-              src={isPasswordVisible2 ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
-              alt={isPasswordVisible2 ? "Ocultar senha" : "Exibir senha"}
-              className={styles.inputIcon}
-              onClick={togglePasswordVisibility2}
-              style={{ cursor: "pointer" }}
-            />
+              <input
+                type={isPasswordVisible2 ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <img
+                src={isPasswordVisible2 ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+                alt={isPasswordVisible2 ? "Ocultar senha" : "Exibir senha"}
+                className={styles.inputIcon}
+                onClick={togglePasswordVisibility2}
+                style={{ cursor: "pointer" }}
+              />
             </div>
             <div className={styles.modalActions}>
               <button className={styles.cancelButton} onClick={closePasswordModal}>Cancelar</button>
@@ -155,6 +155,7 @@ const Cabecalho = () => {
         isOpen={isHelpModalOpen}
         onClose={closeHelpModal}
         initialTab={getInitialHelpTab()}
+        userProfile={userProfile}
       />
 
       {isLogoutModalOpen && (
