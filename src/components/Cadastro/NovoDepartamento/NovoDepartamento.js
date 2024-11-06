@@ -21,19 +21,19 @@ const NovoDepartamento = () => {
   }, []);
 
   const campos = [
-    { label: 'Nome', name: 'nome', type: 'text' },
+    { label: '*Nome', name: 'nome', type: 'text' },
     { label: 'Fone', name: 'fone', type: 'text' },
     {
-      label: 'Secretaria',
+      label: '*Secretaria',
       name: 'secretariaId',
       type: 'select',
       options: secretarias
-      .sort((a, b) => a.nome.localeCompare(b.nome))
-      .map(sec => {
-        return { label: sec.nome, value: sec.id };
-      })
-  }
-];
+        .sort((a, b) => a.nome.localeCompare(b.nome))
+        .map(sec => {
+          return { label: sec.nome, value: sec.id };
+        })
+    }
+  ];
 
   const handleFormSubmit = async (formData) => {
     try {

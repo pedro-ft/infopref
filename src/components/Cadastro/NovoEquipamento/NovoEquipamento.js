@@ -8,7 +8,7 @@ import styles from '../Novo.module.css';
 const NovoEquipamento = () => {
   const { id } = useParams();
   const campos = [
-    { label: 'Número de Patrimônio', name: 'num_patrimonio', type: 'text' },
+    { label: '*Número de Patrimônio', name: 'num_patrimonio', type: 'text' },
     { label: 'Modelo', name: 'modelo', type: 'text' },
     { label: 'Marca', name: 'marca', type: 'text' },
     { label: 'Data de aquisição', name: 'data_aquisicao', type: 'date' },

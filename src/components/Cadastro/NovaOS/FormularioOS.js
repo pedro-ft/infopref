@@ -64,7 +64,7 @@ const FormularioOS = () => {
     <div className={styles.formContainer}>
       <form onSubmit={handleNext}>
         <div className={styles.formGroup}>
-          <label>Data Abertura:</label>
+          <label>*Data Abertura:</label>
           <input
             type="date"
             name="data_abertura"
@@ -74,7 +74,7 @@ const FormularioOS = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Nome Solicitante:</label>
+          <label>*Nome Solicitante:</label>
           <select
             name="cod_sol"
             value={formData.cod_sol}
@@ -91,7 +91,7 @@ const FormularioOS = () => {
 
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
-            <label>Tipo Chamado:</label>
+            <label>*Tipo Chamado:</label>
             <select
               name="tipo_chamado"
               value={formData.tipo_chamado}
@@ -109,7 +109,7 @@ const FormularioOS = () => {
 
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
-            <label>Status:</label>
+            <label>*Status:</label>
             <select
               name="status"
               value={formData.status}
@@ -123,7 +123,7 @@ const FormularioOS = () => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Prioridade:</label>
+            <label>*Prioridade:</label>
             <select
               name="prioridade"
               value={formData.prioridade}
@@ -139,7 +139,7 @@ const FormularioOS = () => {
 
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
-            <label>Técnico:</label>
+            <label>*Técnico:</label>
             <select
               label='Tecnico'
               name="cod_tec"
@@ -156,7 +156,7 @@ const FormularioOS = () => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>*Data Finalização:</label>
+            <label>Data Finalização:</label>
             <input
               type="date"
               name="data_finalizacao"
@@ -176,7 +176,7 @@ const FormularioOS = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label>*Resolução:</label>
+          <label>Resolução:</label>
           <textarea
             name="resolucao"
             value={formData.resolucao}
@@ -193,7 +193,7 @@ const FormularioOS = () => {
 
         </div>
 
-        <p className="form-note">* Campos não obrigatórios</p>
+        <p className="form-note">* Campos obrigatórios</p>
       </form>
     </div>
   );

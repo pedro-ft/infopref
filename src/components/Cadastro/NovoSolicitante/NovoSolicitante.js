@@ -22,18 +22,18 @@ const NovoSolicitante = () => {
   }, []);
 
   const campos = [
-    { label: 'Nome', name: 'nome', type: 'text' },
+    { label: '*Nome', name: 'nome', type: 'text' },
     { label: 'Fone', name: 'fone', type: 'text' },
     { label: 'ID de Acesso Remoto', name: 'id_acesso_remoto', type: 'text' },
     {
-      label: 'Departamento', name: 'departamento', type: 'select', options: departamentos
+      label: '*Departamento', name: 'departamento', type: 'select', options: departamentos
         .sort((a, b) => a.nome.localeCompare(b.nome))
         .map(dep => {
           return { label: dep.nome, value: dep.id };
         })
     },
-    { label: 'Usuário', name: 'username', type: 'text' },
-    { label: 'Senha', name: 'password', type: 'password', onChange: (e) => handlePasswordChange(e.target.value) }
+    { label: '*Usuário', name: 'username', type: 'text' },
+    { label: '*Senha', name: 'password', type: 'password', onChange: (e) => handlePasswordChange(e.target.value) }
   ]
 
 

@@ -53,57 +53,58 @@ const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => 
   };
 
   return (
-<div className={styles.formContainer}>
-  <form onSubmit={handleSubmit}>
-    {campos.map((campo, index) => (
-      <div className={styles.formGroup} key={index}>
-        <label>{campo.label}:</label>
-        {campo.type === 'select' ? (
-          <select
-            name={campo.name}
-            value={formData[campo.name] || ''}
-            onChange={handleInputChange}
-          >
-            <option value="">Selecione</option>
-            {campo.options.map((option, i) => (
-              <option key={i} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        ) : campo.type === 'password' ? (
-          <div className={styles.inputContainer}>
-            <input
-              type={isPasswordVisible ? 'text' : 'password'}
-              name={campo.name}
-              value={formData[campo.name] || ''}
-              onChange={handleInputChange}
-            />
-            <img
-              src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
-              alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
-              className={styles.inputIcon}
-              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              style={{ cursor: "pointer" }}
-            />
+    <div className={styles.formContainer}>
+      <form onSubmit={handleSubmit}>
+        {campos.map((campo, index) => (
+          <div className={styles.formGroup} key={index}>
+            <label>{campo.label}:</label>
+            {campo.type === 'select' ? (
+              <select
+                name={campo.name}
+                value={formData[campo.name] || ''}
+                onChange={handleInputChange}
+              >
+                <option value="">Selecione</option>
+                {campo.options.map((option, i) => (
+                  <option key={i} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            ) : campo.type === 'password' ? (
+              <div className={styles.inputContainer}>
+                <input
+                  type={isPasswordVisible ? 'text' : 'password'}
+                  name={campo.name}
+                  value={formData[campo.name] || ''}
+                  onChange={handleInputChange}
+                />
+                <img
+                  src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+                  alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
+                  className={styles.inputIcon}
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            ) : (
+              <div className={styles.inputContainer}>
+                <input
+                  type={campo.type}
+                  name={campo.name}
+                  value={formData[campo.name] || ''}
+                  onChange={handleInputChange}
+                />
+              </div>
+            )}
           </div>
-        ) : (
-          <div className={styles.inputContainer}>
-            <input
-              type={campo.type}
-              name={campo.name}
-              value={formData[campo.name] || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-        )}
-      </div>
-    ))}
+        ))}
         {mostrarRequisitosSenha && (
           <p className={styles.passwordRequirements}>
             A senha deve ter entre 5 e 20 caracteres, incluindo pelo menos uma letra e um número.
           </p>
         )}
+        <p className="form-note">* Campos obrigatórios</p>
         <div className={styles.formButtons}>
           <button type="button" className={styles.btnBack} onClick={handleVoltar}>Voltar</button>
           <button type="submit" className={styles.btnSubmit}>Salvar</button>

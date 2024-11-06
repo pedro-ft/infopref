@@ -8,8 +8,8 @@ import styles from '../Novo.module.css';
 const NovaInfoInternet = () => {
   const { id } = useParams();
   const campos = [
-    { label: 'Nome da Rede', name: 'nome', type: 'text' },
-    { label: 'Senha', name: 'senha', type: 'text' },
+    { label: '*Nome da Rede', name: 'nome', type: 'text' },
+    { label: '*Senha', name: 'senha', type: 'text' },
     { label: 'IP', name: 'ip', type: 'text' }
   ]
 

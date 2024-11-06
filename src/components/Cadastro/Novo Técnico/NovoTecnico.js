@@ -8,10 +8,10 @@ const NovoTecnico = () => {
   const [senhaValida, setSenhaValida] = useState(true);
 
   const campos = [
-    { label: 'Nome', name: 'nome', type: 'text' },
+    { label: '*Nome', name: 'nome', type: 'text' },
     { label: 'Fone', name: 'fone', type: 'text' },
-    { label: 'Usuário', name: 'username', type: 'text' },
-    { label: 'Senha', name: 'password', type: 'password', onChange: (e) => handlePasswordChange(e.target.value) },
+    { label: '*Usuário', name: 'username', type: 'text' },
+    { label: '*Senha', name: 'password', type: 'password', onChange: (e) => handlePasswordChange(e.target.value) },
   ];
 
   const isPasswordValid = (password) => {
