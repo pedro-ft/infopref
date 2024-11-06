@@ -18,8 +18,8 @@ const NovoTecnico = () => {
     return (
       password.length >= 5 &&
       password.length <= 20 &&
-      /[A-Za-z]/.test(password) && // Verifica se há pelo menos uma letra
-      /\d/.test(password)          // Verifica se há pelo menos um número
+      /[A-Za-z]/.test(password) &&
+      /\d/.test(password)
     );
   };
 
@@ -55,7 +55,6 @@ const NovoTecnico = () => {
 
       await api.post('/tecnicos', tecnicoPayload);
 
-      console.log('Técnico e usuário criados com sucesso:', tecnicoPayload, userPayload);
     } catch (error) {
       console.error('Erro ao criar o técnico ou usuário:', error);
       if (userId) {

@@ -21,7 +21,6 @@ const NovaInfoInternet = () => {
     }
     try {
       await api.post(`infoInternet/departamento/${id}`, InfoInternetPayload)
-      console.log('Dados do formulário:', InfoInternetPayload);
     } catch (error) {
       console.error('Erro ao enviar formulario:', error);
     }

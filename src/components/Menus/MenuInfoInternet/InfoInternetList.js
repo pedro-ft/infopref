@@ -58,16 +58,16 @@ function InfoInternetList() {
       }
     });
 
-  const totalPages = Math.ceil(filteredInfoInternet.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredInfoInternet.length / itemsPerPage);
 
-  const handlePageChange = (newPage) => { // ACRESCENTADO
+  const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = filteredInfoInternet.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredInfoInternet.slice(startIndex, startIndex + itemsPerPage);
 
   const handleSearch = (term) => {
     setSearchTerm(term);

@@ -12,7 +12,6 @@ const NovoDepartamento = () => {
       try {
         const response = await api.get('/secretarias');
         setSecretarias(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Erro ao carregar secretarias:', error);
       }
@@ -38,7 +37,6 @@ const NovoDepartamento = () => {
   const handleFormSubmit = async (formData) => {
     try {
       await api.post('/departamentos', formData);
-      console.log('Dados do formulário:', formData);
     } catch (error) {
       console.error('Erro ao criar departamento:', error);
     }

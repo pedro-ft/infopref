@@ -29,13 +29,8 @@ function MinhasSolicitacoes() {
                 try {
                     const token = authToken.replace('Bearer ', '');
                     const decoded = jwtDecode(token);
-                    console.log('Decoded token:', decoded);
-
                     const userId = decoded.jti;
-                    console.log('User ID:', userId);
-
                     const response = await api.get(`/solicitantes/usuario/${userId}`);
-                    console.log('Solicitante response:', response.data);
                     setSolicitanteId(response.data.id);
                 } catch (error) {
                     console.error('Erro ao decodificar o token:', error);
@@ -49,10 +44,8 @@ function MinhasSolicitacoes() {
     useEffect(() => {
         if (solicitanteId) {
             const fetchSolicitacoes = async () => {
-                console.log('Fetching solicitacoes for ID:', solicitanteId);
                 try {
                     const response = await api.get(`/osmenu/solicitante/${solicitanteId}`);
-                    console.log('Solicitacoes response:', response.data);
                     setSolicitacoes(response.data);
                 } catch (error) {
                     console.error('Erro ao buscar ordens de serviço:', error);

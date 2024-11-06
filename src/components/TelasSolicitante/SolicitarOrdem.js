@@ -12,7 +12,6 @@ const SolicitarOS = () => {
   const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
   const [descricao, setDescricao] = useState("");
 
-  // Função para obter o ID do solicitante a partir do token JWT
   useEffect(() => {
     const getSolicitanteIdFromToken = async () => {
       const authToken = localStorage.getItem('authToken');
@@ -22,7 +21,6 @@ const SolicitarOS = () => {
           const decoded = jwtDecode(token);
           const userId = decoded.jti;
 
-          // Buscar informações do solicitante com base no ID do usuário
           const response = await api.get(`/solicitantes/usuario/${userId}`);
           setSolicitanteId(response.data.id);
         } catch (error) {
@@ -74,7 +72,6 @@ const SolicitarOS = () => {
     try {
       const response = await api.post('/osmenu', osData);
       navigate('/minhas-solicitacoes');
-      console.log('Ordem de Serviço criada com sucesso:', response.data);
     } catch (error) {
       console.error('Erro ao criar a Ordem de Serviço:', error);
     }
@@ -111,7 +108,7 @@ const SolicitarOS = () => {
               <div key={index} className={styles.formGroup}>
                 <label>Equipamento {index + 1}:</label>
                 <input
-                  type="number" // Tipo "number" para aceitar apenas números
+                  type="number"
                   value={equipamentosSelecionados[index] || ''}
                   onChange={(e) => handleEquipamentoChange(index, e.target.value)}
                   placeholder="Digite o número de patrimônio"

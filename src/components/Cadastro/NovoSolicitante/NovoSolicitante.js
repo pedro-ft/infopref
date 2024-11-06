@@ -13,7 +13,6 @@ const NovoSolicitante = () => {
       try {
         const response = await api.get('/departamentos');
         setDepartamentos(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);
       }
@@ -41,8 +40,8 @@ const NovoSolicitante = () => {
     return (
       password.length >= 5 &&
       password.length <= 20 &&
-      /[A-Za-z]/.test(password) && // Verifica se há pelo menos uma letra
-      /\d/.test(password)          // Verifica se há pelo menos um número
+      /[A-Za-z]/.test(password) &&
+      /\d/.test(password)
     );
   };
 
@@ -55,23 +54,21 @@ const NovoSolicitante = () => {
       alert('A senha precisa atender aos requisitos.');
       return;
     }
-    let userId; // Declara `userId` fora do bloco `try` para que fique disponível no `catch`
+    let userId;
 
     try {
-      // Criar o usuário primeiro para obter o ID
       const userPayload = {
         username: formData.username,
         password: formData.password,
       };
 
       const userResponse = await api.post('/user/solicitante', userPayload);
-      userId = userResponse.data.id; // Atribui o ID retornado à variável `userId`
+      userId = userResponse.data.id;
 
       if (!userId) {
         throw new Error('ID do usuário não retornado pelo backend');
       }
 
-      // Depois, criar o solicitante usando o ID do usuário
       const solicitantePayload = {
         nome: formData.nome,
         fone: formData.fone,
@@ -82,19 +79,14 @@ const NovoSolicitante = () => {
 
       await api.post('/solicitantes', solicitantePayload);
 
-      console.log('Solicitante e usuário criados com sucesso:', solicitantePayload, userPayload);
     } catch (error) {
       console.error('Erro ao criar o solicitante ou usuário:', error);
 
-      // Em caso de erro na criação do solicitante, excluir o usuário criado para manter a integridade
       if (userId) {
         await api.delete(`/user/${userId}`);
       }
     }
   };
-
-
-
 
   return (
     <div className={styles.container}>

@@ -42,48 +42,48 @@ function OrderServicePage() {
 
 
   const filteredData = ordemServicos
-  .filter(item => {
-    const searchParts = searchTerm.toLowerCase().split(" ");
-    return searchParts.every(part =>
-      item.id.toString().toLowerCase().includes(part) ||
-      item.solicitante.nome.toLowerCase().includes(part) ||
-      item.tecnico.nome.toLowerCase().includes(part) ||
-      item.status.toLowerCase().includes(part) ||
-      item.solicitante.departamento.nome.toLowerCase().includes(part) ||
-      item.solicitante.departamento.secretaria.nome.toLowerCase().includes(part) ||
-      item.prioridade.toLowerCase().includes(part)
-    );
-  })
-  .filter(item => {
-    const itemDate = new Date(item.data_abertura);
-    const start = startDate ? new Date(startDate + 'T00:00:00') : null;  
-    const end = endDate ? new Date(endDate + 'T23:59:59') : null;        
-    return (!start || itemDate >= start) && (!end || itemDate <= end);
-  })
-  .sort((a, b) => {
-    switch (sortType) {
-      case 'Mais antigo':
-        return a.id - b.id;
-      case 'Tipo Chamado':
-        return a.tipo_chamado.localeCompare(b.tipo_chamado);
-      case 'Prioridade':
-        const prioridadeOrder = { 'Urgente': 1, 'Normal': 2, 'Baixa': 3 };
-        return prioridadeOrder[a.prioridade] - prioridadeOrder[b.prioridade];
-      case 'Status':
-        return a.status.localeCompare(b.status);
-      case 'Departamento':
-         return a.solicitante.departamento.nome.localeCompare(b.solicitante.departamento.nome);
-      case 'Secretaria':
-        return a.solicitante.departamento.secretaria.nome.localeCompare(b.solicitante.departamento.secretaria.nome);
-      case 'Solicitante':
-        return a.solicitante.nome.localeCompare(b.solicitante.nome);
-      case 'Técnico':
-        return a.tecnico.nome.localeCompare(b.tecnico.nome);
-      case 'Mais recente':
-      default:
-        return b.id - a.id;
-    }
-  });
+    .filter(item => {
+      const searchParts = searchTerm.toLowerCase().split(" ");
+      return searchParts.every(part =>
+        item.id.toString().toLowerCase().includes(part) ||
+        item.solicitante.nome.toLowerCase().includes(part) ||
+        item.tecnico.nome.toLowerCase().includes(part) ||
+        item.status.toLowerCase().includes(part) ||
+        item.solicitante.departamento.nome.toLowerCase().includes(part) ||
+        item.solicitante.departamento.secretaria.nome.toLowerCase().includes(part) ||
+        item.prioridade.toLowerCase().includes(part)
+      );
+    })
+    .filter(item => {
+      const itemDate = new Date(item.data_abertura);
+      const start = startDate ? new Date(startDate + 'T00:00:00') : null;
+      const end = endDate ? new Date(endDate + 'T23:59:59') : null;
+      return (!start || itemDate >= start) && (!end || itemDate <= end);
+    })
+    .sort((a, b) => {
+      switch (sortType) {
+        case 'Mais antigo':
+          return a.id - b.id;
+        case 'Tipo Chamado':
+          return a.tipo_chamado.localeCompare(b.tipo_chamado);
+        case 'Prioridade':
+          const prioridadeOrder = { 'Urgente': 1, 'Normal': 2, 'Baixa': 3 };
+          return prioridadeOrder[a.prioridade] - prioridadeOrder[b.prioridade];
+        case 'Status':
+          return a.status.localeCompare(b.status);
+        case 'Departamento':
+          return a.solicitante.departamento.nome.localeCompare(b.solicitante.departamento.nome);
+        case 'Secretaria':
+          return a.solicitante.departamento.secretaria.nome.localeCompare(b.solicitante.departamento.secretaria.nome);
+        case 'Solicitante':
+          return a.solicitante.nome.localeCompare(b.solicitante.nome);
+        case 'Técnico':
+          return a.tecnico.nome.localeCompare(b.tecnico.nome);
+        case 'Mais recente':
+        default:
+          return b.id - a.id;
+      }
+    });
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -97,7 +97,6 @@ function OrderServicePage() {
   };
 
   const handleOrderClick = (order) => {
-    console.log('Ordem Selecionada:', order);
     setSelectedOrder(order);
   };
 
@@ -132,22 +131,22 @@ function OrderServicePage() {
     <div className={styles.orderServicePage}>
       <Cabecalho />
       <ActionBar onSearch={handleSearch}
-      onSort={handleSort}
-      sortOptions={['Mais recente', 'Mais antigo', 'Prioridade', 'Status', 'Tipo Chamado', 'Secretaria', 'Departamento', 'Solicitante', 'Técnico']} />
+        onSort={handleSort}
+        sortOptions={['Mais recente', 'Mais antigo', 'Prioridade', 'Status', 'Tipo Chamado', 'Secretaria', 'Departamento', 'Solicitante', 'Técnico']} />
       <h2 className={styles.listTitle}>Lista Ordem de Serviços</h2>
       <h3 className={styles.filterTitle}>Filtre as Ordens de Serviços exibidas por um período:</h3>
       <div className={styles.filterContainer}>
         <label>
-          Data de Início: 
+          Data de Início:
           <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
         </label>
         <label>
-          Data de Fim: 
+          Data de Fim:
           <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </label>
         <button className={styles.toggleButton} onClick={() => setIsListView(!isListView)}>
-        Exibir em {isListView ? 'Cards' : 'Linhas'}
-      </button>
+          Exibir em {isListView ? 'Cards' : 'Linhas'}
+        </button>
       </div>
       <main className={styles.mainContent}>
         <OrderServiceList

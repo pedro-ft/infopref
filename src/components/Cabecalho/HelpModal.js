@@ -1,4 +1,3 @@
-// HelpModal.js
 import React, { useEffect, useState } from 'react';
 import styles from './HelpModal.module.css';
 
@@ -658,7 +657,6 @@ const helpContent = {
     },
 };
 
-// Mapeamento entre URLs e abas/sub-abas do modal
 const urlToHelpTab = {
     '/menu': { tab: 'Menu Principal', subTab: 'Menu Principal' },
     '/menu2': { tab: 'Menu Principal', subTab: 'Menu Principal' },
@@ -683,12 +681,10 @@ const urlToHelpTab = {
     '/solicitar-ordem': { tab: 'Solicitar Ordem de Serviço', subTab: 'Solicitar Ordem de Serviço' }
 };
 
-// Função para remover IDs das URLs dinâmicas
 const normalizeUrl = (path) => {
     return path.replace(/\/\d+(?=\/|$)/g, '');
 };
 
-// Função para filtrar o conteúdo de ajuda com base no perfil
 const getFilteredHelpContent = (profile) => {
     if (profile === 'ADM' || profile === 'TECNICO') {
         return ['Menu Principal', 'Ordem de Serviço', 'Solicitante', 'Secretaria', 'Departamento', 'Equipamentos', 'Informações de Internet', 'Técnicos', 'Relatórios'];
@@ -702,8 +698,6 @@ const HelpModal = ({ isOpen, onClose, userProfile }) => {
     const [currentTab, setCurrentTab] = useState('');
     const [expandedTabs, setExpandedTabs] = useState({});
     const [currentMainTab, setCurrentMainTab] = useState('');
-
-    // Filtra o conteúdo de ajuda com base no perfil do usuário
     const availableTabs = getFilteredHelpContent(userProfile);
 
     useEffect(() => {

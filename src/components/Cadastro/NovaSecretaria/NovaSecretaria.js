@@ -12,7 +12,6 @@ const NovaSecretaria = () => {
 
   const handleFormSubmit = async (formData) => {
     await api.post('/secretarias', formData);
-    console.log('Dados do formulário:', formData);
   };
 
   return (

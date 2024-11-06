@@ -6,14 +6,14 @@ import styles from './SolicitanteCard.module.css';
 function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_remoto, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [departamentos, setDepartamentos] = useState([]);
   const [selectedDepartamento, setSelectedDepartamento] = useState(null);
 
   useEffect(() => {
-    console.log('Dados recebidos no SolicitanteCard:', { id, nome, departamento, secretariat, fone, id_acesso_remoto });
+
   }, [id, nome, departamento, secretariat, fone, id_acesso_remoto]);
 
 
@@ -50,8 +50,8 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   };
 
   const closePasswordModal = () => {
-    setIsPasswordModalOpen(false); 
-    setNewPassword(''); 
+    setIsPasswordModalOpen(false);
+    setNewPassword('');
   };
 
   const togglePasswordVisibility = () => {
@@ -76,10 +76,10 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
         const userId = solicitanteDetails.user.id;
 
         await api.delete(`/solicitantes/${id}`);
-        console.log("Solicitante removido");
+
 
         await api.delete(`/user/${userId}`);
-        console.log("Usuário associado removido");
+
       } else {
         console.error("Nenhum usuário associado encontrado para o solicitante");
       }
@@ -102,9 +102,6 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
 
   const handleEdit = async (updatedData) => {
     try {
-
-      console.log('Dados atualizados recebidos:', updatedData);
-
       const departamento = departamentos.find(dep => dep.id === Number(updatedData.departamento));
       if (!departamento) {
         console.error("Departamento não encontrado com o ID:", Number(updatedData.departamento));
@@ -122,10 +119,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
           secretaria: departamento.secretaria
         }
       };
-
-      console.log('Dados enviados para o servidor:', payload);
       await api.put(`/solicitantes/${id}`, payload);
-      console.log('Objeto editado:', payload);
 
       if (onEdit) {
         onEdit(payload);
@@ -225,20 +219,20 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
           <div className={styles.modal}>
             <h2>Redefinir Senha</h2>
             <div className={styles.inputContainer}>
-            <input
-              type={isPasswordVisible ? "text" : "password"}
-              placeholder="Digite a nova senha"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={styles.input}
-            />
-             <img
-              src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
-              alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
-              className={styles.inputIcon}
-              onClick={togglePasswordVisibility} // Chamando a função ao clicar no ícone
-              style={{ cursor: "pointer" }}
-            />
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Digite a nova senha"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={styles.input}
+              />
+              <img
+                src={isPasswordVisible ? "imagens/iconeOculto.svg" : "imagens/iconeVisualizar.svg"}
+                alt={isPasswordVisible ? "Ocultar senha" : "Exibir senha"}
+                className={styles.inputIcon}
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer" }}
+              />
             </div>
             <div className={styles.modalActions}>
               <button onClick={closePasswordModal} className={styles.cancelButton}>Cancelar</button>

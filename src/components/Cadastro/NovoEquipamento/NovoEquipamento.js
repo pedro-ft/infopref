@@ -26,7 +26,6 @@ const NovoEquipamento = () => {
     }
     try {
       await api.post(`equipamentos/equipamentodep?departamentoId=${id}`, equipPayload)
-      console.log('Dados do formulário:', equipPayload);
     } catch (error) {
       console.error('Erro ao enviar formulario:', error);
     }

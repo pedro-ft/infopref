@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/api';
-// import { getAllTecnicos } from '../../api/tecnico';
 import styles from './OSSolicitadasItem.module.css';
 
 function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretaria, departamento, descricao, onDelete, onUpdate }) {
@@ -13,11 +12,11 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
   const getAllTecnicos = async () => {
     try {
-      const response = await api.get('/tecnicos'); // Verifique se a URL está correta
-      return response; // Retorna a resposta completa
+      const response = await api.get('/tecnicos');
+      return response;
     } catch (error) {
       console.error('Erro ao buscar técnicos:', error);
-      throw error; // Lança o erro para que possa ser tratado onde a função for chamada
+      throw error;
     }
   };
 
@@ -27,7 +26,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
         try {
           const response = await getAllTecnicos();
           setTecnicos(response.data);
-          console.log('Tecnicos buscados:', response.data); // Verifique a lista de técnicos
+          console.log('Tecnicos buscados:', response.data);
         } catch (error) {
           console.error('Erro ao buscar técnicos:', error);
         }
@@ -43,13 +42,11 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
   const handleConfirmAccept = async () => {
     try {
-      // Busca a ordem de serviço atual
       const response = await api.get(`/osmenu/${id}`);
       const ordemServicoAtual = response.data;
 
-      // Atualiza os campos necessários
       const updatedOrdemServico = {
-        ...ordemServicoAtual,  // Spread para manter os dados atuais
+        ...ordemServicoAtual,
         cod_tec: tecnicoSelecionado,
         prioridade,
         tipo_chamado: tipoChamado,
@@ -59,14 +56,11 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
           : ordemServicoAtual.equipamentoPatrimonio
       };
 
-      console.log("Ordem de Serviço atualizada:", updatedOrdemServico); // Adicione isto para depuração
-
-      // Envia a atualização
       await updateOrdemServico(updatedOrdemServico);
       closeAcceptModal();
 
       if (onUpdate) {
-        onUpdate(id);  // Atualiza a lista de ordens se necessário
+        onUpdate(id);
       }
     } catch (error) {
       console.error('Erro ao aceitar a ordem de serviço:', error);
@@ -75,12 +69,11 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
 
   const updateOrdemServico = async (ordemServico) => {
-    // Converta equipamentoPatrimonio para string, se for um array.
     if (Array.isArray(ordemServico.equipamentoPatrimonio)) {
       ordemServico.equipamentoPatrimonio = ordemServico.equipamentoPatrimonio.join(', ');
     }
 
-    return await api.put(`/osmenu/${ordemServico.id}`, ordemServico);  // URL correta para a atualização
+    return await api.put(`/osmenu/${ordemServico.id}`, ordemServico);
   };
 
 
@@ -98,10 +91,9 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
   const handleConfirmDelete = async () => {
     try {
-      await await api.delete(`/osmenu/${id}`);  // Chame a função para excluir a ordem
-      console.log("Ordem Removida")
+      await await api.delete(`/osmenu/${id}`);
       if (onDelete) {
-        onDelete(id);  // Atualize a lista após exclusão
+        onDelete(id);
       }
       closeModal();
     } catch (error) {
@@ -149,10 +141,9 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
             <label>Técnico</label>
             <select value={tecnicoSelecionado} onChange={(e) => {
               setTecnicoSelecionado(e.target.value);
-              console.log("Técnico selecionado:", e.target.value); // Adicione isto para depuração
             }}>
 
-              <option value="">Selecione o técnico responsável</option> {/* Adicione uma opção padrão */}
+              <option value="">Selecione o técnico responsável</option>
               {Array.isArray(tecnicos) && tecnicos
                 .sort((a, b) => a.nome.localeCompare(b.nome))
                 .map(tecnico => (
@@ -162,7 +153,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
             <label>Prioridade</label>
             <select value={prioridade} onChange={(e) => setPrioridade(e.target.value)}>
-              <option value="">Selecione uma prioridade</option> {/* Adicione uma opção padrão */}
+              <option value="">Selecione uma prioridade</option>
               <option value="Baixa">Baixa</option>
               <option value="Normal">Normal</option>
               <option value="Urgente">Urgente</option>
@@ -170,7 +161,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
             <label>Tipo de Chamado</label>
             <select value={tipoChamado} onChange={(e) => setTipoChamado(e.target.value)}>
-              <option value="">Selecione uma tipo de chamado</option> {/* Adicione uma opção padrão */}
+              <option value="">Selecione uma tipo de chamado</option>
               <option value="HARDWARE">Hardware</option>
               <option value="SOFTWARE">Software</option>
               <option value="REDE">Rede</option>

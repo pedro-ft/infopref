@@ -32,7 +32,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
 
     if (name === 'fone') {
       newValue = formatPhoneNumber(value);
-    }else if (name === 'id_acesso_remoto') {
+    } else if (name === 'id_acesso_remoto') {
       newValue = formatRemoteId(value);
     }
 
@@ -44,7 +44,6 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Dados enviados no formulário:', formData);
     onSubmit(formData);
   };
 
@@ -52,7 +51,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <h2>Editar</h2>
+          <h2>Editar</h2>
           {fields.map((field, index) => (
             <div key={index} className={styles.formGroup}>
               <label htmlFor={field.name}>{field.label}</label>
