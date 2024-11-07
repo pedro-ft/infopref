@@ -9,6 +9,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
   const [tecnicoSelecionado, setTecnicoSelecionado] = useState('');
   const [prioridade, setPrioridade] = useState('');
   const [tipoChamado, setTipoChamado] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const getAllTecnicos = async () => {
     try {
@@ -41,6 +42,10 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
   };
 
   const handleConfirmAccept = async () => {
+    if (!tecnicoSelecionado || !prioridade || !tipoChamado) {
+      setErrorMessage('Preencha todos os campos obrigatórios.');
+      return;
+    }
     try {
       const response = await api.get(`/osmenu/${id}`);
       const ordemServicoAtual = response.data;
@@ -58,12 +63,13 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
       await updateOrdemServico(updatedOrdemServico);
       closeAcceptModal();
+      setErrorMessage('');
 
       if (onUpdate) {
         onUpdate(id);
       }
     } catch (error) {
-      console.error('Erro ao aceitar a ordem de serviço:', error);
+      setErrorMessage('Erro ao atualizar a ordem de serviço.');
     }
   };
 
@@ -79,6 +85,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
 
   const closeAcceptModal = () => {
     setIsAcceptModalOpen(false);
+    setErrorMessage('');
   };
 
   const openModal = () => {
@@ -174,6 +181,7 @@ function OSSolicitadasItem({ id, dataAbertura, patrimonio, solicitante, secretar
               <button onClick={closeAcceptModal} className={styles.cancelButton}>Cancelar</button>
               <button onClick={handleConfirmAccept} className={styles.confirmButton}>Aceitar</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}
