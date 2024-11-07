@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../../api/api';
 import styles from './OrderServiceForm.module.css';
 
-function OrderServiceForm({ order, onClose, onDelete, onSave }) {
+function OrderServiceForm({ order, onClose, onDelete, onSave}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [solicitantes, setSolicitantes] = useState([]);
@@ -11,6 +11,7 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [tecnicos, setTecnicos] = useState([]);
   const [statusList, setStatusList] = useState([]);
   const [tipo_chamado, setTipoChamado] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const initialFormData = {
     cod_sol: order?.solicitante?.id || "",
@@ -99,8 +100,7 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
       }
       onClose();
     } catch (error) {
-      console.error('Erro ao atualizar a Ordem de Serviço:', error);
-      alert('Houve um erro ao tentar atualizar a Ordem de Serviço.');
+      setErrorMessage('A data de finalização não pode ser menor que a data de abertura.');
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +114,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
       }
     } catch (error) {
       console.error('Erro ao excluir a Ordem de Serviço:', error);
-      alert('Houve um erro ao tentar excluir a Ordem de Serviço.');
     }
   };
 
@@ -253,6 +252,7 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
               </button>
               <button type="button" className={styles.deleteButton} onClick={openModal}>Excluir Ordem</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </form>
         </div >
       </div >

@@ -10,9 +10,7 @@ const SelecionarEquipamentos = () => {
     const { formData } = state || {};
     const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
     const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
-
-
-
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleQuantidadeChange = (e) => {
         const qtd = parseInt(e.target.value);
@@ -29,10 +27,11 @@ const SelecionarEquipamentos = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (equipamentosSelecionados.some(equip => !equip)) {
-            console.error('Todos os equipamentos devem ser selecionados.');
+            setErrorMessage('Insira o número de patrimônio de todos os equipamentos.');
             return;
         }
 
+        setErrorMessage('');
         const osPayload = {
             ...formData,
             equipamentoPatrimonio: equipamentosSelecionados.join(", ")
@@ -68,7 +67,7 @@ const SelecionarEquipamentos = () => {
                         <div key={index} className={styles.formGroup}>
                             <label>Equipamento {index + 1}:</label>
                             <input
-                                type="number" // Tipo "number" para aceitar apenas números
+                                type="number" 
                                 value={equipamentosSelecionados[index] || ''}
                                 onChange={(e) => handleEquipamentoChange(index, e.target.value)}
                                 placeholder="Digite o número de patrimônio"
@@ -81,8 +80,8 @@ const SelecionarEquipamentos = () => {
                             <button type="button" className={styles.btnBack}>Voltar</button>
                         </Link>
                         <button type="submit" className={styles.btnSubmit}>Salvar</button>
-
                     </div>
+                    {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
                 </form>
             </div>
         </>

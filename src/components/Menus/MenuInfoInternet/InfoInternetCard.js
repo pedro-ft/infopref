@@ -6,6 +6,7 @@ import styles from './InfoInternetCard.module.css';
 function InfoInternetCard({ idInfoInternet, nome, senha, ip, onEdit, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -28,6 +29,16 @@ function InfoInternetCard({ idInfoInternet, nome, senha, ip, onEdit, onDelete })
   };
 
   const handleEdit = async (updatedData) => {
+    if (!updatedData.nome || !updatedData.senha) {
+      setErrorMessage('Preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    const ipRegex = /^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}$/;
+    if (updatedData.ip && !ipRegex.test(updatedData.ip)) {
+        setErrorMessage('Insira um IP válido. Exemplo: 192.168.0.1');
+        return;
+      }
     try {
       const payload = {
         nome: updatedData.nome,
@@ -39,6 +50,7 @@ function InfoInternetCard({ idInfoInternet, nome, senha, ip, onEdit, onDelete })
         onEdit(null);
       }
       setIsEditing(false);
+      setErrorMessage('');
     } catch (error) {
       console.error("Erro ao atualizar infointernet: ", error);
     }
@@ -46,6 +58,7 @@ function InfoInternetCard({ idInfoInternet, nome, senha, ip, onEdit, onDelete })
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setErrorMessage('');
   };
 
   const fields = [
@@ -97,6 +110,7 @@ function InfoInternetCard({ idInfoInternet, nome, senha, ip, onEdit, onDelete })
           initialValues={{ nome, senha, ip }}
           onSubmit={(updatedData) => handleEdit({ ...updatedData, idInfoInternet })}
           onCancel={handleCancelEdit}
+          errorMessage={errorMessage}
         />
       )}
     </>

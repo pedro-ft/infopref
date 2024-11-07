@@ -6,6 +6,7 @@ import styles from './SecretariaCard.module.css';
 function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -23,19 +24,36 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
       }
       closeModal();
     } catch (error) {
-      console.error("Erro ao deletar secretaria: ", error);
+      setErrorMessage('Não é possível excluir esta secretaria, pois está associada a outros registros.');
     }
   };
 
   const handleEdit = async (updatedData) => {
+    if (!updatedData.nome) {
+      setErrorMessage('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
+      setErrorMessage('O fone cadastrado é inválido.');
+      return;
+    }
     try {
+      const response = await api.get(`/secretarias?nome=${updatedData.nome}`);
+      const secretariaExists = response.data.some((sec) => sec.nome === updatedData.nome);
 
+      if (secretariaExists) {
+        setErrorMessage('Já existe uma secretaria cadastrada com esse nome.');
+        return;
+      }
+      
       await api.put(`/secretarias/${id}`, updatedData);
 
       if (onEdit) {
         onEdit(updatedData)
       }
       setIsEditing(false);
+      setErrorMessage('');
     } catch (error) {
       console.error("Erro ao atualizar secretaria: ", error);
     }
@@ -43,6 +61,7 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setErrorMessage('');
   };
 
   const fields = [
@@ -83,6 +102,7 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}
@@ -92,6 +112,7 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
           initialValues={{ nome, fone }}
           onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
+          errorMessage={errorMessage}
         />
       )}
     </>

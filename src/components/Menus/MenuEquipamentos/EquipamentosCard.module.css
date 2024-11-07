@@ -159,3 +159,11 @@
     padding: 12px;
     margin: 10px 30px 10px 30px;
   }
+
+  .errorMessage{
+    font: 400 17px/1 Roboto, sans-serif;
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+  

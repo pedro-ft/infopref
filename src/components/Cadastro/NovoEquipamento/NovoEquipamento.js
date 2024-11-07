@@ -44,7 +44,7 @@ const NovoEquipamento = () => {
       await api.post(`equipamentos/equipamentodep?departamentoId=${id}`, equipPayload);
       return {};
     } catch (error) {
-      return { error: 'Ocorreu um erro ao enviar o formulário. Tente novamente.' };
+      return { error: 'Ocorreu um erro ao criar o equipamento. Tente novamente.' };
     }
   };
 

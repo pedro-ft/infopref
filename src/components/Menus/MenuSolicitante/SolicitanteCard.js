@@ -11,6 +11,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [departamentos, setDepartamentos] = useState([]);
   const [selectedDepartamento, setSelectedDepartamento] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
 
@@ -81,7 +82,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
         await api.delete(`/user/${userId}`);
 
       } else {
-        console.error("Nenhum usuário associado encontrado para o solicitante");
+        setErrorMessage('Não é possível excluir este solicitante, pois está associado a outros registros.');
       }
 
       if (onDelete) {
@@ -89,7 +90,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       }
       closeModal();
     } catch (error) {
-      console.error("Erro ao deletar solicitante ou usuário associado:", error);
+      setErrorMessage('Não é possível excluir este solicitante, pois está associado a outros registros.');
     }
   };
 
@@ -101,6 +102,15 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
 
 
   const handleEdit = async (updatedData) => {
+    if (!updatedData.nome || !updatedData.departamento) {
+      setErrorMessage('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
+      setErrorMessage('O fone cadastrado é inválido.');
+      return;
+    }
     try {
       const departamento = departamentos.find(dep => dep.id === Number(updatedData.departamento));
       if (!departamento) {
@@ -138,21 +148,19 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
         if (solicitanteDetails && solicitanteDetails.user && solicitanteDetails.user.id) {
           const userId = solicitanteDetails.user.id;
           await api.put(`/user/${userId}/reset-password`, newPassword);
-          alert("Senha redefinida com sucesso!");
           closePasswordModal();
         } else {
           console.error("Nenhum usuário associado encontrado para o solicitante");
-          alert("Erro ao redefinir a senha. Nenhum usuário associado encontrado.");
         }
       } catch (error) {
-        console.error("Erro ao redefinir a senha:", error);
-        alert("Erro ao redefinir a senha. Tente novamente.");
+        setErrorMessage('A senha deve ter entre 5 e 20 caracteres, incluindo pelo menos uma letra e um número.');
       }
     }
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setErrorMessage('');
   };
 
   const fields = [
@@ -166,9 +174,6 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
           return { label: dep.nome, value: dep.id };
         })
     },
-
-
-
   ];
 
   return (
@@ -210,6 +215,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}
@@ -238,6 +244,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
               <button onClick={closePasswordModal} className={styles.cancelButton}>Cancelar</button>
               <button onClick={handleResetPassword} className={styles.confirmButton}>Confirmar</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}
@@ -249,6 +256,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
           initialValues={{ nome, fone, departamento: selectedDepartamento ? selectedDepartamento.id : '', id_acesso_remoto }}
           onSubmit={handleEdit}
           onCancel={handleCancelEdit}
+          errorMessage={errorMessage}
         />
       )}
     </>

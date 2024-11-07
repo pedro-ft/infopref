@@ -89,3 +89,11 @@
   .formButtons button:hover {
     opacity: 0.8;
   }
+
+  .errorMessage{
+    font: 400 17px/1 Roboto, sans-serif;
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+  

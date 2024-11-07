@@ -11,6 +11,7 @@ const SolicitarOS = () => {
   const [quantidadeEquipamentos, setQuantidadeEquipamentos] = useState(1);
   const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
   const [descricao, setDescricao] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const getSolicitanteIdFromToken = async () => {
@@ -50,12 +51,12 @@ const SolicitarOS = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!solicitanteId) {
-      console.error('ID do solicitante não está definido.');
+    if (!descricao) {
+      setErrorMessage("Preencha todos os campos obrigatórios.");
       return;
     }
     if (equipamentosSelecionados.some(equip => !equip)) {
-      console.error('Todos os equipamentos devem ser preenchidos.');
+      setErrorMessage('Insira o número de patrimônio de todos os equipamentos.');
       return;
     }
 
@@ -122,6 +123,7 @@ const SolicitarOS = () => {
               </Link>
               <button type="submit" className={styles.btnSubmit}>Salvar</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </form>
         </div>
       </main>

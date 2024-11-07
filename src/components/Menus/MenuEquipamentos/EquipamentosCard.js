@@ -10,6 +10,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
   const [departamentos, setDepartamentos] = useState([]);
   const [selectedDepartamento, setSelectedDepartamento] = useState('');
   const [newDataAquisicao, setNewDataAquisicao] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -27,7 +28,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
       }
       closeModal();
     } catch (error) {
-      console.error("Erro ao deletar equipamento: ", error);
+      setErrorMessage('Não é possível excluir este técnico, pois está associado a outros registros.');
     }
   };
 
@@ -137,6 +138,7 @@ function EquipamentoCard({ idEquip, num_patrimonio, modelo, marca, data_aquisica
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}

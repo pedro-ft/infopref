@@ -6,6 +6,7 @@ import styles from './TecnicoCard.module.css';
 function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -44,12 +45,21 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
       }
       closeModal();
     } catch (error) {
-      console.error("Erro ao deletar técnico ou usuário associado:", error);
+      setErrorMessage('Não é possível excluir este técnico, pois está associado a outros registros.');
     }
   };
 
 
   const handleEdit = async (updatedData) => {
+    if (!updatedData.nome) {
+      setErrorMessage('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
+      setErrorMessage('O fone cadastrado é inválido.');
+      return;
+    }
     try {
       await api.put(`/tecnicos/${id}`, updatedData);
 
@@ -57,6 +67,7 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
         onEdit(updatedData)
       }
       setIsEditing(false);
+      setErrorMessage('');
     } catch (error) {
       console.error("Erro ao atualizar tecnico: ", error);
     }
@@ -64,6 +75,7 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setErrorMessage('');
   };
 
   const fields = [
@@ -105,6 +117,7 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}
@@ -115,6 +128,7 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
           initialValues={{ nome, fone }}
           onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
+          errorMessage={errorMessage}
         />
       )}
     </>

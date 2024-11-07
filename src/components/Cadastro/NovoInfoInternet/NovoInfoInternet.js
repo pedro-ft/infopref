@@ -22,6 +22,11 @@ const NovaInfoInternet = () => {
       return { error: 'Preencha todos os campos obrigatórios.' };
     }
 
+    const ipRegex = /^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}$/;
+    if (formData.ip && !ipRegex.test(formData.ip)) {
+        return { error: 'Insira um IP válido. Exemplo: 192.168.0.1' };
+      }
+
     try {
     const InfoInternetPayload = {
       nome: formData.nome,
@@ -32,7 +37,7 @@ const NovaInfoInternet = () => {
       await api.post(`infoInternet/departamento/${id}`, InfoInternetPayload)
       return {};
     } catch (error) {
-      return { error: 'Ocorreu um erro ao criar o técnico. Tente novamente.' };
+      return { error: 'Ocorreu um erro ao criar a Info Internet. Tente novamente.' };
     }
   };
 

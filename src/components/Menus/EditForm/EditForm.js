@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './EditForm.module.css';
 
-function EditForm({ fields, onSubmit, onCancel, initialValues }) {
+function EditForm({ fields, onSubmit, onCancel, initialValues, errorMessage}) {
   const [formData, setFormData] = useState(initialValues || {});
 
   const formatPhoneNumber = (value) => {
@@ -42,9 +42,12 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+   
+    const result = await onSubmit(formData);
+
+    return result;
   };
 
   return (
@@ -97,6 +100,7 @@ function EditForm({ fields, onSubmit, onCancel, initialValues }) {
               Salvar
             </button>
           </div>
+          {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         </form>
       </div>
     </div>

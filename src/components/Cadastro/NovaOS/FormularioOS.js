@@ -25,6 +25,7 @@ const FormularioOS = () => {
   const [tipo_chamado, setTipoChamado] = useState([]);
   const [prioridade, setPrioridades] = useState([]);
   const [tecnico, setTecnicos] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchSelects = async () => {
@@ -63,6 +64,18 @@ const FormularioOS = () => {
 
   const handleNext = async (e) => {
     e.preventDefault();
+
+    if (!formData.data_abertura || !formData.cod_sol || !formData.tipo_chamado || !formData.status || !formData.prioridade || !formData.cod_tec) {
+      setErrorMessage("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    if (formData.status === "FINALIZADO" && formData.data_abertura > formData.data_finalizacao) {
+      setErrorMessage("A data de abertura não pode ser maior que a data de finalização.");
+      return;
+    }
+
+    setErrorMessage('');
     navigate('/selecionar-equipamentos', { state: { formData } });
   };
 
@@ -205,7 +218,7 @@ const FormularioOS = () => {
           <button type="submit" className={styles.btnSubmit}>Próximo</button>
 
         </div>
-
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         <p className="form-note">* Campos obrigatórios</p>
       </form>
     </div>

@@ -26,27 +26,34 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
       }
       closeModal();
     } catch (error) {
-      console.error("Erro ao deletar departamento: ", error);
-
-      const errorMsg = error.response && error.response.data && error.response.data.message
-        ? error.response.data.message
-        : 'Erro ao tentar excluir o departamento.';
-
-      if (error.response && error.response.status === 409) {
-        setErrorMessage('Não é possível excluir este departamento, pois está associado a outros registros.');
-      } else {
-        setErrorMessage(errorMsg);
-      }
+      setErrorMessage('Não é possível excluir este departamento, pois está associado a outros registros.');
     }
   };
 
   const handleEdit = async (updatedData) => {
+    if (!updatedData.nome) {
+      setErrorMessage('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
+      setErrorMessage('O fone cadastrado é inválido.');
+      return;
+    }
     try {
+      const response = await api.get(`/departamentos?nome=${updatedData.nome}`);
+      const departamentoExists = response.data.some((dep) => dep.nome === updatedData.nome);
+
+      if (departamentoExists) {
+        setErrorMessage ('Já existe um departamento cadastrado com esse nome.');
+      }
+
       await api.put(`/departamentos/${id}`, updatedData);
       if (onEdit) {
         onEdit(updatedData)
       }
       setIsEditing(false);
+      setErrorMessage('');
     } catch (error) {
       console.error("Erro ao atualizar departamento: ", error);
     }
@@ -54,6 +61,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setErrorMessage('');
   };
 
   const fields = [
@@ -98,11 +106,11 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir o {nome}?</p>
-            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
             <div className={styles.modalActions}>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>
             </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           </div>
         </div>
       )}
@@ -113,6 +121,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
           initialValues={{ nome, fone }}
           onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
+          errorMessage={errorMessage}
         />
       )}
     </>

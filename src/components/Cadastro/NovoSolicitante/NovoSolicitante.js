@@ -7,6 +7,7 @@ import styles from '../Novo.module.css';
 const NovoSolicitante = () => {
   const [departamentos, setDepartamentos] = useState([]);
   const [senhaValida, setSenhaValida] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchDepartamentos = async () => {
@@ -50,24 +51,40 @@ const NovoSolicitante = () => {
   };
 
   const handleFormSubmit = async (formData) => {
-    if (!isPasswordValid(formData.password)) {
-      alert('A senha precisa atender aos requisitos.');
-      return;
+    setErrorMessage('');
+
+    if (!formData.nome || !formData.username || !formData.password || !formData.departamento) {
+      return { error: 'Preencha todos os campos obrigatórios.' };
     }
-    let userId;
+
+    if (formData.username.length < 3 || formData.username.length > 30) {
+      return { error: 'O usuário deve possuir entre 3 e 30 caracteres.' };
+    }
+
+    if (!isPasswordValid(formData.password)) {
+      return { error: 'A senha não atende aos requisitos.' };
+    }
+
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (formData.fone && !telefoneRegex.test(formData.fone)) {
+      return { error: 'O fone cadastrado é inválido.' };
+    }
 
     try {
+      const response = await api.get(`/user?username=${formData.username}`);
+      const userExists = response.data.some((user) => user.username === formData.username);
+
+      if (userExists) {
+        return { error: 'Já existe um cadastro com esse usuário.' };
+      }
+
       const userPayload = {
         username: formData.username,
         password: formData.password,
       };
 
       const userResponse = await api.post('/user/solicitante', userPayload);
-      userId = userResponse.data.id;
-
-      if (!userId) {
-        throw new Error('ID do usuário não retornado pelo backend');
-      }
+      const userId = userResponse.data.id;
 
       const solicitantePayload = {
         nome: formData.nome,
@@ -78,13 +95,9 @@ const NovoSolicitante = () => {
       };
 
       await api.post('/solicitantes', solicitantePayload);
-
+      return {};
     } catch (error) {
-      console.error('Erro ao criar o solicitante ou usuário:', error);
-
-      if (userId) {
-        await api.delete(`/user/${userId}`);
-      }
+      return { error: 'Ocorreu um erro ao criar o técnico. Tente novamente.' };
     }
   };
 
@@ -93,8 +106,18 @@ const NovoSolicitante = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Novo Solicitante</h1>
-        <Formulario campos={campos} onSubmit={handleFormSubmit} voltarUrl="/solicitantes" isSubmitDisabled={!senhaValida}
-          mostrarRequisitosSenha={true} />
+        <Formulario campos={campos} 
+        onSubmit={async (formData) => {
+          const result = await handleFormSubmit(formData);
+          if (result.error) {
+            setErrorMessage(result.error);
+          }
+          return result; 
+        }} 
+        voltarUrl="/solicitantes" 
+        isSubmitDisabled={!senhaValida}
+        mostrarRequisitosSenha={true}
+        errorMessage={errorMessage} />
       </main>
     </div>
   );
