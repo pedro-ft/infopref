@@ -19,8 +19,8 @@ const NovoTecnico = () => {
     return (
       password.length >= 5 &&
       password.length <= 20 &&
-      /[A-Za-z]/.test(password) && 
-      /\d/.test(password)         
+      /[A-Za-z]/.test(password) &&
+      /\d/.test(password)
     );
   };
 
@@ -29,6 +29,7 @@ const NovoTecnico = () => {
   };
 
   const handleFormSubmit = async (formData) => {
+    let userId;
     setErrorMessage('');
 
     if (!formData.nome || !formData.username || !formData.password) {
@@ -43,8 +44,11 @@ const NovoTecnico = () => {
       return { error: 'A senha não atende aos requisitos.' };
     }
 
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (formData.fone && !telefoneRegex.test(formData.fone)) {
+    // Remove todos os caracteres não numéricos do telefone antes de salvar
+    const telefoneSomenteNumeros = formData.fone ? formData.fone.replace(/\D/g, '') : '';
+
+    // Valida o telefone apenas se ele não estiver vazio
+    if (telefoneSomenteNumeros && (telefoneSomenteNumeros.length < 10 || telefoneSomenteNumeros.length > 11)) {
       return { error: 'O fone cadastrado é inválido.' };
     }
 
@@ -62,20 +66,32 @@ const NovoTecnico = () => {
       };
 
       const userResponse = await api.post('/user', userPayload);
-      const userId = userResponse.data.id;
+      userId = userResponse.data.id; // Salva o ID do usuário criado
 
       const tecnicoPayload = {
         nome: formData.nome,
-        fone: formData.fone,
+        fone: telefoneSomenteNumeros || null,
         user: { id: userId },
       };
 
       await api.post('/tecnicos', tecnicoPayload);
       return {};
     } catch (error) {
+      // Exibe mensagem de erro
+      setErrorMessage('Ocorreu um erro ao criar o técnico. Tente novamente.');
+
+      // Exclui o usuário criado, se o ID existir
+      if (userId) {
+        try {
+          await api.delete(`/user/${userId}`);
+        } catch (deleteError) {
+          console.error("Erro ao excluir o usuário:", deleteError);
+        }
+      }
       return { error: 'Ocorreu um erro ao criar o técnico. Tente novamente.' };
     }
   };
+
 
   return (
     <div className={styles.container}>
@@ -89,7 +105,7 @@ const NovoTecnico = () => {
             if (result.error) {
               setErrorMessage(result.error);
             }
-            return result; 
+            return result;
           }}
           voltarUrl="/tecnicos"
           isSubmitDisabled={!senhaValida}

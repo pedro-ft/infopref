@@ -35,17 +35,16 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
       setErrorMessage('Preencha todos os campos obrigatórios.');
       return;
     }
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
-      setErrorMessage('O fone cadastrado é inválido.');
-      return;
-    }
+    // Remove qualquer formatação para o envio ao backend
+    const rawPhone = updatedData.fone.replace(/\D/g, '');
+    updatedData.fone = rawPhone;
+
     try {
       const response = await api.get(`/departamentos?nome=${updatedData.nome}`);
-      const departamentoExists = response.data.some((dep) => dep.nome === updatedData.nome);
+      const departamentoExists = response.data.some((dep) => dep.nome === updatedData.nome && dep.id !== id);
 
       if (departamentoExists) {
-        setErrorMessage ('Já existe um departamento cadastrado com esse nome.');
+        setErrorMessage('Já existe um departamento cadastrado com esse nome.');
       }
 
       await api.put(`/departamentos/${id}`, updatedData);
@@ -69,6 +68,16 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
     { name: 'fone', label: 'Telefone', type: 'text' },
   ];
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return '';
+    const cleaned = ('' + number).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{2})(\d{4,5})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+    return number;
+  };
+
   return (
     <>
       <article className={styles.card}>
@@ -79,7 +88,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
           </div>
           <div className={styles.cardDetails}>
             <div className={styles.info}>
-              <p>Fone: {fone}</p>
+              <p>Fone: {formatPhoneNumber(fone)}</p>
             </div>
             <div className={styles.cardSideSection}>
               <Link to={`/departamentos/${id}/equipamentos`}>
@@ -118,7 +127,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ nome, fone }}
+          initialValues={{ nome, fone: formatPhoneNumber(fone) }}
           onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
           errorMessage={errorMessage}

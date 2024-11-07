@@ -51,6 +51,7 @@ const NovoSolicitante = () => {
   };
 
   const handleFormSubmit = async (formData) => {
+    let userId;
     setErrorMessage('');
 
     if (!formData.nome || !formData.username || !formData.password || !formData.departamento) {
@@ -65,8 +66,11 @@ const NovoSolicitante = () => {
       return { error: 'A senha não atende aos requisitos.' };
     }
 
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (formData.fone && !telefoneRegex.test(formData.fone)) {
+    // Remove todos os caracteres não numéricos do telefone antes de salvar
+    const telefoneSomenteNumeros = formData.fone ? formData.fone.replace(/\D/g, '') : '';
+
+    // Valida o telefone apenas se ele não estiver vazio
+    if (telefoneSomenteNumeros && (telefoneSomenteNumeros.length < 10 || telefoneSomenteNumeros.length > 11)) {
       return { error: 'O fone cadastrado é inválido.' };
     }
 
@@ -84,11 +88,11 @@ const NovoSolicitante = () => {
       };
 
       const userResponse = await api.post('/user/solicitante', userPayload);
-      const userId = userResponse.data.id;
+      userId = userResponse.data.id;
 
       const solicitantePayload = {
         nome: formData.nome,
-        fone: formData.fone,
+        fone: telefoneSomenteNumeros || null,
         id_acesso_remoto: formData.id_acesso_remoto,
         departamento: { id: formData.departamento },
         user: { id: userId },
@@ -97,6 +101,17 @@ const NovoSolicitante = () => {
       await api.post('/solicitantes', solicitantePayload);
       return {};
     } catch (error) {
+      // Exibe mensagem de erro
+      setErrorMessage('Ocorreu um erro ao criar o técnico. Tente novamente.');
+
+      // Exclui o usuário criado, se o ID existir
+      if (userId) {
+        try {
+          await api.delete(`/user/${userId}`);
+        } catch (deleteError) {
+          console.error("Erro ao excluir o usuário:", deleteError);
+        }
+      }
       return { error: 'Ocorreu um erro ao criar o técnico. Tente novamente.' };
     }
   };
@@ -106,18 +121,18 @@ const NovoSolicitante = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Novo Solicitante</h1>
-        <Formulario campos={campos} 
-        onSubmit={async (formData) => {
-          const result = await handleFormSubmit(formData);
-          if (result.error) {
-            setErrorMessage(result.error);
-          }
-          return result; 
-        }} 
-        voltarUrl="/solicitantes" 
-        isSubmitDisabled={!senhaValida}
-        mostrarRequisitosSenha={true}
-        errorMessage={errorMessage} />
+        <Formulario campos={campos}
+          onSubmit={async (formData) => {
+            const result = await handleFormSubmit(formData);
+            if (result.error) {
+              setErrorMessage(result.error);
+            }
+            return result;
+          }}
+          voltarUrl="/solicitantes"
+          isSubmitDisabled={!senhaValida}
+          mostrarRequisitosSenha={true}
+          errorMessage={errorMessage} />
       </main>
     </div>
   );

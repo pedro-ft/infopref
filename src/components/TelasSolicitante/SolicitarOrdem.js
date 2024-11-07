@@ -62,16 +62,20 @@ const SolicitarOS = () => {
 
     const osData = {
       descricao,
-      cod_sol: solicitanteId,
+      cod_sol: solicitanteId.toString(),
+      cod_tec: '',
       status: 'EM_ABERTO',
       tipo_chamado: 'HARDWARE',
       prioridade: 'Baixa',
-      data_abertura: new Date(),
-      equipamentoPatrimonio: equipamentosSelecionados
+      num_patrimonio: '',
+      resolucao: '',
+      data_abertura: new Date().toISOString().split('T')[0],
+      data_finalizacao: '',
+      equipamentoPatrimonio: equipamentosSelecionados.join(", ")
     };
 
     try {
-      const response = await api.post('/osmenu', osData);
+      await api.post('/osmenu', osData);
       navigate('/minhas-solicitacoes');
     } catch (error) {
       console.error('Erro ao criar a Ordem de Serviço:', error);

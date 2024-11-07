@@ -106,11 +106,18 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       setErrorMessage('Preencha todos os campos obrigatórios.');
       return;
     }
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
-      setErrorMessage('O fone cadastrado é inválido.');
+    // Remove qualquer formatação para o envio ao backend
+    const rawPhone = updatedData.fone.replace(/\D/g, '');
+
+
+    // Validar o telefone (deve ter 10 ou 11 dígitos)
+    if (rawPhone.length < 10 || rawPhone.length > 11) {
+      setErrorMessage('O número de telefone deve ter entre 10 e 11 dígitos.');
       return;
     }
+
+    updatedData.fone = rawPhone;
+
     try {
       const departamento = departamentos.find(dep => dep.id === Number(updatedData.departamento));
       if (!departamento) {
@@ -176,6 +183,16 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
     },
   ];
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return '';
+    const cleaned = ('' + number).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{2})(\d{4,5})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+    return number;
+  };
+
   return (
     <>
       <article className={styles.card}>
@@ -188,7 +205,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
             <div className={styles.info}>
               <p>{secretariat}</p>
               <p>{departamento}</p>
-              <p>Fone: {fone}</p>
+              <p>Fone: {formatPhoneNumber(fone)}</p>
               <p>ID de Acesso Remoto: {id_acesso_remoto}</p>
               <button className={styles.changeButton} onClick={openPasswordModal}>
                 Redefinir Senha
@@ -253,7 +270,7 @@ function SolicitanteCard({ id, nome, departamento, secretariat, fone, id_acesso_
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ nome, fone, departamento: selectedDepartamento ? selectedDepartamento.id : '', id_acesso_remoto }}
+          initialValues={{ nome, fone: formatPhoneNumber(fone), departamento: selectedDepartamento ? selectedDepartamento.id : '', id_acesso_remoto }}
           onSubmit={handleEdit}
           onCancel={handleCancelEdit}
           errorMessage={errorMessage}

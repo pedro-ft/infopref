@@ -42,8 +42,11 @@ const NovoDepartamento = () => {
       return { error: 'Preencha todos os campos obrigatórios.' };
     }
 
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (formData.fone && !telefoneRegex.test(formData.fone)) {
+    // Remove todos os caracteres não numéricos do telefone antes de salvar
+    const telefoneSomenteNumeros = formData.fone ? formData.fone.replace(/\D/g, '') : '';
+
+    // Valida o telefone apenas se ele não estiver vazio
+    if (telefoneSomenteNumeros && (telefoneSomenteNumeros.length < 10 || telefoneSomenteNumeros.length > 11)) {
       return { error: 'O fone cadastrado é inválido.' };
     }
 
@@ -55,7 +58,8 @@ const NovoDepartamento = () => {
         return { error: 'Já existe um departamento cadastrado com esse nome.' };
       }
 
-      await api.post('/departamentos', formData);
+      // Salva o telefone sem formatação no banco de dados, mas apenas se ele foi preenchido
+      await api.post('/departamentos', { ...formData, fone: telefoneSomenteNumeros || null });
       return {};
     } catch (error) {
       return { error: 'Ocorreu um erro ao criar o departamento. Tente novamente.' };
@@ -67,16 +71,16 @@ const NovoDepartamento = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Novo Departamento</h1>
-        <Formulario campos={campos} 
-        onSubmit={async (formData) => {
-          const result = await handleFormSubmit(formData);
-          if (result.error) {
-            setErrorMessage(result.error);
-          }
-          return result;
-        }} 
-        voltarUrl="/departamentos"
-        errorMessage={errorMessage} />
+        <Formulario campos={campos}
+          onSubmit={async (formData) => {
+            const result = await handleFormSubmit(formData);
+            if (result.error) {
+              setErrorMessage(result.error);
+            }
+            return result;
+          }}
+          voltarUrl="/departamentos"
+          errorMessage={errorMessage} />
       </main>
     </div>
   );

@@ -55,16 +55,15 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
       setErrorMessage('Preencha todos os campos obrigatórios.');
       return;
     }
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (updatedData.fone && !telefoneRegex.test(updatedData.fone)) {
-      setErrorMessage('O fone cadastrado é inválido.');
-      return;
-    }
+    // Remove qualquer formatação para o envio ao backend
+    const rawPhone = updatedData.fone.replace(/\D/g, '');
+    updatedData.fone = rawPhone;
+
     try {
       await api.put(`/tecnicos/${id}`, updatedData);
 
       if (onEdit) {
-        onEdit(updatedData)
+        onEdit({ ...updatedData, fone: formatPhoneNumber(rawPhone) });
       }
       setIsEditing(false);
       setErrorMessage('');
@@ -83,6 +82,15 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
     { name: 'fone', label: 'Telefone', type: 'text' },
   ];
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return '';
+    const cleaned = ('' + number).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{2})(\d{4,5})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+    return number;
+  };
 
   return (
     <>
@@ -94,7 +102,7 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
           </div>
           <div className={styles.cardDetails}>
             <div className={styles.info}>
-              <p>Fone: {fone}</p>
+              <p>Fone: {formatPhoneNumber(fone)}</p>
             </div>
             <div className={styles.actions}>
               <button className={styles.editButton} aria-label="Edit" onClick={() => setIsEditing(true)}>
@@ -125,7 +133,7 @@ function TecnicoCard({ id, nome, fone, onDelete, onEdit }) {
       {isEditing && (
         <EditForm
           fields={fields}
-          initialValues={{ nome, fone }}
+          initialValues={{ nome, fone: formatPhoneNumber(fone) }}
           onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
           errorMessage={errorMessage}

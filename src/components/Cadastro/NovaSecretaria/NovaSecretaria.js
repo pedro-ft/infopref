@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import api from '../../../api/api';
 import Cabecalho from '../../Cabecalho/Cabecalho';
 import Formulario from '../Formulario/Formulario';
@@ -10,7 +10,7 @@ const NovaSecretaria = () => {
   const campos = [
     { label: '*Nome', name: 'nome', type: 'text' },
     { label: 'Fone', name: 'fone', type: 'text' }
-  ]
+  ];
 
   const handleFormSubmit = async (formData) => {
     setErrorMessage('');
@@ -19,8 +19,11 @@ const NovaSecretaria = () => {
       return { error: 'Preencha todos os campos obrigatórios.' };
     }
 
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (formData.fone && !telefoneRegex.test(formData.fone)) {
+    // Remove todos os caracteres não numéricos do telefone antes de salvar
+    const telefoneSomenteNumeros = formData.fone ? formData.fone.replace(/\D/g, '') : '';
+
+    // Valida o telefone apenas se ele não estiver vazio
+    if (telefoneSomenteNumeros && (telefoneSomenteNumeros.length < 10 || telefoneSomenteNumeros.length > 11)) {
       return { error: 'O fone cadastrado é inválido.' };
     }
 
@@ -32,7 +35,8 @@ const NovaSecretaria = () => {
         return { error: 'Já existe uma secretaria cadastrada com esse nome.' };
       }
 
-      await api.post('/secretarias', formData);
+      // Salva o telefone sem formatação no banco de dados, mas apenas se ele foi preenchido
+      await api.post('/secretarias', { ...formData, fone: telefoneSomenteNumeros || null });
       return {};
     } catch (error) {
       return { error: 'Ocorreu um erro ao criar a secretaria. Tente novamente.' };
@@ -44,16 +48,18 @@ const NovaSecretaria = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Nova Secretaria</h1>
-        <Formulario campos={campos} 
-        onSubmit={async (formData) => {
-          const result = await handleFormSubmit(formData);
-          if (result.error) {
-            setErrorMessage(result.error);
-          }
-          return result;
-        }} 
-        voltarUrl="/secretarias" 
-        errorMessage={errorMessage}/>
+        <Formulario
+          campos={campos}
+          onSubmit={async (formData) => {
+            const result = await handleFormSubmit(formData);
+            if (result.error) {
+              setErrorMessage(result.error);
+            }
+            return result;
+          }}
+          voltarUrl="/secretarias"
+          errorMessage={errorMessage}
+        />
       </main>
     </div>
   );
