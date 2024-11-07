@@ -56,10 +56,14 @@ const MenuPrincipalSemADM = () => {
         </aside>
         <main className={styles.mainContent}>
           <div className={styles.cardsContainer}>
-            <div className={styles.card}>Ordens em Aberto: {ordensEmAberto}</div>
-            <div className={styles.card}>Ordens em Andamento: {ordensEmAndamento + ordensAguardando}</div>
-            <div className={styles.card}>Ordens Finalizadas Este Mês: {ordensFinalizadasMes}</div>
-            <div className={styles.card}>Ordens com Prioridade Urgente: {ordensUrgentes}</div>
+            <div className={styles.card}>Ordens em Aberto
+              <span>{ordensEmAberto}</span></div>
+            <div className={styles.card}>Ordens em Andamento
+              <span>{ordensEmAndamento + ordensAguardando}</span></div>
+            <div className={styles.card}>Ordens Finalizadas Este Mês
+              <span>{ordensFinalizadasMes}</span></div>
+            <div className={styles.card}>Ordens com Prioridade Urgente
+              <span>{ordensUrgentes}</span></div>
           </div>
         </main>
       </div>

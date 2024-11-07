@@ -65,4 +65,11 @@
     width: 20px;
     height: 20px;
   }
+
+  .errorMessage{
+    font: 400 17px/1 Roboto, sans-serif;
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
   

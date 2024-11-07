@@ -111,7 +111,7 @@ const SolicitarOS = () => {
               <div key={index} className={styles.formGroup}>
                 <label>Equipamento {index + 1}:</label>
                 <input
-                  type="number" // Tipo "number" para aceitar apenas números
+                  type="number" 
                   value={equipamentosSelecionados[index] || ''}
                   onChange={(e) => handleEquipamentoChange(index, e.target.value)}
                   placeholder="Digite o número de patrimônio"

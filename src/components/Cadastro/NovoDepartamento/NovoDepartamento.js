@@ -6,6 +6,7 @@ import styles from '../Novo.module.css';
 
 const NovoDepartamento = () => {
   const [secretarias, setSecretarias] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchSecretarias = async () => {
@@ -36,11 +37,29 @@ const NovoDepartamento = () => {
   ];
 
   const handleFormSubmit = async (formData) => {
+    setErrorMessage('');
+
+    if (!formData.nome || !formData.secretariaId) {
+      return { error: 'Preencha todos os campos obrigatórios.' };
+    }
+
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (formData.fone && !telefoneRegex.test(formData.fone)) {
+      return { error: 'O fone cadastrado é inválido.' };
+    }
+
     try {
+      const response = await api.get(`/departamentos?nome=${formData.nome}`);
+      const departamentoExists = response.data.some((dep) => dep.nome === formData.nome);
+
+      if (departamentoExists) {
+        return { error: 'Já existe um departamento cadastrado com esse nome.' };
+      }
+
       await api.post('/departamentos', formData);
-      console.log('Dados do formulário:', formData);
+      return {};
     } catch (error) {
-      console.error('Erro ao criar departamento:', error);
+      return { error: 'Ocorreu um erro ao criar o departamento. Tente novamente.' };
     }
   };
 
@@ -49,7 +68,16 @@ const NovoDepartamento = () => {
       <Cabecalho />
       <main className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Novo Departamento</h1>
-        <Formulario campos={campos} onSubmit={handleFormSubmit} voltarUrl="/departamentos" />
+        <Formulario campos={campos} 
+        onSubmit={async (formData) => {
+          const result = await handleFormSubmit(formData);
+          if (result.error) {
+            setErrorMessage(result.error);
+          }
+          return result;
+        }} 
+        voltarUrl="/departamentos"
+        errorMessage={errorMessage} />
       </main>
     </div>
   );

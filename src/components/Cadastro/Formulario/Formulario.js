@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Formulario.module.css';
 
-const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => {
+const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha, errorMessage }) => {
   const [formData, setFormData] = useState({});
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
@@ -44,9 +44,12 @@ const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit(formData);
-    navigate(voltarUrl);
+    const result = await onSubmit(formData);
+    if (!result || !result.error) {
+      navigate(voltarUrl);
+    }
   };
+
 
   const handleVoltar = () => {
     navigate(voltarUrl);
@@ -104,6 +107,7 @@ const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha }) => 
             A senha deve ter entre 5 e 20 caracteres, incluindo pelo menos uma letra e um número.
           </p>
         )}
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         <p className="form-note">* Campos obrigatórios</p>
         <div className={styles.formButtons}>
           <button type="button" className={styles.btnBack} onClick={handleVoltar}>Voltar</button>

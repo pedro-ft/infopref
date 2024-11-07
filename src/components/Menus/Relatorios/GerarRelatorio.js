@@ -99,6 +99,10 @@ const GerarRelatorio = () => {
             setErrorMessage("Por favor, preencha todos os campos.");
             return;
         }
+        if (dataInicio > dataFim) {
+            setErrorMessage("A data de início não pode ser maior que a data final.");
+            return;
+        }
         setErrorMessage('');
         try {
             const response = await api.get('/relatorios/ordens-de-servico', {
@@ -108,13 +112,11 @@ const GerarRelatorio = () => {
                     tipo: tipoSelecionado,
                     filtro: subTipoSelecionado,
                 },
-                responseType: 'blob', // Para que a resposta seja tratada como um arquivo
+                responseType: 'blob', 
             });
-
-            // Crie um URL para o blob recebido e abra em uma nova aba
             const file = new Blob([response.data], { type: 'application/pdf' });
             const fileURL = URL.createObjectURL(file);
-            window.open(fileURL, '_blank'); // Abre o PDF em uma nova aba
+            window.open(fileURL, '_blank'); 
         } catch (error) {
             console.error("Erro ao gerar relatório:", error);
             setErrorMessage("Ocorreu um erro ao gerar o relatório. Tente novamente.");
