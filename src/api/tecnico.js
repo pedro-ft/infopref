@@ -1,5 +1,4 @@
-import api from './api'; // Importe a instância do axios
-
+import api from './api';
 const API_BASE_URL = 'tecnicos';
 
 export const getAllTecnicos = async () => {

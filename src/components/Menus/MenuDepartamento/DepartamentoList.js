@@ -21,7 +21,6 @@ function DepartamentoList() {
       try {
         const data = await getAllDepartamentos();
         setDepartamentos(data);
-        console.log(data);
       } catch (error) {
         console.error('Erro ao carregar departamentos:', error);
       }
@@ -41,7 +40,7 @@ function DepartamentoList() {
     }
   });
 
-  const totalPages = Math.ceil(filteredDepartamentos.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredDepartamentos.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -50,7 +49,7 @@ function DepartamentoList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredDepartamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredDepartamentos.slice(startIndex, startIndex + itemsPerPage);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -95,17 +94,17 @@ function DepartamentoList() {
         <section className={styles.listSection}>
           {currentItems.length > 0 ? (
             currentItems.map((departamento, index) => (
-            <DepartamentoCard key={index}
-              id={departamento.id}
-              nome={departamento.nome}
-              fone={departamento.fone}
-              onDelete={handleDeleteDepartamento}
-              onEdit={handleEditDepartamento}
-            />
-          ))
-        ) : (
-          <p>Nenhum departamento encontrado.</p>
-        )}
+              <DepartamentoCard key={index}
+                id={departamento.id}
+                nome={departamento.nome}
+                fone={departamento.fone}
+                onDelete={handleDeleteDepartamento}
+                onEdit={handleEditDepartamento}
+              />
+            ))
+          ) : (
+            <p>Nenhum departamento encontrado.</p>
+          )}
         </section>
       </div>
       <div className={styles.pagination}>

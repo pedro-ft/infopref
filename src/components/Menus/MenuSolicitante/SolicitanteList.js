@@ -22,7 +22,6 @@ function SolicitanteList() {
       try {
 
         const data = await getAllSolicitantes();
-        console.log('Solicitantes retornados:', data);
         setSolicitantes(data);
         setLoading(false);
       } catch (error) {
@@ -34,24 +33,24 @@ function SolicitanteList() {
   }, []);
 
   const filteredSolicitantes = solicitantes
-  .filter(solicitante =>
-    solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  .sort((a, b) => {
-    switch (sortType) {
-      case 'Mais recente':
-        return b.id - a.id;
-      case 'Mais antigo':
-        return a.id - b.id;
-      case 'Secretaria':
-        return a.departamento.secretaria.nome.localeCompare(b.departamento.secretaria.nome);
-      case 'Departamento':
-        return a.departamento.nome.localeCompare(b.departamento.nome);
-      case 'Ordem alfabética':
-      default:
-        return a.nome.localeCompare(b.nome);
-    }
-  });
+    .filter(solicitante =>
+      solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      switch (sortType) {
+        case 'Mais recente':
+          return b.id - a.id;
+        case 'Mais antigo':
+          return a.id - b.id;
+        case 'Secretaria':
+          return a.departamento.secretaria.nome.localeCompare(b.departamento.secretaria.nome);
+        case 'Departamento':
+          return a.departamento.nome.localeCompare(b.departamento.nome);
+        case 'Ordem alfabética':
+        default:
+          return a.nome.localeCompare(b.nome);
+      }
+    });
 
   const totalPages = Math.ceil(filteredSolicitantes.length / itemsPerPage);
 
@@ -70,7 +69,6 @@ function SolicitanteList() {
   }
 
   const handleEditSolicitante = (updatedSolicitante) => {
-    console.log('Dados atualizados:', updatedSolicitante);
     const updatedSolicitantes = solicitantes.map(solicitante =>
       solicitante.id === updatedSolicitante.id ? updatedSolicitante : solicitante
     );
@@ -101,11 +99,11 @@ function SolicitanteList() {
   return (
     <main className={styles.solicitanteModule}>
       <Cabecalho />
-      <ActionBar tipo='Novo Solicitante' 
-      link='novo-solicitante' 
-      onSearch={handleSearch}
-      onSort={handleSort}
-      sortOptions={['Ordem alfabética', 'Secretaria', 'Departamento', 'Mais recente', 'Mais antigo']} />
+      <ActionBar tipo='Novo Solicitante'
+        link='novo-solicitante'
+        onSearch={handleSearch}
+        onSort={handleSort}
+        sortOptions={['Ordem alfabética', 'Secretaria', 'Departamento', 'Mais recente', 'Mais antigo']} />
       <div className={styles.contentWrapper}>
         <h2 className={styles.listTitle}>Lista Solicitantes</h2>
         <section className={styles.listSection}>

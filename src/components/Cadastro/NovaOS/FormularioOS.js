@@ -40,9 +40,7 @@ const FormularioOS = () => {
         setStatus([{ key: "Aguardando peças", value: "AGUARDANDO_PEÇAS" }, { key: "Em andamento", value: "EM_ANDAMENTO" }, { key: "Finalizado", value: "FINALIZADO" }]);
 
         setPrioridades(["Baixa", "Normal", "Urgente"]);
-        console.log(response.data);  // Verifique os dados retornados
       } catch (error) {
-        console.error('Erro ao carregar departamentos:', error);
       }
     };
     fetchSelects();
@@ -52,6 +50,14 @@ const FormularioOS = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === 'status' && value !== 'FINALIZADO') {
+      setFormData((prevData) => ({
+        ...prevData,
+        data_finalizacao: '',
+        resolucao: ''
+      }));
+    }
   };
 
 
@@ -155,15 +161,19 @@ const FormularioOS = () => {
             </select>
           </div>
 
-          <div className={styles.formGroup}>
-            <label>Data Finalização:</label>
-            <input
-              type="date"
-              name="data_finalizacao"
-              value={formData.data_finalizacao}
-              onChange={handleInputChange}
-            />
-          </div>
+          {formData.status === "FINALIZADO" && (
+            <div>
+              <div className={styles.formGroup}>
+                <label>Data Finalização:</label>
+                <input
+                  type="date"
+                  name="data_finalizacao"
+                  value={formData.data_finalizacao}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className={styles.formGroup}>
@@ -175,15 +185,18 @@ const FormularioOS = () => {
             rows="3"
           />
         </div>
-        <div className={styles.formGroup}>
-          <label>Resolução:</label>
-          <textarea
-            name="resolucao"
-            value={formData.resolucao}
-            onChange={handleInputChange}
-            rows="3"
-          />
-        </div>
+
+        {formData.status === "FINALIZADO" && (
+          <div className={styles.formGroup}>
+            <label>Resolução:</label>
+            <textarea
+              name="resolucao"
+              value={formData.resolucao}
+              onChange={handleInputChange}
+              rows="3"
+            />
+          </div>
+        )}
 
         <div className={styles.formButtons}>
           <Link className={styles.linkBtn} to="/osmenu">

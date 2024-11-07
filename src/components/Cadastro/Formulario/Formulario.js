@@ -5,7 +5,14 @@ import styles from './Formulario.module.css';
 const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha, errorMessage }) => {
   const [formData, setFormData] = useState({});
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [ipError, setIpError] = useState(null);
   const navigate = useNavigate();
+
+  // Função para validar o IP
+  const isValidIP = (ip) => {
+    const ipPattern = /^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/;
+    return ipPattern.test(ip);
+  };
 
   const formatPhoneNumber = (value) => {
     let formattedValue = value.replace(/\D/g, '');
@@ -37,6 +44,14 @@ const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha, error
       formattedValue = formatPhoneNumber(value);
     } else if (name === 'id_acesso_remoto') {
       formattedValue = formatRemoteId(value);
+    }
+
+    if (name === 'ip') {
+      if (isValidIP(value)) {
+        setIpError(null);
+      } else {
+        setIpError('Por favor, insira um IP válido. Exemplo: 192.168.0.1');
+      }
     }
 
     setFormData({ ...formData, [name]: formattedValue });
@@ -98,10 +113,14 @@ const Formulario = ({ campos, onSubmit, voltarUrl, mostrarRequisitosSenha, error
                   value={formData[campo.name] || ''}
                   onChange={handleInputChange}
                 />
+                {campo.name === 'ip' && ipError && (
+                  <p className={styles.errorText}>{ipError}</p>
+                )}
               </div>
             )}
           </div>
         ))}
+
         {mostrarRequisitosSenha && (
           <p className={styles.passwordRequirements}>
             A senha deve ter entre 5 e 20 caracteres, incluindo pelo menos uma letra e um número.

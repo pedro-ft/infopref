@@ -10,14 +10,13 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated, setUserProfile} = useContext(UserContext);
+  const { setUsername: setGlobalUsername, setAvatarUrl, setIsAuthenticated, setUserProfile } = useContext(UserContext);
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      // Fazendo a requisição POST para autenticar o usuário
       const response = await api.post('/login', {
         username: username,
         password: password
@@ -25,23 +24,18 @@ function LoginPage() {
 
       const authToken = response.headers.getAuthorization();
       const decoded = jwtDecode(authToken.slice(7));
-      console.log(decoded);
-
-      // Armazena o token JWT no localStorage
       localStorage.setItem('authToken', authToken);
 
       const userResponse = await api.get(`/user/${decoded.jti}`)
-      console.log(userResponse.data);
 
       setIsAuthenticated(true);
       setGlobalUsername(userResponse.data.username);
       setUserProfile(userResponse.data.profile);
-      const defaultAvatarUrl = userResponse.data.profile.includes("ADM") ? 'imagens/iconeTecnico.svg' : 
-                               userResponse.data.profile.includes("TECNICO") ? 'imagens/iconeTecnico.svg' : 
-                              'imagens/UsuarioIcone.svg';
+      const defaultAvatarUrl = userResponse.data.profile.includes("ADM") ? 'imagens/iconeTecnico.svg' :
+        userResponse.data.profile.includes("TECNICO") ? 'imagens/iconeTecnico.svg' :
+          'imagens/UsuarioIcone.svg';
       setAvatarUrl(defaultAvatarUrl);
 
-      // Redireciona o usuário de acordo com o tipo de perfil
       if (userResponse.data.profile.includes("ADM")) {
         navigate('/menu');
       } else if (userResponse.data.profile.includes("TECNICO")) {
@@ -50,7 +44,6 @@ function LoginPage() {
         navigate('/minhas-solicitacoes');
       }
     } catch (err) {
-      console.log(err)
       setError('Usuário ou senha inválidos');
     }
   };
@@ -63,15 +56,15 @@ function LoginPage() {
           label="Usuário"
           iconSrc="imagens/iconeUsuario.svg"
           iconAlt="Icone Usuário"
-          value={username}  // Passa o valor do username
-          onChange={(e) => setUsername(e.target.value)}  // Atualiza o estado do username
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <InputGroup
           label="Senha"
           iconSrc="imagens/iconeVisualizar.svg"
           iconAlt="Visualizar Icone"
-          value={password}  // Passa o valor do password
-          onChange={(e) => setPassword(e.target.value)}  // Atualiza o estado do password
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit" className={styles.loginButton}>
           Entrar

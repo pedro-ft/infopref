@@ -5,10 +5,7 @@ import styles from './OrderServiceForm.module.css';
 
 function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // States para armazenar dados do banco de dados
   const [solicitantes, setSolicitantes] = useState([]);
   const [prioridades, setPrioridades] = useState([]);
   const [tecnicos, setTecnicos] = useState([]);
@@ -21,11 +18,12 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
     tipo_chamado: order?.tipo_chamado || "",
     prioridade: order?.prioridade || "",
     status: order?.status || "",
+    data_finalizacao: order?.data_finalizacao ? format(new Date(order.data_finalizacao), 'yyyy-MM-dd') : "",
+    resolucao: order?.resolucao || "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
-  // Conversão para o formato "yyyy-MM-dd"
   const toDateInputValue = (date) => {
     if (!date) return "";
     return format(new Date(date), 'yyyy-MM-dd');
@@ -90,8 +88,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
   const updateOrderService = async () => {
     try {
       setIsSubmitting(true);
-
-      // Certifique-se de enviar a data no formato esperado pelo backend (ISO 8601)
       const updatedFormData = {
         ...formData,
         data_finalizacao: formData.data_finalizacao ? new Date(formData.data_finalizacao).toISOString().split('T')[0] : null,
@@ -124,7 +120,6 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Ordem de Serviço Atualizada:', formData);
     updateOrderService();
   };
 
@@ -161,9 +156,9 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   onChange={handleChange}
                 >
                   {tipo_chamado
-                  .map(stat => {
-                    return <option key={stat.key} value={stat.value}>{stat.key}</option>
-                  })}
+                    .map(stat => {
+                      return <option key={stat.key} value={stat.value}>{stat.key}</option>
+                    })}
                 </select>
               </div>
               <div className={styles.formGroup}>
@@ -215,16 +210,18 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                   })}
                 </select>
               </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="data_finalizacao">Data Finalização</label>
-                <input
-                  type="date"
-                  id="data_finalizacao"
-                  name="data_finalizacao"
-                  value={formData.data_finalizacao}
-                  onChange={handleChange}
-                />
-              </div>
+              {formData.status === "FINALIZADO" && (
+                <div className={styles.formGroup}>
+                  <label htmlFor="data_finalizacao">Data Finalização</label>
+                  <input
+                    type="date"
+                    id="data_finalizacao"
+                    name="data_finalizacao"
+                    value={formData.data_finalizacao}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
             </div>
 
             <div className={styles.formGroup}>
@@ -237,16 +234,18 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
                 onChange={handleChange}
               />
             </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="resolucao">Resolução</label>
-              <textarea
-                id="resolucao"
-                name="resolucao"
-                rows="3"
-                value={formData.resolucao}
-                onChange={handleChange}
-              />
-            </div>
+            {formData.status === "FINALIZADO" && (
+              <div className={styles.formGroup}>
+                <label htmlFor="resolucao">Resolução</label>
+                <textarea
+                  id="resolucao"
+                  name="resolucao"
+                  rows="3"
+                  value={formData.resolucao}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
             <div className={styles.formActions}>
               <button type="button" className={styles.cancelButton} onClick={onClose}>Cancelar</button>
               <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
@@ -255,8 +254,8 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
               <button type="button" className={styles.deleteButton} onClick={openModal}>Excluir Ordem</button>
             </div>
           </form>
-        </div>
-      </div>
+        </div >
+      </div >
       {isModalOpen && (
         <div className={styles.modalOverlay2}>
           <div className={styles.modalContent2}>
@@ -268,7 +267,8 @@ function OrderServiceForm({ order, onClose, onDelete, onSave }) {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 }

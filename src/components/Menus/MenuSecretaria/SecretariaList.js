@@ -54,7 +54,7 @@ function SecretariaList() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredSecretarias.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const currentItems = filteredSecretarias.slice(startIndex, startIndex + itemsPerPage);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -97,17 +97,17 @@ function SecretariaList() {
         <section className={styles.listSection}>
           {currentItems.length > 0 ? (
             currentItems.map((secretaria, index) => (
-            <SecretariaCard key={index} nome={secretaria.nome}
-              fone={secretaria.fone}
-              id={secretaria.id}
-              onDelete={handleDeleteSecretaria}
-              onEdit={handleEditSecretaria}
+              <SecretariaCard key={index} nome={secretaria.nome}
+                fone={secretaria.fone}
+                id={secretaria.id}
+                onDelete={handleDeleteSecretaria}
+                onEdit={handleEditSecretaria}
 
-            />
-          ))
-        ) : (
-          <p>Nenhuma secretaria encontrada.</p>
-        )}
+              />
+            ))
+          ) : (
+            <p>Nenhuma secretaria encontrada.</p>
+          )}
         </section>
       </div>
       <div className={styles.pagination}>

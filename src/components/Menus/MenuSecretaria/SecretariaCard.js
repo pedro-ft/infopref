@@ -17,10 +17,9 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
 
   const handleConfirmDelete = async () => {
     try {
-      await api.delete(`/secretarias/${id}`); // Use o id recebido
-      console.log("Secretaria removida");
+      await api.delete(`/secretarias/${id}`);
       if (onDelete) {
-        onDelete(id); // Chama onDelete para atualizar a lista, caso necessário
+        onDelete(id);
       }
       closeModal();
     } catch (error) {
@@ -30,9 +29,9 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
 
   const handleEdit = async (updatedData) => {
     try {
-      console.log('Dados enviados para o servidor:', updatedData);
+
       await api.put(`/secretarias/${id}`, updatedData);
-      console.log('Objeto editado:', updatedData);
+
       if (onEdit) {
         onEdit(updatedData)
       }
@@ -91,7 +90,7 @@ function SecretariaCard({ id, nome, fone, onDelete, onEdit }) {
         <EditForm
           fields={fields}
           initialValues={{ nome, fone }}
-          onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}  // Inclui o ID
+          onSubmit={(updatedData) => handleEdit({ ...updatedData, id })}
           onCancel={handleCancelEdit}
         />
       )}

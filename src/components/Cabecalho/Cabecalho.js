@@ -72,7 +72,6 @@ const Cabecalho = () => {
       closePasswordModal();
     } catch (error) {
       alert("Erro ao alterar a senha. Verifique a senha atual e tente novamente.");
-      console.error(error);
     }
   };
 

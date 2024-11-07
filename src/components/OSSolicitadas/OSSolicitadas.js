@@ -12,7 +12,7 @@ function OSSolicitadas() {
     useEffect(() => {
         const fetchOrdensSolicitadas = async () => {
             try {
-                const data = await getAllOrdemServico();  // Ou outra função específica para buscar ordens solicitadas
+                const data = await getAllOrdemServico();
                 const ordensEmAberto = data.filter(item => item.status === 'EM_ABERTO');
                 setSolicitadas(ordensEmAberto);
             } catch (error) {

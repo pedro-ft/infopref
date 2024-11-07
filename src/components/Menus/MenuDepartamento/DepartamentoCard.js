@@ -21,7 +21,6 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
   const handleConfirmDelete = async () => {
     try {
       await api.delete(`/departamentos/${id}`);
-      console.log("Departamento removido");
       if (onDelete) {
         onDelete(id);
       }
@@ -29,13 +28,11 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
     } catch (error) {
       console.error("Erro ao deletar departamento: ", error);
 
-      // Aqui estamos tentando obter uma mensagem de erro do corpo da resposta
       const errorMsg = error.response && error.response.data && error.response.data.message
         ? error.response.data.message
         : 'Erro ao tentar excluir o departamento.';
 
-      // Verifica se o erro indica que a exclusão não foi permitida
-      if (error.response && error.response.status === 409) { // Verifica se o status é 409
+      if (error.response && error.response.status === 409) {
         setErrorMessage('Não é possível excluir este departamento, pois está associado a outros registros.');
       } else {
         setErrorMessage(errorMsg);
@@ -45,9 +42,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
 
   const handleEdit = async (updatedData) => {
     try {
-      console.log('Dados enviados para o servidor:', updatedData);
       await api.put(`/departamentos/${id}`, updatedData);
-      console.log('Objeto editado:', updatedData);
       if (onEdit) {
         onEdit(updatedData)
       }
@@ -103,7 +98,7 @@ function DepartamentoCard({ id, nome, fone, onEdit, onDelete }) {
           <div className={styles.modal}>
             <h2>Confirmar Exclusão</h2>
             <p>Tem certeza que deseja excluir o {nome}?</p>
-            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>} {/* Exibe a mensagem de erro */}
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
             <div className={styles.modalActions}>
               <button onClick={closeModal} className={styles.cancelButton}>Não</button>
               <button onClick={handleConfirmDelete} className={styles.confirmButton}>Sim</button>

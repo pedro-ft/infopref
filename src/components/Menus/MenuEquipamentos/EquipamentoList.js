@@ -66,7 +66,7 @@ function EquipamentoList() {
       }
     });
 
-  const totalPages = Math.ceil(filteredEquipamentos.length / itemsPerPage); // ACRESCENTADO
+  const totalPages = Math.ceil(filteredEquipamentos.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -79,8 +79,8 @@ function EquipamentoList() {
     setCurrentPage(1);
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage; // ACRESCENTADO
-  const currentItems = filteredEquipamentos.slice(startIndex, startIndex + itemsPerPage); // ACRESCENTADO
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredEquipamentos.slice(startIndex, startIndex + itemsPerPage);
 
   const handleEditEquipamento = async () => {
     try {

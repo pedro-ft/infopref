@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
     try {
       const response = await api.get(`/user/${userId}/profile`);
       if (response && response.data) {
-        return response.data; // Assumindo que o backend retorna o tipo de perfil
+        return response.data;
       }
     } catch (error) {
       console.error('Erro ao buscar o perfil do usuário:', error);
@@ -33,7 +33,7 @@ export const UserProvider = ({ children }) => {
       }
 
       if (response && response.data) {
-        setRealName(response.data.nome); // Atualiza com o nome real
+        setRealName(response.data.nome);
       }
 
     } catch (error) {
@@ -49,26 +49,23 @@ export const UserProvider = ({ children }) => {
         const decodedToken = jwtDecode(token);
         const { sub: username, jti: userId } = decodedToken;
 
-        // Reseta o nome real e perfil para evitar que permaneçam do usuário anterior
         setRealName('');
         setUserProfile('');
 
-        setUsername(username); // Define o username padrão
+        setUsername(username);
         setIsAuthenticated(true);
 
-        // Busca o perfil do usuário
         const profileType = await fetchUserProfile(userId);
         setUserProfile(profileType);
 
-        // Se o perfil for TECNICO ou SOLICITANTE, busca o nome real
         if (profileType && profileType !== 'ADM') {
-          await fetchUserDetails(userId, profileType); // Aguarda o nome ser carregado
+          await fetchUserDetails(userId, profileType);
         }
       }
     };
 
     initializeUserFromToken();
-  }, [localStorage.getItem('authToken')]); // Substitua por `authToken`
+  }, [localStorage.getItem('authToken')]);
 
   return (
     <UserContext.Provider value={{

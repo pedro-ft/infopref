@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../../api/api';
 import Cabecalho from '../../Cabecalho/Cabecalho';
@@ -125,11 +125,11 @@ const GerarRelatorio = () => {
 
     const handleBackClick = () => {
         if (userProfile === 'ADM') {
-          navigate('/menu');
+            navigate('/menu');
         } else if (userProfile === 'TECNICO') {
-          navigate('/menu2');
+            navigate('/menu2');
         }
-      };
+    };
 
     return (
         <div className={styles.container}>
@@ -186,10 +186,10 @@ const GerarRelatorio = () => {
                         </div>
                     )}
                     <div className={styles.formButtons}>
-                    <button className={styles.btnBack} aria-label='Voltar' onClick={handleBackClick}>Voltar</button>
-                    <button type="submit" className={styles.btnSubmit}>
-                        Gerar Relatório
-                    </button>
+                        <button className={styles.btnBack} aria-label='Voltar' onClick={handleBackClick}>Voltar</button>
+                        <button type="submit" className={styles.btnSubmit}>
+                            Gerar Relatório
+                        </button>
                     </div>
                     {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
                 </form>
