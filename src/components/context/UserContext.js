@@ -65,6 +65,7 @@ export const UserProvider = ({ children }) => {
     };
 
     initializeUserFromToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem('authToken')]);
 
   return (

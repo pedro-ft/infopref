@@ -712,6 +712,7 @@ const HelpModal = ({ isOpen, onClose, userProfile }) => {
                 setExpandedTabs((prev) => ({ ...prev, [tab]: true }));
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
     const handleTabChange = (mainTab, subTab) => {
