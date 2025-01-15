@@ -5,11 +5,6 @@ Desenvolvido para a disciplina de Projeto de Software durante o 4º ano de gradu
 
 ## Como executar o projeto
 
-Back-end
-1. Instalar o Java JDK 21 ([https://www.oracle.com/java/technologies/downloads/#jdk17-windows](https://www.oracle.com/java/technologies/downloads/#java21))
-2. Abrir a pasta  target (/infopref/target)
-3. Executar o comando `java -jar infopref-0.0.1-SNAPSHOT.jar`
-
 Front-end
 1. Instalar o nodeJS (https://nodejs.org/pt/download/prebuilt-installer)
 2. Abrir a pasta infopref/front (/infopref-front)
