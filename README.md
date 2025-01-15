@@ -1,4 +1,4 @@
-# Projeto de Software - INFOPREF
+# Projeto de Software - INFOPREF (Front-end)
 
 ## Resumo
 Desenvolvido para a disciplina de Projeto de Software durante o 4º ano de graduação em Engenharia de Computação. Sistema web para gerenciar ordens de serviço, equipamentos e outras informações relacionadas à área de informática de uma prefeitura. Minha atuação foi focada na documentação do projeto, desenvolvimento do front-end e integração entre front e back-end.
