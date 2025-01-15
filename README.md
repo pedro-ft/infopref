@@ -3,14 +3,6 @@
 ## Resumo
 Desenvolvido para a disciplina de Projeto de Software durante o 4º ano de graduação em Engenharia de Computação. Sistema web para gerenciar ordens de serviço, equipamentos e outras informações relacionadas à área de informática de uma prefeitura. Minha atuação foi focada na documentação do projeto, desenvolvimento do front-end e integração entre front e back-end.
 
-## Como executar o projeto
-
-Front-end
-1. Instalar o nodeJS (https://nodejs.org/pt/download/prebuilt-installer)
-2. Abrir a pasta infopref/front (/infopref-front)
-3. Executar o comando `npm start`
-4. Abrir em um navegador http://localhost:3000
-
 ## Tecnologias Utilizadas
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
